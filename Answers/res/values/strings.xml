@@ -1,5 +1,7 @@
 <resources>
 
     <string name="app_name">Answers</string>
+    <string name="title_section1">Binnengekomen vragen</string>
+    <string name="title_section2">Review vragen</string>
 
 </resources>
