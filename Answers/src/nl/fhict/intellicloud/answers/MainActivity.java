@@ -23,7 +23,7 @@ import android.support.v4.view.ViewPager;
  */
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
-
+	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a
@@ -50,15 +50,18 @@ public class MainActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager());
+		
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -91,7 +94,7 @@ public class MainActivity extends FragmentActivity implements
 	 * Called when a tab enters the selected state.
 	 * 
 	 * @param tab The tab that was reselected.
-	 * @param ft A FragmentTransaction for queuing fragment operations to execute during a tab switch. 
+	 * @param fragmentTransaction A FragmentTransaction for queuing fragment operations to execute during a tab switch. 
 	 * The previous tab's unselect and this tab's select will be executed in a single transaction. 
 	 * This FragmentTransaction does not support being added to the back stack.
 	 */
@@ -100,14 +103,26 @@ public class MainActivity extends FragmentActivity implements
 			FragmentTransaction fragmentTransaction) {
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
-		mViewPager.setCurrentItem(tab.getPosition());
+		//mViewPager.setCurrentItem(tab.getPosition());
+		int position = tab.getPosition();
+		
+		Fragment fragment = null;
+		
+		switch(position) {
+		case 0:
+			break;
+			
+		}
+		android.support.v4.app.FragmentTransaction fft = getSupportFragmentManager().beginTransaction();
+		fft.replace(R.id.pager, fragment);
+		//fragmentTransaction.add(R.id.pager, fragment, null);
 	}
 
 	/**
 	 * Called when a tab exits the selected state.
 	 * 
 	 * @param tab The tab that was reselected.
-	 * @param ft A FragmentTransaction for queuing fragment operations to execute during a tab switch. 
+	 * @param fragmentTransaction A FragmentTransaction for queuing fragment operations to execute during a tab switch. 
 	 * This tab's unselect and the newly selected tab's select will be executed in a single transaction. 
 	 * This FragmentTransaction does not support being added to the back stack.
 	 */
@@ -121,7 +136,7 @@ public class MainActivity extends FragmentActivity implements
 	 * Some applications may use this action to return to the top level of a category.
 	 * 
 	 * @param tab The tab that was reselected.
-	 * @param ft A FragmentTransaction for queuing fragment operations to execute once this method returns. 
+	 * @param fragmentTransaction A FragmentTransaction for queuing fragment operations to execute once this method returns. 
 	 * This FragmentTransaction does not support being added to the back stack.
 	 */
 	@Override
