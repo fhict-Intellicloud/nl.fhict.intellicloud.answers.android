@@ -110,7 +110,15 @@ public class MainActivity extends FragmentActivity implements
 		
 		switch(position) {
 		case 0:
+			fragment = new TabFragmentIncomingQuestions();
 			break;
+			
+			case 1:
+				fragment = new TabFragmentReviewQuestions();
+				break;
+				
+			default:
+				break;
 			
 		}
 		android.support.v4.app.FragmentTransaction fft = getSupportFragmentManager().beginTransaction();

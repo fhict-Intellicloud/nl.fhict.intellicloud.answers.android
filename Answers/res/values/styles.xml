@@ -1,9 +1,12 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
+    
+
+    <!-- Application theme. -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
@@ -11,10 +14,27 @@
             backward-compatibility can go here.
         -->
     </style>
-
-    <!-- Application theme. -->
+    
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    
+    <style name="Theme.IntellicloudTheme" parent="android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/Theme.IntellicloudTheme.ActionBar</item>
+        <item name="android:listViewStyle">@style/Theme.IntellicloudTheme.ListView</item>
+    </style>
+    
+    <style name="Theme.IntellicloudTheme.ActionBar" parent="android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/intellicloud_color_one</item>
+        <item name="android:titleTextStyle">@style/Theme.IntellicloudTheme.ActionBar.TitleTextStyle</item>
+    </style>
+    
+    <style name="Theme.IntellicloudTheme.ActionBar.TitleTextStyle" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    
+    <style name="Theme.IntellicloudTheme.ListView" parent="@android:style/Widget.Holo.Light.ListView">
+        <item name="android:typeface">sans</item>
     </style>
 
 </resources>

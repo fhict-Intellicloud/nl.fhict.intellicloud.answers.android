@@ -1,0 +1,7 @@
+<resources>
+
+    <string name="app_name">Answers</string>
+    <string name="tabbarname_incomingquestions">Binnengekomen vragen</string>
+    <string name="tabbarname_reviewquestions">Review vragen</string>
+
+</resources>
