@@ -1,11 +1,18 @@
 package nl.fhict.intellicloud.answers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nl.fhict.intellicloud.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 /**
  * 
@@ -15,7 +22,7 @@ import android.view.ViewGroup;
  *
  */
 public class TabFragmentReviewQuestions extends Fragment {
-	
+	ListView lvAnswer;
 	/**
 	 * Perform initialization of all fragments and loaders.
 	 * 
@@ -41,8 +48,24 @@ public class TabFragmentReviewQuestions extends Fragment {
 			Bundle savedInstanceState) {
 
 		View tablayout = inflater.inflate(R.layout.tab_fragment_review, null);
+		List<Answer> list = new ArrayList<Answer>();
+		User user1 = new User(1, "HOLY", "Remco", "Loeff", "", "", "");
+		User user2 = new User(2, "MOLY", "Hans", "Grietje", "En", "", "");
+		Question q = new Question(21, "HOI?", user1, user2, "test");
+		Answer anwser = new Answer(1,"HELL YEAH",q, user1, "");
+		
+		list.add(anwser);
+		list.add(anwser);
+		list.add(anwser);
+		
+		ReviewListAdapter adapter = new ReviewListAdapter(this.getActivity(), list);
+		lvAnswer = (ListView) tablayout.findViewById(R.id.lvReviewAnswer);
+		lvAnswer.setAdapter(adapter);
+		AnswerListOnClickListener listClickListener = new AnswerListOnClickListener(getActivity(), list);
+		
+		lvAnswer.setOnItemClickListener(listClickListener);
+		
 		return tablayout;
 
 	}
-
 }

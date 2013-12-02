@@ -84,9 +84,7 @@ public class MainActivity extends FragmentActivity implements
 			// the adapter. Also specify this Activity object, which implements
 			// the TabListener interface, as the callback (listener) for when
 			// this tab is selected.
-			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
-					.setTabListener(this));
+			actionBar.addTab(actionBar.newTab().setText(mSectionsPagerAdapter.getPageTitle(i)).setTabListener(this));
 		}
 	}
 	
@@ -103,19 +101,7 @@ public class MainActivity extends FragmentActivity implements
 			FragmentTransaction fragmentTransaction) {
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
-		//mViewPager.setCurrentItem(tab.getPosition());
-		int position = tab.getPosition();
-		
-		Fragment fragment = null;
-		
-		switch(position) {
-		case 0:
-			break;
-			
-		}
-		android.support.v4.app.FragmentTransaction fft = getSupportFragmentManager().beginTransaction();
-		fft.replace(R.id.pager, fragment);
-		//fragmentTransaction.add(R.id.pager, fragment, null);
+		mViewPager.setCurrentItem(tab.getPosition());
 	}
 
 	/**
