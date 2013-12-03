@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:padding="20dp">
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" 
+    android:padding="20dp">
+    <ImageView
+        android:id="@+id/ivRequestor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher" />
+    
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp" >
+        
+        <TextView
+        android:id="@+id/tvRequestor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/requestor" 
+        android:paddingTop="20dp"/>
+ 
+        </LinearLayout>
+        </LinearLayout>
+        
+        <TextView
+        android:id="@+id/tvTheQuestionHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/questionHeader" />
+        
+        <TextView
+        android:id="@+id/tvTheQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/question"
+        android:layout_marginTop="5dp"/>
+        
+        <TextView
+        android:id="@+id/tvTheAnswerHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/answerHeader"
+        android:layout_marginTop="20dp"/>
+        
+        <TextView
+        android:id="@+id/tvTheAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/answer"
+        android:layout_marginTop="5dp"/>
+        
+        <TextView
+        android:id="@+id/tvReviewHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reviewHeader"
+        android:layout_marginTop="20dp"/>
+        
+        <ListView
+        android:id="@+id/lvReviews"
+        android:layout_width="wrap_content"
+        android:layout_height="130dp" >
+        </ListView>
+        
+        <Button
+        android:id="@+id/btnAddNewReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/addReview" />
+        
+        </LinearLayout>
