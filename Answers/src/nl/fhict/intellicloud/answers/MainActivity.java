@@ -84,9 +84,7 @@ public class MainActivity extends FragmentActivity implements
 			// the adapter. Also specify this Activity object, which implements
 			// the TabListener interface, as the callback (listener) for when
 			// this tab is selected.
-			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
-					.setTabListener(this));
+			actionBar.addTab(actionBar.newTab().setText(mSectionsPagerAdapter.getPageTitle(i)).setTabListener(this));
 		}
 	}
 	
@@ -109,9 +107,9 @@ public class MainActivity extends FragmentActivity implements
 		Fragment fragment = null;
 		
 		switch(position) {
-		case 0:
-			fragment = new TabFragmentIncomingQuestions();
-			break;
+			case 0:
+				fragment = new TabFragmentIncomingQuestions();
+				break;
 			
 			case 1:
 				fragment = new TabFragmentReviewQuestions();
@@ -178,8 +176,8 @@ public class MainActivity extends FragmentActivity implements
 			switch(position) {
 			
 				case 0:
-				fragment = new TabFragmentIncomingQuestions();
-				break;
+					fragment = new TabFragmentIncomingQuestions();
+					break;
 				
 				case 1:
 					fragment = new TabFragmentReviewQuestions();
