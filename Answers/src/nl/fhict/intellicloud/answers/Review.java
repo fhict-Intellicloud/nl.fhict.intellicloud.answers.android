@@ -9,9 +9,9 @@ public class Review implements Parcelable {
 	private String review;
 	private Answer answer;
 	private User reviewer;
-	private String reviewState;
+	private ReviewState reviewState;
 	
-	public Review(int id, String review, Answer answer, User reviewer, String reviewState){
+	public Review(int id, String review, Answer answer, User reviewer, ReviewState reviewState){
 		this.id = id;
 		this.review = review;
 		this.answer = answer;
@@ -24,7 +24,7 @@ public class Review implements Parcelable {
 		review = in.readString();
 		answer = in.readParcelable(Answer.class.getClassLoader());
 		reviewer = in.readParcelable(User.class.getClassLoader());
-		reviewState = in.readString();
+		reviewState = in.readParcelable(ReviewState.class.getClassLoader());
 	}
 	
 	public int getId() {
@@ -59,11 +59,11 @@ public class Review implements Parcelable {
 		this.reviewer = reviewer;
 	}
 	
-	public String getReviewState() {
+	public ReviewState getReviewState() {
 		return reviewState;
 	}
 	
-	public void setReviewState(String reviewState) {
+	public void setReviewState(ReviewState reviewState) {
 		this.reviewState = reviewState;
 	}
 
@@ -78,7 +78,7 @@ public class Review implements Parcelable {
 		dest.writeString(review);
 		dest.writeParcelable(answer, 0);
 		dest.writeParcelable(reviewer, 0);
-		dest.writeString(reviewState);
+		dest.writeParcelable(reviewState, 0);
 	}
 	
 	public static final Parcelable.Creator<Review> CREATOR = new Parcelable.Creator<Review>() {

@@ -5,31 +5,25 @@ import android.os.Parcelable;
 
 public class User implements Parcelable{
 	private int id;
-	private String userName;
 	private String firstName;
 	private String lastName;
 	private String infix;
-	private String password;
-	private String userType;
+	private UserType userType;
 	
-	public User(int id, String userName, String firstName, String lastName, String infix, String password, String userType) {
+	public User(int id, String firstName, String lastName, String infix, UserType userType) {
 		this.id = id;
-		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.infix = infix;
-		this.password = password;
 		this.userType = userType;
 	}
 	
 	public User (Parcel in){
 		id = in.readInt();
-		userName = in.readString();
 		firstName = in.readString();
 		lastName = in.readString();
 		infix = in.readString();
-		password = in.readString();
-		userType = in.readString();
+		userType = in.readParcelable(UserType.class.getClassLoader());
 	}
 	
 	public int getId() {
@@ -38,14 +32,6 @@ public class User implements Parcelable{
 	
 	public void setId(int id) {
 		this.id = id;
-	}
-	
-	public String getUserName() {
-		return userName;
-	}
-	
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 	
 	public String getFirstName() {
@@ -72,19 +58,11 @@ public class User implements Parcelable{
 		this.infix = infix;
 	}
 	
-	public String getPassword() {
-		return password;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	public String getUserType() {
+	public UserType getUserType() {
 		return userType;
 	}
 	
-	public void setUserType(String userType) {
+	public void setUserType(UserType userType) {
 		this.userType = userType;
 	}
 
@@ -98,10 +76,8 @@ public class User implements Parcelable{
 		dest.writeInt(id);
 		dest.writeString(firstName);
 		dest.writeString(lastName);
-		dest.writeString(userName);
 		dest.writeString(infix);
-		dest.writeString(password);
-		dest.writeString(userType);
+		dest.writeParcelable(userType, 0);
 	}
 	
 	public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {

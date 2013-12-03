@@ -49,10 +49,10 @@ public class TabFragmentReviewQuestions extends Fragment {
 
 		View tablayout = inflater.inflate(R.layout.tab_fragment_review, null);
 		List<Answer> list = new ArrayList<Answer>();
-		User user1 = new User(1, "HOLY", "Remco", "Loeff", "", "", "");
-		User user2 = new User(2, "MOLY", "Hans", "Grietje", "En", "", "");
-		Question q = new Question(21, "HOI?", user1, user2, "test");
-		Answer anwser = new Answer(1,"HELL YEAH",q, user1, "");
+		User user1 = new User(1, "Remco", "Loeff", "", UserType.Employee);
+		User user2 = new User(2, "Hans", "Grietje", "En", UserType.Customer);
+		Question q = new Question(21, "HOI?", user1, user2, QuestionState.Open);
+		Answer anwser = new Answer(1,"HELL YEAH",q, user1, AnswerState.UnderReview);
 		
 		list.add(anwser);
 		list.add(anwser);

@@ -9,9 +9,9 @@ public class Question implements Parcelable {
 	private String question;
 	private User asker;
 	private User anwserer;
-	private String questionState;
+	private QuestionState questionState;
 	
-	public Question(int id, String question, User asker, User anwserer, String questionState){
+	public Question(int id, String question, User asker, User anwserer, QuestionState questionState){
 		this.id = id;
 		this.question = question;
 		this.asker = asker;
@@ -24,7 +24,7 @@ public class Question implements Parcelable {
 		question = in.readString();
 		asker = in.readParcelable(User.class.getClassLoader());
 		anwserer = in.readParcelable(User.class.getClassLoader());
-		questionState = in.readString();
+		questionState = in.readParcelable(QuestionState.class.getClassLoader());
 	}
 	
 	public int getId() {
@@ -59,11 +59,11 @@ public class Question implements Parcelable {
 		this.anwserer = anwserer;
 	}
 	
-	public String getQuestionState() {
+	public QuestionState getQuestionState() {
 		return questionState;
 	}
 	
-	public void setQuestionState(String questionState) {
+	public void setQuestionState(QuestionState questionState) {
 		this.questionState = questionState;
 	}
 
@@ -78,7 +78,7 @@ public class Question implements Parcelable {
 		dest.writeString(question);
 		dest.writeParcelable(asker, 0);
 		dest.writeParcelable(anwserer, 0);
-		dest.writeString(questionState);
+		dest.writeParcelable(questionState, 0);
 	}
 	
 	public static final Parcelable.Creator<Question> CREATOR = new Parcelable.Creator<Question>() {
