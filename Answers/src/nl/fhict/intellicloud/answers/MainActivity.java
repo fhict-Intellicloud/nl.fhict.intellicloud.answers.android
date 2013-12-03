@@ -101,7 +101,27 @@ public class MainActivity extends FragmentActivity implements
 			FragmentTransaction fragmentTransaction) {
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
-		mViewPager.setCurrentItem(tab.getPosition());
+		//mViewPager.setCurrentItem(tab.getPosition());
+		int position = tab.getPosition();
+		
+		Fragment fragment = null;
+		
+		switch(position) {
+			case 0:
+				fragment = new TabFragmentIncomingQuestions();
+				break;
+			
+			case 1:
+				fragment = new TabFragmentReviewQuestions();
+				break;
+				
+			default:
+				break;
+			
+		}
+		android.support.v4.app.FragmentTransaction fft = getSupportFragmentManager().beginTransaction();
+		fft.replace(R.id.pager, fragment);
+		//fragmentTransaction.add(R.id.pager, fragment, null);
 	}
 
 	/**
@@ -156,8 +176,8 @@ public class MainActivity extends FragmentActivity implements
 			switch(position) {
 			
 				case 0:
-				fragment = new TabFragmentIncomingQuestions();
-				break;
+					fragment = new TabFragmentIncomingQuestions();
+					break;
 				
 				case 1:
 					fragment = new TabFragmentReviewQuestions();

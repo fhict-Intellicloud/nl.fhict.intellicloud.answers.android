@@ -1,11 +1,16 @@
 package nl.fhict.intellicloud.answers;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import nl.fhict.intellicloud.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
+import android.widget.ListView;
 
 /**
  * 
@@ -15,7 +20,6 @@ import android.view.ViewGroup;
  *
  */
 public class TabFragmentIncomingQuestions extends Fragment {
-
 	/**
 	 * Perform initialization of all fragments and loaders.
 	 * 
@@ -26,6 +30,8 @@ public class TabFragmentIncomingQuestions extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
+	
+	
 
 	/**
 	 * Called to have the fragment instantiate its user interface view. This is optional, and non-graphical fragments can return null (which is the default implementation). 
@@ -43,6 +49,29 @@ public class TabFragmentIncomingQuestions extends Fragment {
 		View tablayout = inflater.inflate(R.layout.tab_fragment_incomming, null);
 		return tablayout;
 
+	}
+	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		
+		ListView lv = (ListView)getActivity().findViewById(R.id.lvIncomingQuestions);
+	    
+	    ArrayList<Question> list = createDummyQuestions();
+	    
+	    IncomingQuestionsListAdapter iqla = new IncomingQuestionsListAdapter(getView().getContext(), list);
+	    lv.setAdapter(iqla);
+	}
+	
+	public ArrayList<Question> createDummyQuestions() {
+		ArrayList<Question> list = new ArrayList<Question>();
+		list.add(new Question(1, "What does the fox say?", null, null, QuestionState.Open, new Date()));
+		list.add(new Question(2, "What is love?", null, null, QuestionState.Open, new Date()));
+		list.add(new Question(3, "Do you know the muffin man?", null, null, QuestionState.Open, new Date()));
+		list.add(new Question(4, "What is your name?", null, null, QuestionState.Open, new Date()));
+		list.add(new Question(5, "What is your quest?", null, null, QuestionState.Open, null));
+		list.add(new Question(6, "What is the airspeed velocity of an unladen swallow?", null, null, QuestionState.Open, new Date()));
+		return list;
 	}
 
 }

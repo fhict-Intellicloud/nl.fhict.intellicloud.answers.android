@@ -1,5 +1,7 @@
 package nl.fhict.intellicloud.answers;
 
+import java.util.Date;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -10,13 +12,15 @@ public class Question implements Parcelable {
 	private User asker;
 	private User anwserer;
 	private QuestionState questionState;
+	private Date date;
 	
-	public Question(int id, String question, User asker, User anwserer, QuestionState questionState){
+	public Question(int id, String question, User asker, User anwserer, QuestionState questionState, Date date){
 		this.id = id;
 		this.question = question;
 		this.asker = asker;
 		this.anwserer = anwserer;
 		this.questionState = questionState;
+		this.date = date;
 	}
 	
 	public Question (Parcel in){
@@ -25,6 +29,7 @@ public class Question implements Parcelable {
 		asker = in.readParcelable(User.class.getClassLoader());
 		anwserer = in.readParcelable(User.class.getClassLoader());
 		questionState = in.readParcelable(QuestionState.class.getClassLoader());
+		date = in.readParcelable(User.class.getClassLoader());
 	}
 	
 	public int getId() {
@@ -67,6 +72,14 @@ public class Question implements Parcelable {
 		this.questionState = questionState;
 	}
 
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
 	@Override
 	public int describeContents() {
 		return 0;
@@ -79,8 +92,9 @@ public class Question implements Parcelable {
 		dest.writeParcelable(asker, 0);
 		dest.writeParcelable(anwserer, 0);
 		dest.writeParcelable(questionState, 0);
+		dest.writeLong(date.getTime());
 	}
-	
+
 	public static final Parcelable.Creator<Question> CREATOR = new Parcelable.Creator<Question>() {
 		public Question createFromParcel (Parcel in){
 			return new Question(in);
@@ -91,6 +105,4 @@ public class Question implements Parcelable {
 			return new Question[size];
 		}
 	};
-	
-	
 }

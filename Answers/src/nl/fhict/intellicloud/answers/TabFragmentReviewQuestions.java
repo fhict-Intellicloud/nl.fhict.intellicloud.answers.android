@@ -1,6 +1,7 @@
 package nl.fhict.intellicloud.answers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import nl.fhict.intellicloud.R;
@@ -51,7 +52,7 @@ public class TabFragmentReviewQuestions extends Fragment {
 		List<Answer> list = new ArrayList<Answer>();
 		User user1 = new User(1, "Remco", "Loeff", "", UserType.Employee);
 		User user2 = new User(2, "Hans", "Grietje", "En", UserType.Customer);
-		Question q = new Question(21, "HOI?", user1, user2, QuestionState.Open);
+		Question q = new Question(21, "HOI?", user1, user2, QuestionState.Open, new Date());
 		Answer anwser = new Answer(1,"HELL YEAH",q, user1, AnswerState.UnderReview);
 		
 		list.add(anwser);

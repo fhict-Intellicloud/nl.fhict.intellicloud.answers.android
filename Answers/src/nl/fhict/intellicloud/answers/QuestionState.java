@@ -31,5 +31,4 @@ public enum QuestionState implements Parcelable{
 			return new QuestionState[size];
 		}
 	};
-
 }
