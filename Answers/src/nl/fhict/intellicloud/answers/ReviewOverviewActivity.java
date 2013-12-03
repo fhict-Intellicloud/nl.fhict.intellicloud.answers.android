@@ -12,14 +12,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class AnswerReviewsActivity extends Activity {
+public class ReviewOverviewActivity extends Activity {
 
 	Answer answer;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_answer_reviews);
+		setContentView(R.layout.activity_review_overview);
 		answer = getIntent().getExtras().getParcelable("Answer");
 		
 		TextView tvRequestor = (TextView) findViewById(R.id.tvRequestor);
@@ -31,16 +31,16 @@ public class AnswerReviewsActivity extends Activity {
 		tvTheAnswer.setOnClickListener(new OnClickListener() {	
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(AnswerReviewsActivity.this, OriginalAnswerActivity.class);
+				Intent intent = new Intent(ReviewOverviewActivity.this, OriginalAnswerActivity.class);
 				startActivity(intent);
 			}
 		});
 		
-		Button btnAddReview = (Button) findViewById(R.id.btnVoegNieuweReviewToe);
+		Button btnAddReview = (Button) findViewById(R.id.btnAddNewReview);
 		btnAddReview.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(AnswerReviewsActivity.this, AddReviewActivity.class);
+				Intent intent = new Intent(ReviewOverviewActivity.this, AddReviewActivity.class);
 				startActivity(intent);
 			}
 		});

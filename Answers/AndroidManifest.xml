@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="nl.fhict.intellicloud.answers.AnswerReviewsActivity"
+            android:name="nl.fhict.intellicloud.answers.ReviewOverviewActivity"
             android:label="@string/title_activity_answer_reviews" >
         </activity>
         <activity
