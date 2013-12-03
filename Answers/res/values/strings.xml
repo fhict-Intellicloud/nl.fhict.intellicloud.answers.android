@@ -11,23 +11,23 @@
     <string name="requestor">Requestor</string>
     <string name="date">28 november 2013</string>
     <string name="question">Question</string>
-    <string name="questionHeader">DE VRAAG</string>
+    <string name="questionHeader">THE QUESTION</string>
     <string name="answer">Answer</string>
-    <string name="answerHeader">HET ANTWOORD</string>
+    <string name="answerHeader">THE ANSWER</string>
     <string name="reviewHeader">REVIEWS</string>
-    <string name="addReview">Voeg een nieuwe review toe</string>
+    <string name="addReview">Add a new review</string>
 
     <!-- activity_add_review.xml -->
-    <string name="title_activity_add_review">Voeg nieuwe review toe</string>
-    <string name="feedback">UW OPMERKINGEN</string>
-    <string name="add">Voeg toe</string>
+    <string name="title_activity_add_review">Add a new review</string>
+    <string name="feedback">YOUR FEEDBACK</string>
+    <string name="add">Add</string>
 
     <!-- activity_original_answer.xml -->
-    <string name="title_activity_original_answer">Antwoord</string>
-    <string name="orignialAnswer">ORIGINEEL ANTWOORD</string>
+    <string name="title_activity_original_answer">Answer</string>
+    <string name="orignialAnswer">ORIGINAL ANSWER</string>
     
     <!-- activity_send_answer.xml -->
-    <string name="title_activity_send_answer">Review antwoord</string>
+    <string name="title_activity_send_answer">Review answer</string>
     <string name="unknown_date">Unknown date</string>
 
 </resources>

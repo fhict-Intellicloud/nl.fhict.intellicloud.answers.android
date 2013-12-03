@@ -3,5 +3,30 @@
     <string name="app_name">Answers</string>
     <string name="tabbarname_incomingquestions">Binnengekomen vragen</string>
     <string name="tabbarname_reviewquestions">Review vragen</string>
+    <string name="action_settings">Instellingen</string>
+
+    <!-- answer_list_item.xml & activity_answer_reviews.xml -->
+    <string name="title_activity_answer_reviews">AnswerReviewsActivity</string>
+    <string name="requestor">Vraagsteller</string>
+    <string name="date">28 november 2013</string>
+    <string name="question">Vraag</string>
+    <string name="questionHeader">DE VRAAG</string>
+    <string name="answer">Antwoord</string>
+    <string name="answerHeader">HET ANTWOORD</string>
+    <string name="reviewHeader">REVIEWS</string>
+    <string name="addReview">Voeg een nieuwe review toe</string>
+
+    <!-- activity_add_review.xml -->
+    <string name="title_activity_add_review">Voeg nieuwe review toe</string>
+    <string name="feedback">UW OPMERKINGEN</string>
+    <string name="add">Voeg toe</string>
+
+    <!-- activity_original_answer.xml -->
+    <string name="title_activity_original_answer">Antwoord</string>
+    <string name="orignialAnswer">ORIGINEEL ANTWOORD</string>
+    
+    <!-- activity_send_answer.xml -->
+    <string name="title_activity_send_answer">Review antwoord</string>
+    <string name="unknown_date">Onbekende datum</string>
 
 </resources>
