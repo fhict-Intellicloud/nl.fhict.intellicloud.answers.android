@@ -65,12 +65,12 @@ public class TabFragmentIncomingQuestions extends Fragment {
 	
 	public ArrayList<Question> createDummyQuestions() {
 		ArrayList<Question> list = new ArrayList<Question>();
-		list.add(new Question(1, "What does the fox say?", null, null, QuestionState.QuestionStateOpen, new Date()));
-		list.add(new Question(2, "What is love?", null, null, QuestionState.QuestionStateOpen, new Date()));
-		list.add(new Question(3, "Do you know the muffin man?", null, null, QuestionState.QuestionStateOpen, new Date()));
-		list.add(new Question(4, "What is your name?", null, null, QuestionState.QuestionStateOpen, new Date()));
-		list.add(new Question(5, "What is your quest?", null, null, QuestionState.QuestionStateOpen, new Date()));
-		list.add(new Question(6, "What is the airspeed velocity of an unladen swallow?", null, null, QuestionState.QuestionStateOpen, new Date()));
+		list.add(new Question(1, "What does the fox say?", null, null, QuestionState.Open, new Date()));
+		list.add(new Question(2, "What is love?", null, null, QuestionState.Open, new Date()));
+		list.add(new Question(3, "Do you know the muffin man?", null, null, QuestionState.Open, new Date()));
+		list.add(new Question(4, "What is your name?", null, null, QuestionState.Open, new Date()));
+		list.add(new Question(5, "What is your quest?", null, null, QuestionState.Open, null));
+		list.add(new Question(6, "What is the airspeed velocity of an unladen swallow?", null, null, QuestionState.Open, new Date()));
 		return list;
 	}
 

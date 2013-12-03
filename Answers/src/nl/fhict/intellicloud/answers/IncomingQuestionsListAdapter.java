@@ -31,9 +31,17 @@ public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> {
 	    Question question = values.get(position);
 	    
 	    TextView firstLine = (TextView) rowView.findViewById(R.id.firstLine);
-	    firstLine.setText(question.getContent());
+	    firstLine.setText(question.getQuestion());
 	    TextView secondLine = (TextView) rowView.findViewById(R.id.secondLine);
-	    secondLine.setText(sdf.format(question.getCreationTime()));
+	    
+	    if(question.getDate() == null){
+	    	secondLine.setText(R.string.unknown_date);
+	    }
+	    else
+	    {
+	    	secondLine.setText(sdf.format(question.getDate()));
+	    }
+	    
 
 	    return rowView;
 	  }

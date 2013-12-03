@@ -28,5 +28,6 @@
     
     <!-- activity_send_answer.xml -->
     <string name="title_activity_send_answer">Review antwoord</string>
+    <string name="unknown_date">Unknown date</string>
 
 </resources>
