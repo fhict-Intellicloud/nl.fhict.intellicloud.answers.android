@@ -1,9 +1,7 @@
 package nl.fhict.intellicloud.answers;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 
-public class User implements Parcelable{
+public class User{
 	private int id;
 	private String firstName;
 	private String lastName;
@@ -16,14 +14,6 @@ public class User implements Parcelable{
 		this.lastName = lastName;
 		this.infix = infix;
 		this.userType = userType;
-	}
-	
-	public User (Parcel in){
-		id = in.readInt();
-		firstName = in.readString();
-		lastName = in.readString();
-		infix = in.readString();
-		userType = in.readParcelable(UserType.class.getClassLoader());
 	}
 	
 	public int getId() {
@@ -65,29 +55,4 @@ public class User implements Parcelable{
 	public void setUserType(UserType userType) {
 		this.userType = userType;
 	}
-
-	@Override
-	public int describeContents() {
-		return 0;
-	}
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(id);
-		dest.writeString(firstName);
-		dest.writeString(lastName);
-		dest.writeString(infix);
-		dest.writeParcelable(userType, 0);
-	}
-	
-	public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
-		public User createFromParcel (Parcel in){
-			return new User(in);
-		}
-
-		@Override
-		public User[] newArray(int size) {
-			return new User[size];
-		}
-	};
 }

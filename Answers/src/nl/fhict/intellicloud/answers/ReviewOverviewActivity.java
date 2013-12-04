@@ -1,5 +1,7 @@
 package nl.fhict.intellicloud.answers;
 
+import java.util.Date;
+
 import nl.fhict.intellicloud.R;
 import nl.fhict.intellicloud.R.layout;
 import nl.fhict.intellicloud.R.menu;
@@ -14,16 +16,26 @@ import android.widget.TextView;
 
 public class ReviewOverviewActivity extends Activity {
 
+	int answerInt;
+	
 	Answer answer;
+	Question question;
+	User user1, user2;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_review_overview);
-		answer = getIntent().getExtras().getParcelable("Answer");
+		answerInt = getIntent().getExtras().getInt("Answer");
+		
+		user1 = new User(1, "Remco", "Loeff", "", UserType.Customer);
+		user2 = new User(1, "Wipneus", "Pim", "en", UserType.Customer);
+		question = new Question(1, "Hoe loopt het sprooje af van Hans & Grietje?", user1, user2, QuestionState.Open, new Date());
+		
+		answer = new Answer(1,"Hans gaat dood en Grietje niet. Happy End", question, user2, AnswerState.UnderReview);
 		
 		TextView tvRequestor = (TextView) findViewById(R.id.tvRequestor);
-		tvRequestor.setText(answer.getAnswerer().getFirstName() + " " + answer.getAnswerer().getLastName());
+		tvRequestor.setText(answerInt + answer.getAnswerer().getFirstName() + " " + answer.getAnswerer().getLastName());
 		TextView tvTheQuestion = (TextView) findViewById(R.id.tvTheQuestion);
 		tvTheQuestion.setText(answer.getQuestion().getQuestion());
 		TextView tvTheAnswer = (TextView) findViewById(R.id.tvTheAnswer);
