@@ -1,9 +1,6 @@
 package nl.fhict.intellicloud.answers;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-public class Review implements Parcelable {
+public class Review {
 	
 	private int id;
 	private String review;
@@ -17,14 +14,6 @@ public class Review implements Parcelable {
 		this.answer = answer;
 		this.reviewer = reviewer;
 		this.reviewState = reviewState;
-	}
-	
-	public Review (Parcel in){
-		id = in.readInt();
-		review = in.readString();
-		answer = in.readParcelable(Answer.class.getClassLoader());
-		reviewer = in.readParcelable(User.class.getClassLoader());
-		reviewState = in.readParcelable(ReviewState.class.getClassLoader());
 	}
 	
 	public int getId() {
@@ -66,30 +55,5 @@ public class Review implements Parcelable {
 	public void setReviewState(ReviewState reviewState) {
 		this.reviewState = reviewState;
 	}
-
-	@Override
-	public int describeContents() {
-		return 0;
-	}
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(id);
-		dest.writeString(review);
-		dest.writeParcelable(answer, 0);
-		dest.writeParcelable(reviewer, 0);
-		dest.writeParcelable(reviewState, 0);
-	}
-	
-	public static final Parcelable.Creator<Review> CREATOR = new Parcelable.Creator<Review>() {
-		public Review createFromParcel (Parcel in){
-			return new Review(in);
-		}
-
-		@Override
-		public Review[] newArray(int size) {
-			return new Review[size];
-		}
-	};
 }
 

@@ -2,10 +2,7 @@ package nl.fhict.intellicloud.answers;
 
 import java.util.Date;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-public class Question implements Parcelable {
+public class Question {
 	
 	private int id;
 	private String question;
@@ -21,15 +18,6 @@ public class Question implements Parcelable {
 		this.anwserer = anwserer;
 		this.questionState = questionState;
 		this.date = date;
-	}
-	
-	public Question (Parcel in){
-		id = in.readInt();
-		question = in.readString();
-		asker = in.readParcelable(User.class.getClassLoader());
-		anwserer = in.readParcelable(User.class.getClassLoader());
-		questionState = in.readParcelable(QuestionState.class.getClassLoader());
-		date = in.readParcelable(User.class.getClassLoader());
 	}
 	
 	public int getId() {
@@ -79,30 +67,4 @@ public class Question implements Parcelable {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
-	@Override
-	public int describeContents() {
-		return 0;
-	}
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(id);
-		dest.writeString(question);
-		dest.writeParcelable(asker, 0);
-		dest.writeParcelable(anwserer, 0);
-		dest.writeParcelable(questionState, 0);
-		dest.writeLong(date.getTime());
-	}
-
-	public static final Parcelable.Creator<Question> CREATOR = new Parcelable.Creator<Question>() {
-		public Question createFromParcel (Parcel in){
-			return new Question(in);
-		}
-
-		@Override
-		public Question[] newArray(int size) {
-			return new Question[size];
-		}
-	};
 }
