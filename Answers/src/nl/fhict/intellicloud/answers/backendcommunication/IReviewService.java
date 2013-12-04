@@ -18,13 +18,13 @@ public interface IReviewService {
 	 * Adds a review to the database and sends it to be processed.
 	 * @param review The review to add.
 	 */
-	void createReview(Review review);
+	void CreateReview(Review review);
 	/**
-	 * Get {@link Review} objects that belong to a specific {@link Answer}.
+	 * Get {@link Review} objects that belongs to a specific {@link Answer}.
 	 * @param answer The Answer to find reviews for.
 	 * @return {@link ArrayList} with all Reviews for the given answer
 	 */
-	ArrayList<Review> getReviews(Answer answer);
+	ArrayList<Review> GetReviews(Answer answer);
 	/**
 	 * Updates a {@link Review} with the updated {@link ReviewState}.
 	 * @param review The Review to update.

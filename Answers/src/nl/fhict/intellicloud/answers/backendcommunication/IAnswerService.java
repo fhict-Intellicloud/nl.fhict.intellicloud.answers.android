@@ -28,14 +28,14 @@ public interface IAnswerService {
 	 * Gets all {@link Answer} objects currently available
 	 * @return An {@link ArrayList} with all available answers
 	 */
-	ArrayList<Answer> getAnswers();
+	ArrayList<Answer> GetAnswers();
 	/**
 	 * Gets all available {@link Answer} objects that correspond to the set filters
 	 * @param employeeid The id of the employee to filter for, or -1 for all employees
 	 * @param answerState The {@link AnswerState} to filter for, or null to seek for all.
 	 * @return An {@link ArrayList} with all answers which match the filters
 	 */
-	ArrayList<Answer> getAnswers(int employeeid, AnswerState answerState);
+	ArrayList<Answer> GetAnswers(int employeeId, AnswerState answerState);
 	/**
 	 * Updates an {@link Answer} with a new {@link AnswerState}
 	 * @param answer The Answer to change the state for.

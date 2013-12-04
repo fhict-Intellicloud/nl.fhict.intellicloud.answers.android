@@ -50,13 +50,13 @@ public class DummyBackend implements IAnswerService, IQuestionService,
 	
 	}
 	@Override
-	public void createReview(Review review) {
+	public void CreateReview(Review review) {
 		dummyReviews.add(review);
 
 	}
 
 	@Override
-	public ArrayList<Review> getReviews(Answer answer) {
+	public ArrayList<Review> GetReviews(Answer answer) {
 
 		return dummyReviews;
 	}
@@ -87,12 +87,12 @@ public class DummyBackend implements IAnswerService, IQuestionService,
 
 
 	@Override
-	public ArrayList<Answer> getAnswers() {
-		return getAnswers(-1, null);
+	public ArrayList<Answer> GetAnswers() {
+		return GetAnswers(-1, null);
 	}
 
 	@Override
-	public ArrayList<Answer> getAnswers(int employeeid, AnswerState answerState) {
+	public ArrayList<Answer> GetAnswers(int employeeId, AnswerState answerState) {
 		return dummyAnswers;
 	}
 
