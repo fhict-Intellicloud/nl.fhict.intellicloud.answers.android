@@ -23,7 +23,7 @@ public class AnswerListOnClickListener implements OnItemClickListener {
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Answer answer = list.get(position);
 		Intent intent = new Intent(activity.getApplicationContext(), ReviewOverviewActivity.class);
-		intent.putExtra("Answer", answer);
+		intent.putExtra("Answer", 1);
 		activity.startActivity(intent);
 	}
 }
