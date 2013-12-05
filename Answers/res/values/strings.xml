@@ -17,9 +17,16 @@
     <string name="reviewHeader">REVIEWS</string>
     <string name="addReview">Add a new review</string>
     <string name="daysAgo">days ago</string>
+    <string name="dayAgo">day ago</string>
     <string name="hoursAgo">hours ago</string>
+    <string name="hourAgo">hour ago</string>
     <string name="minutesAgo">minutes ago</string>
+    <string name="minuteAgo">minute ago</string>
     <string name="justPosted">just posted</string>
+    
+    <string name="logout">Logout</string>
+    <string name="triedToLogout">You tried to logout</string>
+    
 
     <!-- activity_add_review.xml -->
     <string name="title_activity_add_review">Add a new review</string>

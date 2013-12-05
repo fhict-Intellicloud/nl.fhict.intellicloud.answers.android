@@ -10,7 +10,8 @@
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" 
+        android:windowBackground="@android:color/transparent"/>
 
     <!-- android:layout_gravity="start" tells DrawerLayout to treat
          this as a sliding drawer on the left side for left-to-right
@@ -18,13 +19,65 @@
          The drawer is given a fixed width in dp and extends the full height of
          the container. A solid background is used for contrast
          with the content view. -->
-    <ListView
-        android:id="@+id/left_drawer"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:choiceMode="singleChoice"
-        android:divider="#c1c1c1"
-        android:dividerHeight="0.5dp"
-        android:background="#5a5859"/>
+    <RelativeLayout android:id="@+id/left_drawer"
+       		android:layout_width="240dp"
+	        android:layout_height="match_parent"
+	        android:layout_gravity="start"
+	        android:orientation="vertical" 
+	        android:background="#5a5859">
+	    <LinearLayout 
+	        android:layout_width="240dp"
+	        android:layout_height="match_parent"
+	        android:layout_gravity="start"
+	        android:orientation="vertical" 
+	        android:background="#5a5859">
+			    <LinearLayout
+			        android:layout_width="match_parent"
+		        	android:layout_height="wrap_content"
+		        	android:orientation="horizontal"
+		        	android:background="@drawable/drawer_user_background">
+			        <ImageView 
+			            android:id="@+id/userImageId"
+			            android:layout_width="wrap_content"
+			        	android:layout_height="96dp"
+			        	android:src="@drawable/test_user_image"/>
+			        <TextView 
+			            android:id="@+id/userIdTekst"
+			            android:layout_width="match_parent"
+			            android:layout_height="96dp"
+			            android:textColor="#fff"
+			            android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
+			    </LinearLayout>
+		    <ListView
+		        android:id="@+id/drawerListView"
+		        android:layout_width="fill_parent"
+	        	android:layout_height="fill_parent"
+		        android:choiceMode="singleChoice"
+		        android:divider="#c1c1c1"
+		        android:dividerHeight="0.5dp"/>
+	    	</LinearLayout>
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:orientation="horizontal"
+        	android:layout_alignParentBottom="true"	
+        	android:layout_centerInParent="true">
+	        <ImageView 
+	           android:id="@+id/logoutImage"
+	            android:layout_width="wrap_content"
+	        	android:layout_height="36dp"
+	        	android:src="@drawable/logout_icon_white" 
+	        	android:clickable="true"
+	            android:onClick="onLogoutClick"/>
+	        <TextView 
+	            android:id="@+id/LogoutTekst"
+	            android:layout_width="match_parent"
+	            android:layout_height="36dp"
+	            android:textColor="#fff"
+	            android:text="@string/logout"
+	            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+	            android:clickable="true"
+	            android:onClick="onLogoutClick"/>
+	    </LinearLayout>
+	</RelativeLayout>
 </android.support.v4.widget.DrawerLayout>

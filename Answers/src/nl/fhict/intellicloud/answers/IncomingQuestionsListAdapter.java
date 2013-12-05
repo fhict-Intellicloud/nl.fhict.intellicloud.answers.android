@@ -73,14 +73,23 @@ public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> {
 			long days = diffInSec;
 			
 			if(days > 0){
-				return Long.toString(days) + " " + getContext().getResources().getString(R.string.daysAgo);
+				if(days >1) {
+					return Long.toString(days) + " " + getContext().getResources().getString(R.string.daysAgo);
+				}
+				return Long.toString(days) + " " + getContext().getResources().getString(R.string.dayAgo);
 			}
 			if(hours > 0){
-				return Long.toString(hours) + " " + getContext().getResources().getString(R.string.hoursAgo);
+				if(hours > 1){
+					return Long.toString(hours) + " " + getContext().getResources().getString(R.string.hoursAgo);
+				}
+				return Long.toString(hours) + " " + getContext().getResources().getString(R.string.hourAgo);
 			}
 			if(minutes > 0){
-				return Long.toString(minutes) + " " + getContext().getResources().getString(R.string.minutesAgo);
+				if(minutes > 1){
+					return Long.toString(minutes) + " " + getContext().getResources().getString(R.string.minutesAgo);
+				}
+				return Long.toString(minutes) + " " + getContext().getResources().getString(R.string.minuteAgo);
 			}
 			return getContext().getResources().getString(R.string.justPosted);
-     }
+	  }
 }

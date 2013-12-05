@@ -29,11 +29,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
+    private RelativeLayout mLinearLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -49,18 +53,22 @@ public class MainActivity extends Activity {
         mTitle = mDrawerTitle = getTitle();
         mFilterTitles = getResources().getStringArray(R.array.filter_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
+        mDrawerList = (ListView) findViewById(R.id.drawerListView);
+        mLinearLayout = (RelativeLayout) findViewById(R.id.left_drawer);
+        TextView drawerUserTekst = (TextView) findViewById(R.id.userIdTekst);
+        drawerUserTekst.setText("Piet Jansen");
         // set a custom shadow that overlays the main content when the drawer opens
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mFilterTitles));
+        SlidingMenuListAdapter smla = new SlidingMenuListAdapter(getApplicationContext(), mFilterTitles);
+	    
+        mDrawerList.setAdapter(smla);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
+        
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
@@ -99,8 +107,6 @@ public class MainActivity extends Activity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -113,17 +119,6 @@ public class MainActivity extends Activity {
         }
         // Handle action buttons
         switch(item.getItemId()) {
-        case R.id.action_websearch:
-            // create intent to perform web search for this planet
-            Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-            intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-            // catch event that there's no activity to handle intent
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
-            } else {
-                Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
-            }
-            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -150,7 +145,7 @@ public class MainActivity extends Activity {
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
         setTitle(mFilterTitles[position]);
-        mDrawerLayout.closeDrawer(mDrawerList);
+        mDrawerLayout.closeDrawer(mLinearLayout);
     }
 
     @Override
@@ -177,107 +172,8 @@ public class MainActivity extends Activity {
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
-
-    /**
-     * Fragment that appears in the "content_frame", shows a planet
-     */
-    public static class ListFragment extends Fragment {
-        public static final String ARG_FILTER_NUMBER = "filter_number";
-
-        public ListFragment() {
-            // Empty constructor required for fragment subclasses
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_list, container, false);
-            int i = getArguments().getInt(ARG_FILTER_NUMBER);
-            String filter = getResources().getStringArray(R.array.filter_array)[i];
-
-            getActivity().setTitle(filter);
-            return rootView;
-        }
-        
-		@Override
-    	public void onViewCreated(View view, Bundle savedInstanceState) {
-    		super.onViewCreated(view, savedInstanceState);
-    		
-    		ListView lv = (ListView)getActivity().findViewById(R.id.lvIncomingQuestions);
-    	    
-    	    
-    	    int i = getArguments().getInt(ARG_FILTER_NUMBER);
-    	    ArrayList<Question> list = createListWithFilter(createDummyQuestions(), i);
-    	    IncomingQuestionsListAdapter iqla = new IncomingQuestionsListAdapter(getView().getContext(), list);
-    	    lv.setAdapter(iqla);
-    	}
-		
-		private ArrayList<Question> createListWithFilter(ArrayList<Question> listToFilter, int filterId) {
-			ArrayList<Question> list = new ArrayList<Question>();
-			switch(filterId) {
-			case 0:
-				list = listToFilter;
-				break;
-			case 1:
-				for(Question q : listToFilter){
-					if(q.getQuestionState().equals(QuestionState.Open)){
-						list.add(q);
-					}
-				}
-				break;
-			case 2:
-				for(Question q : listToFilter){
-					if(q.getQuestionState().equals(QuestionState.Closed)){
-						list.add(q);
-					}
-				}
-				break;
-			case 3:
-				for(Question q : listToFilter){
-					if(q.getQuestionState().equals(QuestionState.UpForAnswer)){
-						list.add(q);
-					}
-				}
-				break;
-			case 4:
-				for(Question q : listToFilter){
-					if(q.getQuestionState().equals(QuestionState.UpForFeedback)){
-						list.add(q);
-					}
-				}
-				break;
-			}
-			return list;
-		}
-        public ArrayList<Question> createDummyQuestions() {
-        	
-    		ArrayList<Question> list = new ArrayList<Question>();
-    		list.add(new Question(1, "What does the fox say?", null, null, QuestionState.Open, new Date()));
-    		list.add(new Question(2, "What is love?", null, null, QuestionState.Open, new Date()));
-    		list.add(new Question(3, "Do you know the muffin man?", null, null, QuestionState.Open, new Date()));
-    		list.add(new Question(4, "What is your name?", null, null, QuestionState.Open, new Date()));
-    		list.add(new Question(5, "What is your quest?", null, null, QuestionState.Open, null));
-    		list.add(new Question(6, "What is the airspeed velocity of an unladen swallow?", null, null, QuestionState.Open, setDate("2013-12-04 09:27:37")));
-    		list.add(new Question(1, "Does looking at a picture of the sun hurt your eyes?", null, null, QuestionState.Closed, setDate("2013-12-05 09:27:37")));
-    		list.add(new Question(2, "How can I lose weight without moving?", null, null, QuestionState.Closed, new Date()));
-    		list.add(new Question(3, "How do I get accepted into Hogwarts?", null, null, QuestionState.UpForAnswer, new Date()));
-    		list.add(new Question(4, "Is it posible to make 1+1=3?", null, null, QuestionState.UpForAnswer, new Date()));
-    		list.add(new Question(5, "HOW DO I TURN OF CAPSLOCK?", null, null, QuestionState.UpForFeedback, null));
-    		list.add(new Question(6, "Is this an oke question?", null, null, QuestionState.UpForFeedback, new Date()));
-    		return list;
-    	}
-        
-        private Date setDate(String date) {
-        	String dtStart = date;  
-        	SimpleDateFormat  format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        	Date myDate;
-        	try {
-        		return format.parse(dtStart);
-        	} catch (Exception e) {  
-        	    // TODO Auto-generated catch block  
-        	    e.printStackTrace();  
-        	}
-			return null;
-        }
+    
+    public void onLogoutClick(View v){
+    	Toast.makeText(this, getResources().getString(R.string.triedToLogout), Toast.LENGTH_SHORT).show();
     }
 }
