@@ -15,6 +15,10 @@
     <string name="answerHeader">HET ANTWOORD</string>
     <string name="reviewHeader">REVIEWS</string>
     <string name="addReview">Voeg een nieuwe review toe</string>
+    <string name="daysAgo">dagen geleden</string>
+    <string name="hoursAgo">uur geleden</string>
+    <string name="minutesAgo">minuten geleden</string>  
+    <string name="justPosted">zojuist</string>
 
     <!-- activity_add_review.xml -->
     <string name="title_activity_add_review">Voeg nieuwe review toe</string>
@@ -29,4 +33,16 @@
     <string name="title_activity_send_answer">Review antwoord</string>
     <string name="unknown_date">Onbekende datum</string>
 
+    <string-array
+        name="filter_array">
+        <item>Alles</item>
+        <item>Openstaand</item>
+        <item>Afgekeurd</item>
+        <item>In behandeling</item>
+        <item>Review</item>
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
 </resources>
