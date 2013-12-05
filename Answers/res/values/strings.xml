@@ -26,8 +26,12 @@
     <string name="title_activity_original_answer">Answer</string>
     <string name="orignialAnswer">ORIGINAL ANSWER</string>
     
-    <!-- activity_send_answer.xml -->
-    <string name="title_activity_send_answer">Review answer</string>
+    <!-- activity_review_answer.xml -->
+    <string name="title_activity_review_answer">Review answer</string>
     <string name="unknown_date">Unknown date</string>
+
+    <!-- activity_send_answer.xml -->
+    <string name="title_activity_send_answer">Answer</string>
+    <string name="addAnswer">Add answer</string>
 
 </resources>

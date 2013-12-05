@@ -11,7 +11,7 @@
     android:orientation="horizontal" 
     android:padding="20dp">
     <ImageView
-        android:id="@+id/ivRequestor"
+        android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_launcher" />
@@ -44,25 +44,12 @@
         android:layout_height="wrap_content"
         android:text="@string/question"
         android:layout_marginTop="5dp"/>
-        
-        <TextView
-        android:id="@+id/tvReviewHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/reviewHeader"
-        android:layout_marginTop="20dp"/>
-        
-        <ListView
-        android:id="@+id/lvReviews"
-        android:layout_width="wrap_content"
-        android:layout_height="130dp" >
-        </ListView>
-        
-        <TextView
+
+    <TextView
             android:id="@+id/tvFinalAnswer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DEFINITIEF ANTWOROD!" />
+            android:text="@string/answerHeader" />
         
             <EditText
         android:id="@+id/etFeedback"
@@ -77,9 +64,9 @@
     </EditText>
         
         <Button
-        android:id="@+id/btnAddReview"
+        android:id="@+id/btnAddAnswer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/addReview" />
+        android:text="@string/addAnswer" />
         
         </LinearLayout>
