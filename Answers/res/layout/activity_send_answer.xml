@@ -11,7 +11,7 @@
     android:orientation="horizontal" 
     android:padding="20dp">
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/ivRequestor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_launcher" />
@@ -46,17 +46,17 @@
         android:layout_marginTop="5dp"/>
 
     <TextView
-            android:id="@+id/tvFinalAnswer"
+            android:id="@+id/tvTheAnswer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/answerHeader" />
         
             <EditText
-        android:id="@+id/etFeedback"
+        android:id="@+id/etAnswer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvFinalAnswer"
-        android:layout_below="@+id/tvFinalAnswer"
+        android:layout_alignLeft="@+id/tvTheAnswer"
+        android:layout_below="@+id/tvTheAnswer"
         android:layout_marginTop="18dp"
         android:ems="10"
         android:inputType="textMultiLine" >
