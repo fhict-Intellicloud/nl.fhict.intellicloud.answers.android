@@ -23,7 +23,8 @@
     <string name="minutesAgo">minutes ago</string>
     <string name="minuteAgo">minute ago</string>
     <string name="justPosted">just posted</string>
-    
+    <string name="unknownUser">Unkown User</string>
+    <string name="filters">filters</string>
     <string name="logout">Logout</string>
     <string name="triedToLogout">You tried to logout</string>
     

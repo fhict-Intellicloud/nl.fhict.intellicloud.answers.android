@@ -10,7 +10,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class ListFragment extends Fragment {
     public static final String ARG_FILTER_NUMBER = "filter_number";

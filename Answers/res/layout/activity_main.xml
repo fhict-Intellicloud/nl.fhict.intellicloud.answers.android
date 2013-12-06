@@ -23,14 +23,13 @@
        		android:layout_width="240dp"
 	        android:layout_height="match_parent"
 	        android:layout_gravity="start"
-	        android:orientation="vertical" 
-	        android:background="#5a5859">
+	        android:orientation="vertical" >
 	    <LinearLayout 
 	        android:layout_width="240dp"
 	        android:layout_height="match_parent"
 	        android:layout_gravity="start"
 	        android:orientation="vertical" 
-	        android:background="#5a5859">
+	        android:background="@color/slidingmenu_background_color">
 			    <LinearLayout
 			        android:layout_width="match_parent"
 		        	android:layout_height="wrap_content"
@@ -48,18 +47,31 @@
 			            android:textColor="#fff"
 			            android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
 			    </LinearLayout>
+			<TextView 
+	            android:id="@+id/filter"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:paddingTop="15dp"
+	            android:textColor="#fff"
+	            android:text="@string/filters"
+	            android:textSize="15dp"/>
+			<View
+			    android:layout_width="fill_parent"
+			    android:layout_height="2dp"
+			    android:background="@color/slidingmenu_devider_color"/>
 		    <ListView
 		        android:id="@+id/drawerListView"
 		        android:layout_width="fill_parent"
 	        	android:layout_height="fill_parent"
 		        android:choiceMode="singleChoice"
-		        android:divider="#c1c1c1"
+		        android:divider="@color/slidingmenu_devider_color"
 		        android:dividerHeight="0.5dp"/>
 	    	</LinearLayout>
 	    <LinearLayout
 	        android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:orientation="horizontal"
+        	android:paddingBottom="15dp"
         	android:layout_alignParentBottom="true"	
         	android:layout_centerInParent="true">
 	        <ImageView 
@@ -76,6 +88,7 @@
 	            android:textColor="#fff"
 	            android:text="@string/logout"
 	            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+	            android:gravity="center"
 	            android:clickable="true"
 	            android:onClick="onLogoutClick"/>
 	    </LinearLayout>

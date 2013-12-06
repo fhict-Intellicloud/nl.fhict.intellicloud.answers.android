@@ -1,32 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tableLayout1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
-    <ImageView android:id="@+id/incommingQuestionStateImage"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"/>
-    <LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="fill_parent" 
+    android:stretchColumns="1">
+ 
+    <!-- 2 columns -->
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dip">
+ 
+        <ImageView android:id="@+id/incommingQuestionStateImage"
+	        android:layout_width="fill_parent"
+	        android:layout_height="match_parent"/>
+		<TextView
+	        android:id="@+id/userTextView"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:singleLine="true"
+	        android:textSize="18sp" 
+	        android:textStyle="bold"
+	        android:paddingLeft="5dip"
+       		android:paddingRight="5dip"/>
+    </TableRow>
+ 
+    <!-- edittext span 2 column -->
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dip">
+ 		
         <TextView
-	        android:id="@+id/firstLine"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="15dp"
-			android:layout_marginLeft="15dp"
-	    	android:layout_marginRight="15dp"
+	        android:id="@+id/timeAgoTextView"
 	        android:singleLine="true"
-	        android:textSize="18sp" />
-	    <TextView
-	        android:id="@+id/secondLine"
+	        android:textSize="12sp" 
+	        android:layout_column="1"
+	        android:paddingLeft="5dip"
+        	android:paddingRight="5dip"/>
+    </TableRow> 
+    <!-- edittext span 2 column -->
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:paddingBottom="5dip">
+ 		
+        <TextView
+	        android:id="@+id/questionTextView"
 	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="15dp"
-	    	android:layout_marginRight="15dp"
-	    	android:layout_marginBottom="15dp"
 	        android:singleLine="true"
-	        android:textSize="12sp" />
-    </LinearLayout>
-	
-</LinearLayout>
+	        android:textSize="18sp" 
+	        android:layout_column="1"
+	        android:paddingLeft="5dip"
+        	android:paddingRight="5dip"/>
+    </TableRow>
+</TableLayout>

@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -35,11 +36,19 @@ public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> {
 	    
 	    ImageView questionStageImage = (ImageView) rowView.findViewById(R.id.incommingQuestionStateImage);
 	    questionStageImage.setImageResource(getImageId(question.getQuestionState()));
-	    TextView firstLine = (TextView) rowView.findViewById(R.id.firstLine);
-	    firstLine.setText(question.getQuestion());
-	    TextView secondLine = (TextView) rowView.findViewById(R.id.secondLine);
-	    secondLine.setText(setTime(question.getDate()));   
-
+	    TextView userLine = (TextView) rowView.findViewById(R.id.userTextView);
+	    if(question.getAsker() != null) {
+	    	userLine.setText(question.getAsker().getFullName());
+	    }
+	    else
+	    {
+	    	userLine.setText(R.string.unknownUser);
+	    }
+	    TextView timeLine = (TextView) rowView.findViewById(R.id.timeAgoTextView);
+	    timeLine.setText(setTime(question.getDate())); 
+	    TextView questionLine = (TextView) rowView.findViewById(R.id.questionTextView);
+	    questionLine.setText(question.getQuestion());
+	    questionLine.setMaxWidth(rowView.getWidth()-questionStageImage.getWidth());
 	    return rowView;
 	  }
 	  

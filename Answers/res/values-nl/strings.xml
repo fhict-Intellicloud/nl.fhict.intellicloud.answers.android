@@ -22,8 +22,10 @@
     <string name="minutesAgo">minuten geleden</string>
     <string name="minuteAgo">minuut geleden</string>  
     <string name="justPosted">zojuist</string>
-
-     <string name="logout">Uitloggen</string>
+	<string name="unknownUser">Onbekender Gebruiker</string>
+    
+    <string name="filters">filters</string>
+    <string name="logout">Uitloggen</string>
     <string name="triedToLogout">Je probeerde uit te loggen</string>
     
     <!-- activity_add_review.xml -->
