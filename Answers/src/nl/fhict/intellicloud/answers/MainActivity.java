@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import android.R.color;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
@@ -32,10 +33,11 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements SearchView.OnQueryTextListener{
     private DrawerLayout mDrawerLayout;
     private RelativeLayout mLinearLayout;
     private ListView mDrawerList;
@@ -53,9 +55,9 @@ public class MainActivity extends Activity {
         mTitle = mDrawerTitle = getTitle();
         mFilterTitles = getResources().getStringArray(R.array.filter_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.drawerListView);
+        mDrawerList = (ListView) findViewById(R.id.lvDrawer);
         mLinearLayout = (RelativeLayout) findViewById(R.id.left_drawer);
-        TextView drawerUserTekst = (TextView) findViewById(R.id.userIdTekst);
+        TextView drawerUserTekst = (TextView) findViewById(R.id.txtUserIdText);
         drawerUserTekst.setText("Piet Jansen");
         // set a custom shadow that overlays the main content when the drawer opens
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -80,12 +82,12 @@ public class MainActivity extends Activity {
                 R.string.drawer_close  /* "close drawer" description for accessibility */
                 ) {
             public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle);
+                getActionBar().setTitle(mTitle); 
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
             public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
+                getActionBar().setTitle(mDrawerTitle);                
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
@@ -94,12 +96,30 @@ public class MainActivity extends Activity {
         if (savedInstanceState == null) {
             selectItem(0);
         }
+        
+        
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        
+        //int searchPlateId = searchView.getContext().getResources().getIdentifier("android:id/search_plate", null, null);
+        //searchView.findViewById(searchPlateId).setBackgroundResource(R.drawable.action_search);
+
+        // change text color
+        int searchTextViewId = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView searchTextView = (TextView) searchView.findViewById(searchTextViewId);
+        searchTextView.setTextColor(getResources().getColor(R.color.search_quetion_color));
+        searchTextView.setTextSize(22);
+
+        searchView.setOnQueryTextListener(this);
+        
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -176,4 +196,17 @@ public class MainActivity extends Activity {
     public void onLogoutClick(View v){
     	Toast.makeText(this, getResources().getString(R.string.triedToLogout), Toast.LENGTH_SHORT).show();
     }
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		Toast.makeText(this, getResources().getString(R.string.triedToSearch) , Toast.LENGTH_SHORT).show();
+		//TODO filteren uit lijst
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

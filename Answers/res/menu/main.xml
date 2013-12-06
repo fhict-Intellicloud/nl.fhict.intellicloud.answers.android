@@ -14,5 +14,10 @@
   limitations under the License.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainMenu">
+    <item android:id="@+id/search"
+          android:icon="@drawable/search_icon_white"
+          android:showAsAction="collapseActionView|ifRoom"
+          android:actionViewClass="android.widget.SearchView" />
 </menu>

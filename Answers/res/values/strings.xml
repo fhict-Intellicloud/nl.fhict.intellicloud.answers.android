@@ -27,6 +27,7 @@
     <string name="filters">filters</string>
     <string name="logout">Logout</string>
     <string name="triedToLogout">You tried to logout</string>
+    <string name="triedToSearch">You tried to search</string>
     
 
     <!-- activity_add_review.xml -->

@@ -34,9 +34,9 @@ public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> {
 	    
 	    Question question = values.get(position);
 	    
-	    ImageView questionStageImage = (ImageView) rowView.findViewById(R.id.incommingQuestionStateImage);
+	    ImageView questionStageImage = (ImageView) rowView.findViewById(R.id.ivIncommingQuestionState);
 	    questionStageImage.setImageResource(getImageId(question.getQuestionState()));
-	    TextView userLine = (TextView) rowView.findViewById(R.id.userTextView);
+	    TextView userLine = (TextView) rowView.findViewById(R.id.txtUser);
 	    if(question.getAsker() != null) {
 	    	userLine.setText(question.getAsker().getFullName());
 	    }
@@ -44,9 +44,9 @@ public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> {
 	    {
 	    	userLine.setText(R.string.unknownUser);
 	    }
-	    TextView timeLine = (TextView) rowView.findViewById(R.id.timeAgoTextView);
+	    TextView timeLine = (TextView) rowView.findViewById(R.id.txtTimeAgo);
 	    timeLine.setText(setTime(question.getDate())); 
-	    TextView questionLine = (TextView) rowView.findViewById(R.id.questionTextView);
+	    TextView questionLine = (TextView) rowView.findViewById(R.id.txtQuestion);
 	    questionLine.setText(question.getQuestion());
 	    questionLine.setMaxWidth(rowView.getWidth()-questionStageImage.getWidth());
 	    return rowView;

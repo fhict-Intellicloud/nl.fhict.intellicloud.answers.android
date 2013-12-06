@@ -36,19 +36,19 @@
 		        	android:orientation="horizontal"
 		        	android:background="@drawable/drawer_user_background">
 			        <ImageView 
-			            android:id="@+id/userImageId"
+			            android:id="@+id/ivUserImageId"
 			            android:layout_width="wrap_content"
 			        	android:layout_height="96dp"
 			        	android:src="@drawable/test_user_image"/>
 			        <TextView 
-			            android:id="@+id/userIdTekst"
+			            android:id="@+id/txtUserIdText"
 			            android:layout_width="match_parent"
 			            android:layout_height="96dp"
 			            android:textColor="#fff"
 			            android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
 			    </LinearLayout>
 			<TextView 
-	            android:id="@+id/filter"
+	            android:id="@+id/txtFilter"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
 	            android:paddingTop="15dp"
@@ -60,7 +60,7 @@
 			    android:layout_height="2dp"
 			    android:background="@color/slidingmenu_devider_color"/>
 		    <ListView
-		        android:id="@+id/drawerListView"
+		        android:id="@+id/lvDrawer"
 		        android:layout_width="fill_parent"
 	        	android:layout_height="fill_parent"
 		        android:choiceMode="singleChoice"
@@ -75,14 +75,14 @@
         	android:layout_alignParentBottom="true"	
         	android:layout_centerInParent="true">
 	        <ImageView 
-	           android:id="@+id/logoutImage"
+	           android:id="@+id/ivLogout"
 	            android:layout_width="wrap_content"
 	        	android:layout_height="36dp"
 	        	android:src="@drawable/logout_icon_white" 
 	        	android:clickable="true"
 	            android:onClick="onLogoutClick"/>
 	        <TextView 
-	            android:id="@+id/LogoutTekst"
+	            android:id="@+id/txtLogoutText"
 	            android:layout_width="match_parent"
 	            android:layout_height="36dp"
 	            android:textColor="#fff"

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tableLayout1"
+    android:id="@+id/tlIncoming"
     android:layout_width="match_parent"
     android:layout_height="fill_parent" 
     android:stretchColumns="1">
  
     <!-- 2 columns -->
     <TableRow
-        android:id="@+id/tableRow1"
+        android:id="@+id/trIncomingTableRow1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingTop="5dip">
  
-        <ImageView android:id="@+id/incommingQuestionStateImage"
+        <ImageView android:id="@+id/ivIncommingQuestionState"
 	        android:layout_width="fill_parent"
 	        android:layout_height="match_parent"/>
 		<TextView
-	        android:id="@+id/userTextView"
+	        android:id="@+id/txtUser"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:singleLine="true"
@@ -28,13 +28,13 @@
  
     <!-- edittext span 2 column -->
     <TableRow
-        android:id="@+id/tableRow2"
+        android:id="@+id/trIncomingTableRow2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="5dip">
  		
         <TextView
-	        android:id="@+id/timeAgoTextView"
+	        android:id="@+id/txtTimeAgo"
 	        android:singleLine="true"
 	        android:textSize="12sp" 
 	        android:layout_column="1"
@@ -43,13 +43,13 @@
     </TableRow> 
     <!-- edittext span 2 column -->
     <TableRow
-        android:id="@+id/tableRow2"
+        android:id="@+id/trIncomingTableRow2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" 
         android:paddingBottom="5dip">
  		
         <TextView
-	        android:id="@+id/questionTextView"
+	        android:id="@+id/txtQuestion"
 	        android:layout_width="fill_parent"
 	        android:singleLine="true"
 	        android:textSize="18sp" 

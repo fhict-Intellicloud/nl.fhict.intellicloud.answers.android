@@ -26,7 +26,8 @@
     
     <string name="filters">filters</string>
     <string name="logout">Uitloggen</string>
-    <string name="triedToLogout">Je probeerde uit te loggen</string>
+    <string name="triedToLogout">U probeerde uit te loggen</string>
+    <string name="triedToSearch">U probeerde te zoeken</string>
     
     <!-- activity_add_review.xml -->
     <string name="title_activity_add_review">Voeg nieuwe review toe</string>
