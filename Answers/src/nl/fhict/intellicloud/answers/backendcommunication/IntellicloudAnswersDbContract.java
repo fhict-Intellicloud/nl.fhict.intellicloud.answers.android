@@ -56,6 +56,8 @@ public class IntellicloudAnswersDbContract {
 		public static final String COLUMN_INFIX = "infix";
 		public static final String COLUMN_USERTYPE = "user_type";
 		
+		public static final String[] ALL_COLUMNS = {COLUMN_ID, COLUMN_FIRSTNAME, COLUMN_LASTNAME, COLUMN_INFIX, COLUMN_USERTYPE};
+		
 	}
 	public static class CreateStatements{
 		public static final String CREATE_TABLE_QUESTIONS = "create table "

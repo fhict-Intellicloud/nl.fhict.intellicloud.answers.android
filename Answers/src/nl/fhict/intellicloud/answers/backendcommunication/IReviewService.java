@@ -21,7 +21,7 @@ public interface IReviewService {
 	void CreateReview(Review review);
 	/**
 	 * Get {@link Review} objects that belongs to a specific {@link Answer}.
-	 * @param answer The Answer to find reviews for.
+	 * @param answer The Answer to find reviews for, or leave null to get all reviews.
 	 * @return {@link ArrayList} with all Reviews for the given answer
 	 */
 	ArrayList<Review> GetReviews(Answer answer);
