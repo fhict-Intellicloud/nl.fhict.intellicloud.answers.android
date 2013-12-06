@@ -35,7 +35,8 @@ public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> {
 	    TextView secondLine = (TextView) rowView.findViewById(R.id.secondLine);
 	    
 	    if(question.getDate() == null){
-	    	secondLine.setText(R.string.unknown_date);
+	    	secondLine.setText("06-12-2013");
+	    	//secondLine.setText(R.string.unknown_date);
 	    }
 	    else
 	    {

@@ -11,11 +11,13 @@
     <string name="requestor">Requestor</string>
     <string name="date">28 november 2013</string>
     <string name="question">Question</string>
-    <string name="questionHeader">THE QUESTION</string>
+    <string name="questionHeader">Hoe loopt Hans en Grietje af?</string>
     <string name="answer">Answer</string>
-    <string name="answerHeader">THE ANSWER</string>
-    <string name="reviewHeader">REVIEWS</string>
+    <string name="answerHeader">Antwoord</string>
+    <string name="reviewHeader">Review</string>
     <string name="addReview">Add a new review</string>
+    <string name="acceptAnswer">Antwoord goedgekeurd</string>
+    <string name="declineAnswer">Antwoord afgekeurd</string>
 
     <!-- activity_add_review.xml -->
     <string name="title_activity_add_review">Add a new review</string>
@@ -26,8 +28,6 @@
     <string name="title_activity_original_answer">Answer</string>
     <string name="orignialAnswer">ORIGINAL ANSWER</string>
     
-    <!-- activity_send_answer.xml -->
-    <string name="title_activity_send_answer">Review answer</string>
-    <string name="unknown_date">Unknown date</string>
+    <string name="sendReview">Verzend Review</string>
 
 </resources>

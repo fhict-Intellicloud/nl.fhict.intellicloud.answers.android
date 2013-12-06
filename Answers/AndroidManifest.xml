@@ -35,10 +35,6 @@
             android:name="nl.fhict.intellicloud.answers.OriginalAnswerActivity"
             android:label="@string/title_activity_original_answer" >
         </activity>
-        <activity
-            android:name="nl.fhict.intellicloud.answers.SendAnswerActivity"
-            android:label="@string/title_activity_send_answer" >
-        </activity>
     </application>
 
 </manifest>
