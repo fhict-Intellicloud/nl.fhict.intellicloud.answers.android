@@ -30,12 +30,11 @@ public class ReviewOverviewActivity extends Activity {
 		
 		user1 = new User(1, "Remco", "Loeff", "", UserType.Customer);
 		user2 = new User(1, "Wipneus", "Pim", "en", UserType.Customer);
-		question = new Question(1, "Hoe loopt het sprooje af van Hans & Grietje?", user1, user2, QuestionState.Open, new Date());
+		question = new Question(1, "Na veel speculaties over het sprookje van Hans en Grietje, "
+		+ "ben ik nu wel heel benieuwd hoe dit afloopt. Dus bij deze de vraag hoe loopt het af?", user1, user2, QuestionState.Open, new Date());
 		
 		answer = new Answer(1,"Hans gaat dood en Grietje niet. Happy End", question, user2, AnswerState.UnderReview);
 		
-		TextView tvRequestor = (TextView) findViewById(R.id.tvRequestor);
-		tvRequestor.setText(answerInt + answer.getAnswerer().getFirstName() + " " + answer.getAnswerer().getLastName());
 		TextView tvTheQuestion = (TextView) findViewById(R.id.tvTheQuestion);
 		tvTheQuestion.setText(answer.getQuestion().getQuestion());
 		TextView tvTheAnswer = (TextView) findViewById(R.id.tvTheAnswer);
@@ -48,10 +47,19 @@ public class ReviewOverviewActivity extends Activity {
 			}
 		});
 		
-		Button btnAddReview = (Button) findViewById(R.id.btnAddNewReview);
-		btnAddReview.setOnClickListener(new OnClickListener() {
+		TextView tvAccepAnswer = (TextView) findViewById(R.id.tvAcceptAnswer);
+		tvAccepAnswer.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
+				Intent intent = new Intent(ReviewOverviewActivity.this, MainActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		TextView tvDeclineAnswer = (TextView) findViewById(R.id.tvDeclineAnswer);
+		tvDeclineAnswer.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v){
 				Intent intent = new Intent(ReviewOverviewActivity.this, AddReviewActivity.class);
 				startActivity(intent);
 			}
