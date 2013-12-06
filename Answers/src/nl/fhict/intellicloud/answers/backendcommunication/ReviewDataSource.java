@@ -43,7 +43,17 @@ public class ReviewDataSource implements IReviewService {
 	}
 	@Override
 	public void CreateReview(Review review) {
-		//Not used in this application...
+		ContentValues values = new ContentValues();
+			
+		values.put(ReviewsEntry.COLUMN_REVIEW, review.getReview());
+		values.put(ReviewsEntry.COLUMN_REVIEWER, review.getReviewer().getId());
+		values.put(ReviewsEntry.COLUMN_REVIEWSTATE, review.getReviewState().toString());
+		values.put(ReviewsEntry.COLUMN_ANSWER, review.getAnswer().getId());
+			
+		open();
+		database.insert(ReviewsEntry.TABLE_NAME, null, values);
+		close();
+			
 
 	}
 

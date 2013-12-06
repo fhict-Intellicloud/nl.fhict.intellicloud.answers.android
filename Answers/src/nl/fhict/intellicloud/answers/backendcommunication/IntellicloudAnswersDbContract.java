@@ -37,7 +37,7 @@ public class IntellicloudAnswersDbContract {
 		public static final String TABLE_NAME = "reviews";
 		public static final String COLUMN_ID = "id";
 		public static final String COLUMN_REVIEW = "review";
-		public static final String COLUMN_REVIEWER = "review";
+		public static final String COLUMN_REVIEWER = "reviewer";
 		public static final String COLUMN_ANSWER = "answer";
 		public static final String COLUMN_REVIEWSTATE = "review_state";
 	
@@ -62,7 +62,7 @@ public class IntellicloudAnswersDbContract {
 	public static class CreateStatements{
 		public static final String CREATE_TABLE_QUESTIONS = "create table "
 				  + QuestionsEntry.TABLE_NAME + 
-				"(" + QuestionsEntry.COLUMN_ID + " INTEGER PRIMARY KEY, " 
+				"(" + QuestionsEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
 				+ QuestionsEntry.COLUMN_QUESTION + " TEXT, "
 				+ QuestionsEntry.COLUMN_ASKER + " INTEGER, "
 				+ QuestionsEntry.COLUMN_ANSWERER + " INTEGER, "
@@ -71,14 +71,14 @@ public class IntellicloudAnswersDbContract {
 				+ " );";
 		  public static final String CREATE_TABLE_ANSWERS = "create table "
 		      + AnswersEntry.TABLE_NAME + 
-	      		"(" + AnswersEntry.COLUMN_ID + " INTEGER PRIMARY KEY, " 
+	      		"(" + AnswersEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
 	      		+ AnswersEntry.COLUMN_ANSWER + " TEXT, "
 	      		+ AnswersEntry.COLUMN_QUESTION + " INTEGER, "
 	      		+ AnswersEntry.COLUMN_ANSWERSTATE + " TEXT NOT NULL"
 	      		+ " );";
 		  public static final String CREATE_TABLE_REVIEWS = "create table "
 		      + ReviewsEntry.TABLE_NAME + 
-	      		"(" + ReviewsEntry.COLUMN_ID + " INTEGER PRIMARY KEY, " 
+	      		"(" + ReviewsEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
 	      		+ ReviewsEntry.COLUMN_REVIEW + " TEXT, "
 	      		+ ReviewsEntry.COLUMN_REVIEWER + " INTEGER, "
 	      		+ ReviewsEntry.COLUMN_ANSWER + " INTEGER, "
