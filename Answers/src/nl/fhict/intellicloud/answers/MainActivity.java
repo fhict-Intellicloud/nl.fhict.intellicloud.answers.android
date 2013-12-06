@@ -37,7 +37,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements SearchView.OnQueryTextListener{
+public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     private RelativeLayout mLinearLayout;
     private ListView mDrawerList;
@@ -117,8 +117,6 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
         TextView searchTextView = (TextView) searchView.findViewById(searchTextViewId);
         searchTextView.setTextColor(getResources().getColor(R.color.search_quetion_color));
         searchTextView.setTextSize(22);
-
-        searchView.setOnQueryTextListener(this);
         
         return super.onCreateOptionsMenu(menu);
     }
@@ -196,17 +194,4 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
     public void onLogoutClick(View v){
     	Toast.makeText(this, getResources().getString(R.string.triedToLogout), Toast.LENGTH_SHORT).show();
     }
-
-	@Override
-	public boolean onQueryTextChange(String newText) {
-		Toast.makeText(this, getResources().getString(R.string.triedToSearch) , Toast.LENGTH_SHORT).show();
-		//TODO filteren uit lijst
-		return false;
-	}
-
-	@Override
-	public boolean onQueryTextSubmit(String query) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }

@@ -33,9 +33,9 @@ public class SlidingMenuListAdapter extends ArrayAdapter<String> {
 	    
 	    String drawerItem = values[position];
 	    
-	    ImageView questionStageImage = (ImageView) rowView.findViewById(R.id.slidingItemImage);
+	    ImageView questionStageImage = (ImageView) rowView.findViewById(R.id.ivSlidingItem);
 	    questionStageImage.setImageResource(getImageId(position));
-	    TextView firstLine = (TextView) rowView.findViewById(R.id.firstLineSlidingItem);
+	    TextView firstLine = (TextView) rowView.findViewById(R.id.txtFirstLineSlidingItem);
 	    firstLine.setText(drawerItem); 
 
 	    return rowView;
