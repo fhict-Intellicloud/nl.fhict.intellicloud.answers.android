@@ -1,219 +1,197 @@
 package nl.fhict.intellicloud.answers;
 
-import java.util.Locale;
-
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import nl.fhict.intellicloud.R;
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
+import android.R.color;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.SearchManager;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.net.ParseException;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
+import android.text.method.DateTimeKeyListener;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-/**
- * 
- * @author Joris & Remco
- * 
- * Class containing the TabListener for two tabs.
- * The first tab is a TabFragmentIncomingQuestions fragment.
- * The second tab is a TabFragmentReviewQuestions fragment.
- *
- */
-public class MainActivity extends FragmentActivity implements
-		ActionBar.TabListener {
-	
-	/**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide
-	 * fragments for each of the sections. We use a
-	 * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
-	 * will keep every loaded fragment in memory. If this becomes too memory
-	 * intensive, it may be best to switch to a
-	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-	 */
-	SectionsPagerAdapter mSectionsPagerAdapter;
+public class MainActivity extends Activity {
+    private DrawerLayout mDrawerLayout;
+    private RelativeLayout mLinearLayout;
+    private ListView mDrawerList;
+    private ActionBarDrawerToggle mDrawerToggle;
 
-	/**
-	 * The {@link ViewPager} that will host the section contents.
-	 */
-	ViewPager mViewPager;
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
+    private String[] mFilterTitles;
 
-	
-	/**
-	 * Perform initialization of all fragments and loaders.
-	 * 
-	 * @param savedInstanceState If the activity is being re-initialized after previously being shut down then 
-	 * this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle). Note: Otherwise it is null.
-	 */
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-		// Set up the action bar.
-		final ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		
+        mTitle = mDrawerTitle = getTitle();
+        mFilterTitles = getResources().getStringArray(R.array.filter_array);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.lvDrawer);
+        mLinearLayout = (RelativeLayout) findViewById(R.id.left_drawer);
+        TextView drawerUserTekst = (TextView) findViewById(R.id.txtUserIdText);
+        drawerUserTekst.setText("Piet Jansen");
+        // set a custom shadow that overlays the main content when the drawer opens
+        //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        // set up the drawer's list view with items and click listener
+        SlidingMenuListAdapter smla = new SlidingMenuListAdapter(getApplicationContext(), mFilterTitles);
+	    
+        mDrawerList.setAdapter(smla);
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager());
-		
+        // enable ActionBar app icon to behave as action to toggle nav drawer
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+        
 
-		// Set up the ViewPager with the sections adapter.
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
+        // ActionBarDrawerToggle ties together the the proper interactions
+        // between the sliding drawer and the action bar app icon
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                mDrawerLayout,         /* DrawerLayout object */
+                R.drawable.ic_navigation_drawer,  /* nav drawer image to replace 'Up' caret */
+                R.string.drawer_open,  /* "open drawer" description for accessibility */
+                R.string.drawer_close  /* "close drawer" description for accessibility */
+                ) {
+            public void onDrawerClosed(View view) {
+                getActionBar().setTitle(mTitle); 
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
 
-		// When swiping between different sections, select the corresponding
-		// tab. We can also use ActionBar.Tab#select() to do this if we have
-		// a reference to the Tab.
-		mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
-					}
-				});
+            public void onDrawerOpened(View drawerView) {
+                getActionBar().setTitle(mDrawerTitle);                
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-		// For each of the sections in the app, add a tab to the action bar.
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			// Create a tab with text corresponding to the page title defined by
-			// the adapter. Also specify this Activity object, which implements
-			// the TabListener interface, as the callback (listener) for when
-			// this tab is selected.
-			actionBar.addTab(actionBar.newTab().setText(mSectionsPagerAdapter.getPageTitle(i)).setTabListener(this));
-		}
-	}
-	
-	/**
-	 * Called when a tab enters the selected state.
-	 * 
-	 * @param tab The tab that was reselected.
-	 * @param fragmentTransaction A FragmentTransaction for queuing fragment operations to execute during a tab switch. 
-	 * The previous tab's unselect and this tab's select will be executed in a single transaction. 
-	 * This FragmentTransaction does not support being added to the back stack.
-	 */
-	@Override
-	public void onTabSelected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
-		// When the given tab is selected, switch to the corresponding page in
-		// the ViewPager.
-		//mViewPager.setCurrentItem(tab.getPosition());
-		int position = tab.getPosition();
-		
-		Fragment fragment = null;
-		
-		switch(position) {
-			case 0:
-				fragment = new TabFragmentIncomingQuestions();
-				break;
-			
-			case 1:
-				fragment = new TabFragmentReviewQuestions();
-				break;
-				
-			default:
-				break;
-			
-		}
-		android.support.v4.app.FragmentTransaction fft = getSupportFragmentManager().beginTransaction();
-		fft.replace(R.id.pager, fragment);
-		//fragmentTransaction.add(R.id.pager, fragment, null);
-	}
+        if (savedInstanceState == null) {
+            selectItem(0);
+        }
+        
+        
+    }
 
-	/**
-	 * Called when a tab exits the selected state.
-	 * 
-	 * @param tab The tab that was reselected.
-	 * @param fragmentTransaction A FragmentTransaction for queuing fragment operations to execute during a tab switch. 
-	 * This tab's unselect and the newly selected tab's select will be executed in a single transaction. 
-	 * This FragmentTransaction does not support being added to the back stack.
-	 */
-	@Override
-	public void onTabUnselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
 
-	/**
-	 * Called when a tab that is already selected is chosen again by the user. 
-	 * Some applications may use this action to return to the top level of a category.
-	 * 
-	 * @param tab The tab that was reselected.
-	 * @param fragmentTransaction A FragmentTransaction for queuing fragment operations to execute once this method returns. 
-	 * This FragmentTransaction does not support being added to the back stack.
-	 */
-	@Override
-	public void onTabReselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
-	}
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        
+        //int searchPlateId = searchView.getContext().getResources().getIdentifier("android:id/search_plate", null, null);
+        //searchView.findViewById(searchPlateId).setBackgroundResource(R.drawable.action_search);
 
-	/**
-	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-	 * one of the sections/tabs/pages.
-	 */
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        // change text color
+        int searchTextViewId = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView searchTextView = (TextView) searchView.findViewById(searchTextViewId);
+        searchTextView.setTextColor(getResources().getColor(R.color.search_quetion_color));
+        searchTextView.setTextSize(22);
+        
+        return super.onCreateOptionsMenu(menu);
+    }
 
-		public SectionsPagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
+    /* Called whenever we call invalidateOptionsMenu() */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        return super.onPrepareOptionsMenu(menu);
+    }
 
-		/**
-		 * Return the Fragment associated with a specified position.
-		 * 
-		 * @param position The position within this adapter.
-		 */
-		@Override
-		public Fragment getItem(int position) {
-			// getItem is called to instantiate the fragment for the given page.
-			// the first page is for incoming questions
-			// the second page is for reviewing answers
-			
-			Fragment fragment = null;
-			
-			switch(position) {
-			
-				case 0:
-					fragment = new TabFragmentIncomingQuestions();
-					break;
-				
-				case 1:
-					fragment = new TabFragmentReviewQuestions();
-					break;
-					
-				default:
-					break;
-			}
-			return fragment;
-		}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+         // The action bar home/up action should open or close the drawer.
+         // ActionBarDrawerToggle will take care of this.
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        // Handle action buttons
+        switch(item.getItemId()) {
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
 
-		/**
-		 * Returns the total number of pages within the adapter.
-		 */
-		@Override
-		public int getCount() {
-			// Show 2 total pages.
-			return 2;
-		}
+    /* The click listner for ListView in the navigation drawer */
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+    }
 
-		/**
-		 * Returns the title of the page at a position.
-		 * 
-		 * @param position The position within this adapter.
-		 */
-		@Override
-		public CharSequence getPageTitle(int position) {			
-			//Return the page title for each tab
-			Locale l = Locale.getDefault();
-			switch (position) {
-			case 0:
-				return getString(R.string.tabbarname_incomingquestions).toUpperCase(l);
-			case 1:
-				return getString(R.string.tabbarname_reviewquestions).toUpperCase(l);
-			}
-			return null;
-		}
-	}
+    private void selectItem(int position) {
+        // update the main content by replacing fragments
+        Fragment fragment = new ListFragment();
+        Bundle args = new Bundle();
+        args.putInt(ListFragment.ARG_FILTER_NUMBER, position);
+        fragment.setArguments(args);
+
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+        // update selected item and title, then close the drawer
+        mDrawerList.setItemChecked(position, true);
+        setTitle(mFilterTitles[position]);
+        mDrawerLayout.closeDrawer(mLinearLayout);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
+    }
+
+    /**
+     * When using the ActionBarDrawerToggle, you must call it during
+     * onPostCreate() and onConfigurationChanged()...
+     */
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+    
+    public void onLogoutClick(View v){
+    	Toast.makeText(this, getResources().getString(R.string.triedToLogout), Toast.LENGTH_SHORT).show();
+    }
 }
