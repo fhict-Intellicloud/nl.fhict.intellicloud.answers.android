@@ -16,6 +16,18 @@
     <string name="answerHeader">Antwoord</string>
     <string name="reviewHeader">Review</string>
     <string name="addReview">Add a new review</string>
+    <string name="daysAgo">days ago</string>
+    <string name="dayAgo">day ago</string>
+    <string name="hoursAgo">hours ago</string>
+    <string name="hourAgo">hour ago</string>
+    <string name="minutesAgo">minutes ago</string>
+    <string name="minuteAgo">minute ago</string>
+    <string name="justPosted">just posted</string>
+    <string name="unknownUser">Unkown User</string>
+    <string name="filters">filters</string>
+    <string name="logout">Logout</string>
+    <string name="triedToLogout">You tried to logout</string>
+    <string name="triedToSearch">You tried to search</string>
     <string name="acceptAnswer">Antwoord goedgekeurd</string>
     <string name="declineAnswer">Antwoord afgekeurd</string>
 
@@ -27,7 +39,28 @@
     <!-- activity_original_answer.xml -->
     <string name="title_activity_original_answer">Answer</string>
     <string name="orignialAnswer">ORIGINAL ANSWER</string>
+    <!-- activity_send_answer.xml -->
+    <string name="title_activity_send_answer">Review answer</string>
+    <string name="unknown_date">Unknown date</string>
+    <string name="title_activity_slide_in_menu">SlideInMenuActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_sliding_fragment">SlidingFragmentActivity</string>
+    
+    <string-array
+        name="filter_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
     
     <string name="sendReview">Verzend Review</string>
-
 </resources>

@@ -2,4 +2,7 @@
 <resources>
     <color name="intellicloud_color_one">#009ea2</color>
     <color name="intellicloud_color_two">#5cb888</color>
+    <color name="slidingmenu_background_color">#5a5859</color>
+    <color name="slidingmenu_devider_color">#c1c1c1</color>
+    <color name="search_quetion_color">#fff</color>
 </resources>
