@@ -22,6 +22,7 @@ public class SendAnswerActivity extends Activity {
     Answer answer;
     Question question;
     User user1, user2;
+    EditText etAnswer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,21 +39,20 @@ public class SendAnswerActivity extends Activity {
         TextView tvTheQuestion = (TextView) findViewById(R.id.tvTheQuestion);
         tvTheQuestion.setText(question.getQuestion());
         Button btnAddAnswer = (Button) findViewById(R.id.btnAddAnswer);
+        Button btnRequestReview = (Button) findViewById(R.id.btnRequestReview);
+        etAnswer = (EditText) findViewById(R.id.etAnswer);
 
         btnAddAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText etAnswer = (EditText) findViewById(R.id.etAnswer);
+                answer = new Answer(answerInt,etAnswer.getText().toString(), question, user2, AnswerState.UnderReview);
+            }
+        });
+        btnRequestReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 answer = new Answer(answerInt,etAnswer.getText().toString(), question, user2, AnswerState.UnderReview);
             }
         });
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.send_answer, menu);
-		return true;
-	}
-
 }

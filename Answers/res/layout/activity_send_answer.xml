@@ -33,40 +33,48 @@
         </LinearLayout>
         
         <TextView
-        android:id="@+id/tvTheQuestionHeader"
+        android:id="@+id/tvQuestionHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/questionHeader" />
+        android:text="@string/question" />
         
         <TextView
         android:id="@+id/tvTheQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/question"
+        android:text="@string/questionHeader"
         android:layout_marginTop="5dp"/>
 
     <TextView
-            android:id="@+id/tvTheAnswer"
+            android:id="@+id/tvAnswerHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/answerHeader" />
+            android:text="@string/answer" />
         
             <EditText
         android:id="@+id/etAnswer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvTheAnswer"
-        android:layout_below="@+id/tvTheAnswer"
+        android:layout_alignLeft="@+id/tvAnswerHeader"
+        android:layout_below="@+id/tvAnswerHeader"
         android:layout_marginTop="18dp"
         android:ems="10"
         android:inputType="textMultiLine" >
         <requestFocus />
     </EditText>
-        
-        <Button
+
+    <Button
         android:id="@+id/btnAddAnswer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/addAnswer" />
-        
-        </LinearLayout>
+        android:text="@string/addAnswer"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:id="@+id/btnRequestReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/requestReview"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

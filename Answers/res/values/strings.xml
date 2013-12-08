@@ -47,10 +47,8 @@
     <!-- activity_send_answer.xml -->
     <string name="title_activity_send_answer">Answer</string>
     <string name="addAnswer">Add answer</string>
-    <string name="title_activity_send_answer">Review answer</string>
-    <string name="unknown_date">Unknown date</string>
+    <string name="requestReview">Request review</string>
     <string name="title_activity_slide_in_menu">SlideInMenuActivity</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_sliding_fragment">SlidingFragmentActivity</string>
     
     <string-array
