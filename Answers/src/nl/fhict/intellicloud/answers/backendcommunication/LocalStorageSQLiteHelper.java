@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import nl.fhict.intellicloud.answers.backendcommunication.IntellicloudAnswersDbContract.*;
+import nl.fhict.intellicloud.answers.backendcommunication.IntellicloudDbContract.*;
 
 public class LocalStorageSQLiteHelper extends SQLiteOpenHelper {
 	  

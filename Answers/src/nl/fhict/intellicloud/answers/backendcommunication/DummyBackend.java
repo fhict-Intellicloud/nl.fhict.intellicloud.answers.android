@@ -66,11 +66,6 @@ public class DummyBackend implements IAnswerService, IQuestionService,
 
 	}
 
-	@Override
-	public ArrayList<Review> GetReviews(Answer answer) {
-
-		return dummyReviews;
-	}
 
 	@Override
 	public void UpdateReview(Review review) {
@@ -147,5 +142,10 @@ public class DummyBackend implements IAnswerService, IQuestionService,
      	}
 			return null;
      }
+	@Override
+	public ArrayList<Review> GetReviews(int answerId) {
+		// TODO Auto-generated method stub
+		return dummyReviews;
+	}
 
 }

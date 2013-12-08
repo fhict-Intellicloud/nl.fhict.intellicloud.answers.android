@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import nl.fhict.intellicloud.answers.Answer;
 import nl.fhict.intellicloud.answers.AnswerState;
 import nl.fhict.intellicloud.answers.Question;
-import nl.fhict.intellicloud.answers.backendcommunication.IntellicloudAnswersDbContract.*;
+import nl.fhict.intellicloud.answers.backendcommunication.IntellicloudDbContract.*;
 
 
 public class AnswerDataSource implements IAnswerService {
@@ -19,8 +19,10 @@ public class AnswerDataSource implements IAnswerService {
 		private SQLiteDatabase database;
 		private LocalStorageSQLiteHelper dbHelper;
 		private String[] allColumns = { AnswersEntry.COLUMN_ID, 
+										AnswersEntry.COLUMN_BACKEND_ID,
 										AnswersEntry.COLUMN_ANSWER, 
-										AnswersEntry.COLUMN_QUESTION, 
+										AnswersEntry.COLUMN_QUESTION,
+										AnswersEntry.COLUMN_ANSWERER_ID,
 										AnswersEntry.COLUMN_ANSWERSTATE };
 		
 		private IQuestionService questionDataSource = null;
@@ -79,16 +81,24 @@ public class AnswerDataSource implements IAnswerService {
 		@Override
 		public ArrayList<Answer> GetAnswers(int employeeId, AnswerState answerState) {
 		
-			String answerStateFilter = null;
-			
+			String answerFilter = null;
+		
 			if (answerState != null)
 			{
-				answerStateFilter = AnswersEntry.COLUMN_ANSWERSTATE + " = " + answerState.toString();
+				answerFilter += AnswersEntry.COLUMN_ANSWERSTATE + " = " + answerState.toString();
+			}
+			if (employeeId >= 0)
+			{
+				if (answerFilter.length() > 0)
+				{
+					answerFilter += " AND ";
+				}
+				answerFilter += AnswersEntry.COLUMN_ANSWERER_ID + " = " + employeeId;
 			}
 			ArrayList<Answer> filteredAnswers = new ArrayList<Answer>();
 			
 			open();
-			Cursor cursor = database.query(AnswersEntry.TABLE_NAME, allColumns, answerStateFilter, null, null, null, null);
+			Cursor cursor = database.query(AnswersEntry.TABLE_NAME, allColumns, answerFilter, null, null, null, null);
 			cursor.moveToFirst();
 			
 			while (!cursor.isAfterLast()) {
@@ -97,6 +107,7 @@ public class AnswerDataSource implements IAnswerService {
 				{
 					filteredAnswers.add(getNextAnswerFromCursor(cursor));
 				}
+				
 				cursor.moveToNext();
 			}
 			close();
@@ -110,6 +121,8 @@ public class AnswerDataSource implements IAnswerService {
 			
 			ContentValues values = new ContentValues();
 			values.put(AnswersEntry.COLUMN_ANSWERSTATE, answer.getAnwserState().toString());
+			values.put(AnswersEntry.COLUMN_ANSWERER_ID, answer.getAnswerer().getId());
+			values.put(AnswersEntry.COLUMN_ANSWER, answer.getAnswer());
 		
 			open();
 			database.update(AnswersEntry.TABLE_NAME, values, AnswersEntry.COLUMN_ID + " = " + answer.getId(), null);

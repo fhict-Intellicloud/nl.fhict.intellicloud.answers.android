@@ -7,7 +7,7 @@ import nl.fhict.intellicloud.answers.Question;
 import nl.fhict.intellicloud.answers.QuestionState;
 import nl.fhict.intellicloud.answers.User;
 import nl.fhict.intellicloud.answers.UserType;
-import nl.fhict.intellicloud.answers.backendcommunication.IntellicloudAnswersDbContract.*;
+import nl.fhict.intellicloud.answers.backendcommunication.IntellicloudDbContract.*;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -17,8 +17,9 @@ public class QuestionDataSource implements IQuestionService {
 	private SQLiteDatabase database;
 	private LocalStorageSQLiteHelper dbHelper;
 	private final String[] allColumns = { QuestionsEntry.COLUMN_ID, 
-									QuestionsEntry.COLUMN_ANSWERER, 
-									QuestionsEntry.COLUMN_ASKER, 
+									QuestionsEntry.COLUMN_BACKEND_ID,
+									QuestionsEntry.COLUMN_ANSWERER_ID, 
+									QuestionsEntry.COLUMN_ASKER_ID, 
 									QuestionsEntry.COLUMN_DATE, 
 									QuestionsEntry.COLUMN_QUESTION, 
 									QuestionsEntry.COLUMN_QUESTIONSTATE};
@@ -62,7 +63,7 @@ public class QuestionDataSource implements IQuestionService {
 		String employeeFilter = null;
 		if (employeeId >= 0)
 		{
-			employeeFilter = QuestionsEntry.COLUMN_ANSWERER + " = " + employeeId;
+			employeeFilter = QuestionsEntry.COLUMN_ANSWERER_ID + " = " + employeeId;
 		}
 		ArrayList<Question> filteredQuestions = new ArrayList<Question>();
 		open();

@@ -13,7 +13,7 @@ import nl.fhict.intellicloud.answers.Review;
 import nl.fhict.intellicloud.answers.ReviewState;
 import nl.fhict.intellicloud.answers.User;
 import nl.fhict.intellicloud.answers.UserType;
-import nl.fhict.intellicloud.answers.backendcommunication.IntellicloudAnswersDbContract.*;
+import nl.fhict.intellicloud.answers.backendcommunication.IntellicloudDbContract.*;
 
 
 public class ReviewDataSource implements IReviewService {
@@ -21,7 +21,8 @@ public class ReviewDataSource implements IReviewService {
 	private LocalStorageSQLiteHelper dbHelper;
 	private final String[] allColumns = { ReviewsEntry.COLUMN_ID, 
 										ReviewsEntry.COLUMN_REVIEW,
-										ReviewsEntry.COLUMN_REVIEWER,
+										ReviewsEntry.COLUMN_BACKEND_ID,
+										ReviewsEntry.COLUMN_REVIEWER_ID,
 										ReviewsEntry.COLUMN_REVIEWSTATE,
 										ReviewsEntry.COLUMN_ANSWER
 										};
@@ -46,7 +47,7 @@ public class ReviewDataSource implements IReviewService {
 		ContentValues values = new ContentValues();
 			
 		values.put(ReviewsEntry.COLUMN_REVIEW, review.getReview());
-		values.put(ReviewsEntry.COLUMN_REVIEWER, review.getReviewer().getId());
+		values.put(ReviewsEntry.COLUMN_REVIEWER_ID, review.getReviewer().getId());
 		values.put(ReviewsEntry.COLUMN_REVIEWSTATE, review.getReviewState().toString());
 		values.put(ReviewsEntry.COLUMN_ANSWER, review.getAnswer().getId());
 			
@@ -58,15 +59,12 @@ public class ReviewDataSource implements IReviewService {
 	}
 
 	@Override
-	public ArrayList<Review> GetReviews(Answer answer) {
+	public ArrayList<Review> GetReviews(int answerId) {
 		String answerFilter = null;
 		ArrayList<Review> filteredReviews = new ArrayList<Review>();
 		
-		if (answer != null)
-		{
-			answerFilter = ReviewsEntry.COLUMN_ANSWER + " = " + answer.getId();
-		}
-		
+		answerFilter = ReviewsEntry.COLUMN_ANSWER + " = " + answerId;
+				
 		
 		open();
 		Cursor cursor = database.query(ReviewsEntry.TABLE_NAME, allColumns, answerFilter, null, null, null, null);
@@ -79,7 +77,7 @@ public class ReviewDataSource implements IReviewService {
 			cursor.moveToNext();
 		}
 		close();
-		return null;
+		return filteredReviews;
 	}
 
 	@Override
