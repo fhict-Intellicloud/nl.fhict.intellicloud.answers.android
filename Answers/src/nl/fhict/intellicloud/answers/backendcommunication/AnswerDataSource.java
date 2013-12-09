@@ -102,12 +102,7 @@ public class AnswerDataSource implements IAnswerService {
 			cursor.moveToFirst();
 			
 			while (!cursor.isAfterLast()) {
-				Answer answer = getNextAnswerFromCursor(cursor);
-				if (employeeId < 0 || answer.getAnswerer().getId() == employeeId)
-				{
-					filteredAnswers.add(getNextAnswerFromCursor(cursor));
-				}
-				
+				filteredAnswers.add(getNextAnswerFromCursor(cursor));		
 				cursor.moveToNext();
 			}
 			close();
