@@ -17,13 +17,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> {
-	 private final Context context;
-	 private final ArrayList<Question> values;
+    private final Context context;
+    private final ArrayList<Question> values;
 
-	  public IncomingQuestionsListAdapter(Context context, ArrayList<Question> values) {
-	    super(context, R.layout.listview_item_incoming, values);
-	    this.context = context;
-	    this.values = values;
+    public IncomingQuestionsListAdapter(Context context, ArrayList<Question> values) {
+        super(context, R.layout.listview_item_incoming, values);
+        this.context = context;
+        this.values = values;
 	  }
 
 	  @Override
@@ -57,7 +57,7 @@ public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> {
 		  switch(state){
 		  	case Open:
 		  		return R.drawable.search_icon_green;
-		case Closed:		  
+		case Closed:
 				return R.drawable.rejected_icon_green;
 			case UpForAnswer:
 				return R.drawable.hourglass_icon_green;

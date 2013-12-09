@@ -18,6 +18,7 @@ import android.widget.TextView;
 public class ListFragment extends Fragment {
     public static final String ARG_FILTER_NUMBER = "filter_number";
     private IQuestionService questionService;
+    private QuestionListOnClickListener qListOnClickListener;
     public ListFragment() {
     	questionService = new DummyBackend();
     }
@@ -45,6 +46,8 @@ public class ListFragment extends Fragment {
 	    ArrayList<Question> list = createListWithFilter(questionService.GetQuestions(), i);
 	    IncomingQuestionsListAdapter iqla = new IncomingQuestionsListAdapter(getView().getContext(), list);
 	    lv.setAdapter(iqla);
+        qListOnClickListener = new QuestionListOnClickListener(getActivity(), list);
+        lv.setOnItemClickListener(qListOnClickListener);
 	}
 	
 	private ArrayList<Question> createListWithFilter(ArrayList<Question> listToFilter, int filterId) {
