@@ -93,7 +93,7 @@ public class ReviewDataSource implements IReviewService {
 	
 	private Review getNextReviewFromCursor(Cursor cursor)
 	{
-		User reviewer = getUser(cursor.getInt(2));
+		User reviewer = UserDataSource.GetUser(cursor.getInt(2), database);
 		Answer answerForReview = answerDataSource.GetAnswer(cursor.getInt(4));
 		ReviewState state = ReviewState.valueOf(cursor.getString(3));
 		Review review = new Review(cursor.getInt(0),
@@ -106,21 +106,6 @@ public class ReviewDataSource implements IReviewService {
 								
 				
 	}
-	private User getUser(int id)
-	{
-		User user = null;
-		Cursor cursor = database.query(UsersEntry.TABLE_NAME, UsersEntry.ALL_COLUMNS, UsersEntry.COLUMN_ID + " = " + id , null, null, null, null);
-		if (cursor.moveToFirst())
-		{
-			user = new User(cursor.getInt(0), 
-					cursor.getString(1), 
-					cursor.getString(2), 
-					cursor.getString(3), 
-					UserType.valueOf(cursor.getString(4)));
-		}
-		cursor.close();
-		
-		return user;
-	}
+	
 
 }
