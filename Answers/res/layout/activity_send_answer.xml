@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:padding="20dp">
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" 
+    android:padding="20dp">
+    <ImageView
+        android:id="@+id/ivRequestor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher" />
+    
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp" >
+        
+        <TextView
+        android:id="@+id/tvRequestor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/requestor" 
+        android:paddingTop="20dp"/>
+ 
+        </LinearLayout>
+        </LinearLayout>
+        
+        <TextView
+        android:id="@+id/tvQuestionHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/questionHeader" />
+        
+        <TextView
+        android:id="@+id/tvTheQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/question"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+            android:id="@+id/tvAnswerHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/answerHeader" />
+        
+            <EditText
+        android:id="@+id/etAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvAnswerHeader"
+        android:layout_below="@+id/tvAnswerHeader"
+        android:layout_marginTop="18dp"
+        android:ems="10"
+        android:inputType="textMultiLine" >
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/btnAddAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/addAnswer"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="5dp" />
+
+    <Button
+        android:id="@+id/btnRequestReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/requestReview"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>
