@@ -4,14 +4,14 @@ public class Answer {
 	
 	private int id;
 	private String answer;
-	private Question question;
+	
 	private User answerer;
 	private AnswerState answerState;
 	
-	public Answer(int id, String answer, Question question, User answerer, AnswerState answerState){
-		this.id = id;
+	public Answer(String answer, User answerer, AnswerState answerState){
+		
 		this.answer = answer;
-		this.question = question;
+		
 		this.answerer = answerer;
 		this.answerState = answerState;
 	}
@@ -31,14 +31,7 @@ public class Answer {
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
-	
-	public Question getQuestion() {
-		return question;
-	}
-	
-	public void setQuestion(Question question) {
-		this.question = question;
-	}
+
 	
 	public User getAnswerer() {
 		return answerer;
@@ -54,5 +47,14 @@ public class Answer {
 	
 	public void setAnwserState(AnswerState anwserState) {
 		this.answerState = anwserState;
+	}
+	
+
+	public AnswerState getAnswerState() {
+		return answerState;
+	}
+
+	public void setAnswerState(AnswerState answerState) {
+		this.answerState = answerState;
 	}
 }

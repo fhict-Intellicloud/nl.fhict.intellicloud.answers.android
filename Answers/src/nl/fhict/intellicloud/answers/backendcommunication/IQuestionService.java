@@ -19,6 +19,13 @@ public interface IQuestionService {
 	 */
 	Question GetQuestion(int id);
 	/**
+	 * Gets a specific {@link Question} that belongs to the requested {@link Answer} ID. 
+	 * @param id The id of the question to retrieve the answer for
+	 * @return The requested Answer object, or null if nothing is found.
+	 */
+	Question GetQuestionUsingAnswer(int answerId);
+	
+	/**
 	 * Gets all {@link Question} objects currently available
 	 * @return An {@link ArrayList} with all available questions;
 	 */
@@ -29,4 +36,9 @@ public interface IQuestionService {
 	 * @return An {@link ArrayList} with all questions which match the filters
 	 */
 	ArrayList<Question> GetQuestions(int employeeId);
+	/**
+	 * Updates an {@link Question}
+	 * @param answer The Question to change.
+	 */
+	void UpdateQuestion(Question question);
 }

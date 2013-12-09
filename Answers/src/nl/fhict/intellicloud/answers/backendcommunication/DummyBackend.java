@@ -22,6 +22,11 @@ import nl.fhict.intellicloud.answers.UserType;
  */
 public class DummyBackend implements IAnswerService, IQuestionService,
 		IReviewService {
+	@Override
+	public void UpdateQuestion(Question question) {
+		// TODO Auto-generated method stub
+		
+	}
 	ArrayList<Question> dummyQuestions = null;
 	ArrayList<Answer> dummyAnswers = null;
 	ArrayList<Review> dummyReviews = null;
@@ -49,11 +54,18 @@ public class DummyBackend implements IAnswerService, IQuestionService,
 		
 		dummyAnswers = new ArrayList<Answer>();
 		Question q = new Question(21, "HOI?", user1, user2, QuestionState.Open, new Date());
-		Answer anwser = new Answer(1,"HELL YEAH",q, user1, AnswerState.UnderReview);
+		Answer anwser = new Answer("HELL YEAH", user1, AnswerState.UnderReview);
 		
 		dummyAnswers.add(anwser);
 		dummyAnswers.add(anwser);
 		dummyAnswers.add(anwser);
+		
+		int i = 0;
+		for (Question question : dummyQuestions)
+		{
+			Answer answerselection = dummyAnswers.get(i % dummyAnswers.size());
+			question.setAnswer(answerselection);
+		}
 		
 		dummyReviews = new ArrayList<Review>();
 		
@@ -65,11 +77,6 @@ public class DummyBackend implements IAnswerService, IQuestionService,
 
 	}
 
-	@Override
-	public ArrayList<Review> GetReviews(Answer answer) {
-
-		return dummyReviews;
-	}
 
 	@Override
 	public void UpdateReview(Review review) {
@@ -90,8 +97,9 @@ public class DummyBackend implements IAnswerService, IQuestionService,
 	}
 
 	@Override
-	public void CreateAnswer(Answer answer) {
+	public void CreateAnswer(Answer answer, int questionId) {
 		dummyAnswers.add(answer);
+		dummyQuestions.get(questionId).setAnswer(answer);
 
 	}
 
@@ -146,5 +154,20 @@ public class DummyBackend implements IAnswerService, IQuestionService,
      	}
 			return null;
      }
+	@Override
+	public ArrayList<Review> GetReviews(int answerId) {
+		// TODO Auto-generated method stub
+		return dummyReviews;
+	}
+	@Override
+	public Answer GetAnswerUsingQuestion(int questionId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Question GetQuestionUsingAnswer(int answerId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

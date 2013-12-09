@@ -21,10 +21,10 @@ public interface IReviewService {
 	void CreateReview(Review review);
 	/**
 	 * Get {@link Review} objects that belongs to a specific {@link Answer}.
-	 * @param answer The Answer to find reviews for.
+	 * @param answer The answer ID to find reviews for.
 	 * @return {@link ArrayList} with all Reviews for the given answer
 	 */
-	ArrayList<Review> GetReviews(Answer answer);
+	ArrayList<Review> GetReviews(int answerId);
 	/**
 	 * Updates a {@link Review} with the updated {@link ReviewState}.
 	 * @param review The Review to update.

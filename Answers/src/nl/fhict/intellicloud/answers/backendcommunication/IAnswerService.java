@@ -17,13 +17,19 @@ public interface IAnswerService {
 	 * Adds an answer to the database and sends it to be processed.
 	 * @param answer The answer to add.
 	 */
-	void CreateAnswer(Answer answer);
+	void CreateAnswer(Answer answer, int questionId);
 	/**
 	 * Gets a specific {@link Answer} that belongs to the requested ID. 
-	 * @param id The id of the answer to retrieve (note: should this be a string?)
+	 * @param id The id of the answer to retrieve 
 	 * @return The requested Answer object, or null if nothing is found.
 	 */
 	Answer GetAnswer(int id);
+	/**
+	 * Gets a specific {@link Answer} that belongs to the requested {@link Question} ID. 
+	 * @param id The id of the question to retrieve the answer for
+	 * @return The requested Answer object, or null if nothing is found.
+	 */
+	Answer GetAnswerUsingQuestion(int questionId);
 	/**
 	 * Gets all {@link Answer} objects currently available
 	 * @return An {@link ArrayList} with all available answers
@@ -37,9 +43,11 @@ public interface IAnswerService {
 	 */
 	ArrayList<Answer> GetAnswers(int employeeId, AnswerState answerState);
 	/**
-	 * Updates an {@link Answer} with a new {@link AnswerState}
+	 * Updates an {@link Answer}
 	 * @param answer The Answer to change the state for.
 	 */
 	void UpdateAnswer(Answer answer);
+	
+	
 	
 }
