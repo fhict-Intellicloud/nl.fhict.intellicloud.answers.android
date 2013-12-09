@@ -17,7 +17,7 @@ public interface IAnswerService {
 	 * Adds an answer to the database and sends it to be processed.
 	 * @param answer The answer to add.
 	 */
-	void CreateAnswer(Answer answer);
+	void CreateAnswer(Answer answer, int questionId);
 	/**
 	 * Gets a specific {@link Answer} that belongs to the requested ID. 
 	 * @param id The id of the answer to retrieve 
@@ -43,7 +43,7 @@ public interface IAnswerService {
 	 */
 	ArrayList<Answer> GetAnswers(int employeeId, AnswerState answerState);
 	/**
-	 * Updates an {@link Answer} with a new {@link AnswerState}
+	 * Updates an {@link Answer}
 	 * @param answer The Answer to change the state for.
 	 */
 	void UpdateAnswer(Answer answer);

@@ -8,6 +8,7 @@ import nl.fhict.intellicloud.answers.QuestionState;
 import nl.fhict.intellicloud.answers.User;
 import nl.fhict.intellicloud.answers.UserType;
 import nl.fhict.intellicloud.answers.backendcommunication.IntellicloudDbContract.*;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -98,4 +99,34 @@ public class QuestionDataSource implements IQuestionService {
 		question.setAnswer(answerService.GetAnswer(cursor.getInt(9)));
 		return question;
 	}
+
+	@Override
+	public void UpdateQuestion(Question question) {
+		ContentValues values = new ContentValues();
+		values.put(QuestionsEntry.COLUMN_QUESTIONSTATE, question.getQuestionState().toString());
+		values.put(QuestionsEntry.COLUMN_ANSWER_ID, question.getAnswer().getId());
+
+	
+		open();
+		database.update(QuestionsEntry.TABLE_NAME, values, QuestionsEntry.COLUMN_ID + " = " + question.getId(), null);
+		close();
+		
+	}
+
+	@Override
+	public Question GetQuestionUsingAnswer(int answerId) {
+		open();
+		Question question = null;
+		Cursor cursor = database.query(QuestionsEntry.TABLE_NAME, allColumns, QuestionsEntry.COLUMN_ANSWER_ID + " = " + answerId, null, null, null, null);
+		if (cursor.moveToFirst())
+		{
+			
+			question = getNextQuestionFromCursor(cursor);
+			
+		}
+		cursor.close();
+		close();
+		return question;
+	}
+	
 }

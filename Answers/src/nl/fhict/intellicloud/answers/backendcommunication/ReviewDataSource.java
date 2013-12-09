@@ -96,11 +96,12 @@ public class ReviewDataSource implements IReviewService {
 		User reviewer = UserDataSource.GetUser(cursor.getInt(2), database);
 		Answer answerForReview = answerDataSource.GetAnswer(cursor.getInt(4));
 		ReviewState state = ReviewState.valueOf(cursor.getString(3));
-		Review review = new Review(cursor.getInt(0),
+		Review review = new Review(
 								cursor.getString(1),
 								answerForReview,
 								reviewer,
 								state);
+		review.setId(cursor.getInt(0));
 								
 		return review;			
 								

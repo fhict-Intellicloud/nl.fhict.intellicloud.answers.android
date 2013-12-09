@@ -28,14 +28,17 @@ public class ReviewOverviewActivity extends Activity {
 		setContentView(R.layout.activity_review_overview);
 		reviewInt = getIntent().getExtras().getInt("reviewInt");
 		
-		IAnswerService iAnswerService = new DummyBackend();
+		//IAnswerService iAnswerService = new DummyBackend();
 		IQuestionService iQuestionService = new DummyBackend();
-		IReviewService iReviewService = new DummyBackend();
-				
+		//IReviewService iReviewService = new DummyBackend();
+		
+		question = iQuestionService.GetQuestion(reviewInt);
+		answer = question.getAnswer();
+		
 		TextView tvTheQuestion = (TextView) findViewById(R.id.tvTheQuestion);
-		tvTheQuestion.setText(iQuestionService.GetQuestion(reviewInt).getQuestion());
+		tvTheQuestion.setText(question.getQuestion());
 		TextView tvTheAnswer = (TextView) findViewById(R.id.tvTheAnswer);
-		tvTheAnswer.setText(iAnswerService.GetAnswer(1).getAnswer());
+		tvTheAnswer.setText(answer.getAnswer());
 		tvTheAnswer.setOnClickListener(new OnClickListener() {	
 			@Override
 			public void onClick(View v) {

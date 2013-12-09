@@ -8,8 +8,8 @@ public class Answer {
 	private User answerer;
 	private AnswerState answerState;
 	
-	public Answer(int id, String answer, User answerer, AnswerState answerState){
-		this.id = id;
+	public Answer(String answer, User answerer, AnswerState answerState){
+		
 		this.answer = answer;
 		
 		this.answerer = answerer;

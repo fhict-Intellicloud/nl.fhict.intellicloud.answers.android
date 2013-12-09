@@ -67,7 +67,8 @@ public class SendAnswerActivity extends Activity {
      */
     protected void addAnswer(){
         String answerText = etAnswer.getText().toString();
-        answer = new Answer(questionInt,answerText, question, question.getAnwserer(), AnswerState.UnderReview);
-        aService.CreateAnswer(answer);
+        
+        answer = new Answer(answerText, question.getAnwserer(), AnswerState.UnderReview);
+        aService.CreateAnswer(answer, questionInt);
     }
 }

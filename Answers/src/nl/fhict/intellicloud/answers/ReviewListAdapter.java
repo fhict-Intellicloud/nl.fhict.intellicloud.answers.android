@@ -3,6 +3,8 @@ package nl.fhict.intellicloud.answers;
 import java.util.List;
 
 import nl.fhict.intellicloud.R;
+import nl.fhict.intellicloud.answers.backendcommunication.IQuestionService;
+import nl.fhict.intellicloud.answers.backendcommunication.QuestionDataSource;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +18,12 @@ public class ReviewListAdapter extends BaseAdapter {
 	List<Answer> answerList;
 	Activity activity;
 	
+	
 	public ReviewListAdapter(Activity activity, List<Answer> answerList)
 	{
 		this.activity = activity;
 		this.answerList = answerList;
+		
 	}
 	
 	@Override
@@ -41,6 +45,7 @@ public class ReviewListAdapter extends BaseAdapter {
 	public View getView(int position, View view, ViewGroup viewGroup) {
 		View rowView = view;
 		Answer answer = answerList.get(position);
+	
 		if(rowView == null){
 			LayoutInflater inflater = activity.getLayoutInflater();
 			rowView = inflater.inflate(R.layout.answer_list_item, null);
@@ -56,7 +61,7 @@ public class ReviewListAdapter extends BaseAdapter {
 		//holder.ivUserPicture.setImageDrawable(drawable);
 		holder.tvRequestor.setText(answer.getAnswerer().getFirstName() + " " + answer.getAnswerer().getLastName());
 		holder.tvDate.setText("HIER KOMT DATUM: 27-11-2013");
-		holder.tvQuestion.setText(answer.getQuestion().getQuestion());
+	
 		
 		return rowView;
 	}

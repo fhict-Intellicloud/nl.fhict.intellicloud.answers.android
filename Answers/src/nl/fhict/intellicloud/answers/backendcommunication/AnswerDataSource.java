@@ -43,7 +43,7 @@ public class AnswerDataSource implements IAnswerService {
 		}
 
 		@Override
-		public void CreateAnswer(Answer answer) {
+		public void CreateAnswer(Answer answer, int questionId) {
 			ContentValues values = new ContentValues();
 			Date currentDate = new Date();
 			values.put(AnswersEntry.COLUMN_ANSWER, answer.getAnswer());
@@ -54,9 +54,14 @@ public class AnswerDataSource implements IAnswerService {
 			open();
 			database.insert(AnswersEntry.TABLE_NAME, null,
 			    values);
+			
 			close();
+			ArrayList<Answer> newList = GetAnswers();
 			
-			
+			Answer dbAnswer = newList.get(newList.size()-1);
+			Question questionForAnswer = questionDataSource.GetQuestion(questionId);
+			questionForAnswer.setAnswer(dbAnswer);
+			questionDataSource.UpdateQuestion(questionForAnswer);
 		}
 
 		@Override
@@ -152,10 +157,10 @@ public class AnswerDataSource implements IAnswerService {
 		{
 			//Question questionForAnswer = questionDataSource.GetQuestion(cursor.getInt(2));
 			
-			Answer foundAnswer = new Answer(cursor.getInt(0), 
-											cursor.getString(1), 
+			Answer foundAnswer = new Answer(cursor.getString(1), 
 											UserDataSource.GetUser(cursor.getInt(3), database), 
 											AnswerState.valueOf(cursor.getString(4)));
+			foundAnswer.setId(cursor.getInt(0));
 			
 			
 			return foundAnswer;
