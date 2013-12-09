@@ -147,5 +147,10 @@ public class DummyBackend implements IAnswerService, IQuestionService,
 		// TODO Auto-generated method stub
 		return dummyReviews;
 	}
+	@Override
+	public Answer GetAnswerUsingQuestion(int questionId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

@@ -22,7 +22,7 @@ public class AnswerDataSource implements IAnswerService {
 		private String[] allColumns = { AnswersEntry.COLUMN_ID, 
 										AnswersEntry.COLUMN_BACKEND_ID,
 										AnswersEntry.COLUMN_ANSWER, 
-										AnswersEntry.COLUMN_QUESTION,
+										AnswersEntry.COLUMN_QUESTION_ID,
 										AnswersEntry.COLUMN_ANSWERER_ID,
 										AnswersEntry.COLUMN_ANSWERSTATE,
 										AnswersEntry.COLUMN_DATE};
@@ -49,7 +49,7 @@ public class AnswerDataSource implements IAnswerService {
 			Date currentDate = new Date();
 			values.put(AnswersEntry.COLUMN_ANSWER, answer.getAnswer());
 			values.put(AnswersEntry.COLUMN_ANSWERSTATE, answer.getAnwserState().toString());
-			values.put(AnswersEntry.COLUMN_QUESTION, answer.getQuestion().getId());
+			values.put(AnswersEntry.COLUMN_QUESTION_ID, answer.getQuestion().getId());
 			values.put(AnswersEntry.COLUMN_ANSWERER_ID, answer.getAnswerer().getId());
 			values.put(AnswersEntry.COLUMN_DATE, currentDate.getTime());
 			
@@ -76,7 +76,23 @@ public class AnswerDataSource implements IAnswerService {
 			close();
 			return answer;
 		}
-
+		
+		@Override
+		public Answer GetAnswerUsingQuestion(int questionId) {
+			// TODO Auto-generated method stub
+			open();
+			Answer answer = null;
+			Cursor cursor = database.query(AnswersEntry.TABLE_NAME, allColumns, AnswersEntry.COLUMN_QUESTION_ID + " = " + questionId, null, null, null, null);
+			if (cursor.moveToFirst())
+			{
+				
+				answer = getNextAnswerFromCursor(cursor);
+				
+			}
+			cursor.close();
+			close();
+			return answer;
+		}
 		@Override
 		public ArrayList<Answer> GetAnswers() {
 			return GetAnswers(-1, null);
@@ -140,4 +156,6 @@ public class AnswerDataSource implements IAnswerService {
 			
 			return foundAnswer;
 		}
+
+		
 }

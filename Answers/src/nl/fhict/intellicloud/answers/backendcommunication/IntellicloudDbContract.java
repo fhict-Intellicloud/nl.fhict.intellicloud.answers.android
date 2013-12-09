@@ -39,7 +39,7 @@ public class IntellicloudDbContract {
 		public static final String COLUMN_BACKEND_ID = "backend_id";
 		public static final String COLUMN_ANSWER = "answer";
 		public static final String COLUMN_ANSWERER_ID = "answerer";
-		public static final String COLUMN_QUESTION = "question";
+		public static final String COLUMN_QUESTION_ID = "question";
 		public static final String COLUMN_ANSWERSTATE = "answer_state";
 		public static final String COLUMN_DATE = "date";
 		
@@ -97,7 +97,7 @@ public class IntellicloudDbContract {
 	      		+ AnswersEntry.COLUMN_BACKEND_ID + " INTEGER, "
 	      		+ AnswersEntry.COLUMN_ANSWER + " TEXT, "
 	      		+ AnswersEntry.COLUMN_ANSWERER_ID + "INTEGER, "
-	      		+ AnswersEntry.COLUMN_QUESTION + " INTEGER, "
+	      		+ AnswersEntry.COLUMN_QUESTION_ID + " INTEGER, "
 	      		+ AnswersEntry.COLUMN_ANSWERSTATE + " TEXT NOT NULL"
 	      		+ " );";
 		  public static final String CREATE_TABLE_REVIEWS = "create table "

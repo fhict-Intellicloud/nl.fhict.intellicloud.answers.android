@@ -20,10 +20,16 @@ public interface IAnswerService {
 	void CreateAnswer(Answer answer);
 	/**
 	 * Gets a specific {@link Answer} that belongs to the requested ID. 
-	 * @param id The id of the answer to retrieve (note: should this be a string?)
+	 * @param id The id of the answer to retrieve 
 	 * @return The requested Answer object, or null if nothing is found.
 	 */
 	Answer GetAnswer(int id);
+	/**
+	 * Gets a specific {@link Answer} that belongs to the requested {@link Question} ID. 
+	 * @param id The id of the question to retrieve the answer for
+	 * @return The requested Answer object, or null if nothing is found.
+	 */
+	Answer GetAnswerUsingQuestion(int questionId);
 	/**
 	 * Gets all {@link Answer} objects currently available
 	 * @return An {@link ArrayList} with all available answers
@@ -41,5 +47,7 @@ public interface IAnswerService {
 	 * @param answer The Answer to change the state for.
 	 */
 	void UpdateAnswer(Answer answer);
+	
+	
 	
 }
