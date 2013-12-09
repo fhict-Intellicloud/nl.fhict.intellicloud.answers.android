@@ -20,6 +20,7 @@ public class AddReviewActivity extends Activity {
 		tvAddReview.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
+				//TODO
 				Intent intent = new Intent(AddReviewActivity.this, MainActivity.class);
 				startActivity(intent);
 			}
