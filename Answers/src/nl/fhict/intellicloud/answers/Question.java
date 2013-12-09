@@ -12,6 +12,7 @@ public class Question {
 	private Date date;
 	private String title;
 	private Boolean isPrivate;
+	private Answer answer;
 	
 	public Question(int id, String question, User asker, User anwserer, QuestionState questionState, Date date){
 		this.id = id;
@@ -83,5 +84,13 @@ public class Question {
 
 	public void setIsPrivate(Boolean isPrivate) {
 		this.isPrivate = isPrivate;
+	}
+
+	public Answer getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(Answer answer) {
+		this.answer = answer;
 	}
 }

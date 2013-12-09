@@ -5,17 +5,13 @@ public class Answer {
 	private int id;
 	private String answer;
 	
-
-	private String title;
-	private Boolean isPrivate;
-	private Question question;
 	private User answerer;
 	private AnswerState answerState;
 	
-	public Answer(int id, String answer, Question question, User answerer, AnswerState answerState){
+	public Answer(int id, String answer, User answerer, AnswerState answerState){
 		this.id = id;
 		this.answer = answer;
-		this.question = question;
+		
 		this.answerer = answerer;
 		this.answerState = answerState;
 	}
@@ -35,14 +31,7 @@ public class Answer {
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
-	
-	public Question getQuestion() {
-		return question;
-	}
-	
-	public void setQuestion(Question question) {
-		this.question = question;
-	}
+
 	
 	public User getAnswerer() {
 		return answerer;

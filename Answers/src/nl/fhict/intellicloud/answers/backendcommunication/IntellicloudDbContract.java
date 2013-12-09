@@ -26,13 +26,14 @@ public class IntellicloudDbContract {
 		public static final String TABLE_NAME = "questions";
 		public static final String COLUMN_ID = "id";
 		public static final String COLUMN_BACKEND_ID = "backend_id";
-		public static final String COLUMN_ASKER_ID = "asker";
-		public static final String COLUMN_ANSWERER_ID = "answerer";
+		public static final String COLUMN_ASKER_ID = "asker_id";
+		public static final String COLUMN_ANSWERER_ID = "answerer_id";
 		public static final String COLUMN_QUESTION = "question";
 		public static final String COLUMN_QUESTIONSTATE = "question_state";
 		public static final String COLUMN_DATE = "date";
 		public static final String COLUMN_IS_PRIVATE = "is_private";
 		public static final String COLUMN_TITLE = "title";
+		public static final String COLUMN_ANSWER_ID = "answer";
 
 	}
 	public static abstract class AnswersEntry implements BaseColumns {
@@ -40,8 +41,8 @@ public class IntellicloudDbContract {
 		public static final String COLUMN_ID = "id";
 		public static final String COLUMN_BACKEND_ID = "backend_id";
 		public static final String COLUMN_ANSWER = "answer";
-		public static final String COLUMN_ANSWERER_ID = "answerer";
-		public static final String COLUMN_QUESTION_ID = "question";
+		public static final String COLUMN_ANSWERER_ID = "answerer_id";
+//		public static final String COLUMN_QUESTION_ID = "question";
 		public static final String COLUMN_ANSWERSTATE = "answer_state";
 		public static final String COLUMN_DATE = "date";
 		
@@ -53,8 +54,8 @@ public class IntellicloudDbContract {
 		public static final String COLUMN_ID = "id";
 		public static final String COLUMN_BACKEND_ID = "backend_id";
 		public static final String COLUMN_REVIEW = "review";
-		public static final String COLUMN_REVIEWER_ID = "reviewer";
-		public static final String COLUMN_ANSWER = "answer";
+		public static final String COLUMN_REVIEWER_ID = "reviewer_id";
+		public static final String COLUMN_ANSWER_ID = "answer_id";
 		public static final String COLUMN_REVIEWSTATE = "review_state";
 		public static final String COLUMN_DATE = "date";
 		
@@ -92,6 +93,7 @@ public class IntellicloudDbContract {
 				+ QuestionsEntry.COLUMN_QUESTION + " TEXT, "
 				+ QuestionsEntry.COLUMN_ASKER_ID + " INTEGER, "
 				+ QuestionsEntry.COLUMN_ANSWERER_ID + " INTEGER, "
+				+ QuestionsEntry.COLUMN_ANSWER_ID + " INTEGER, "
 				+ QuestionsEntry.COLUMN_DATE + " DATETIME, "
 				+ QuestionsEntry.COLUMN_IS_PRIVATE + " INTEGER,"
 	      		+ QuestionsEntry.COLUMN_TITLE + " TEXT, "
@@ -103,7 +105,7 @@ public class IntellicloudDbContract {
 	      		+ AnswersEntry.COLUMN_BACKEND_ID + " INTEGER, "
 	      		+ AnswersEntry.COLUMN_ANSWER + " TEXT, "
 	      		+ AnswersEntry.COLUMN_ANSWERER_ID + "INTEGER, "
-	      		+ AnswersEntry.COLUMN_QUESTION_ID + " INTEGER, "
+//	      		+ AnswersEntry.COLUMN_QUESTION_ID + " INTEGER, "
 	      		+ AnswersEntry.COLUMN_ANSWERSTATE + " TEXT NOT NULL,"
 	      		
 	      		+ " );";
@@ -113,7 +115,7 @@ public class IntellicloudDbContract {
 	      		+ ReviewsEntry.COLUMN_BACKEND_ID + " INTEGER,"
 	      		+ ReviewsEntry.COLUMN_REVIEW + " TEXT, "
 	      		+ ReviewsEntry.COLUMN_REVIEWER_ID + " INTEGER, "
-	      		+ ReviewsEntry.COLUMN_ANSWER + " INTEGER, "
+	      		+ ReviewsEntry.COLUMN_ANSWER_ID + " INTEGER, "
 	      		+ ReviewsEntry.COLUMN_REVIEWSTATE + " TEXT NOT NULL"
 	      		+ " );";
 		  public static final String CREATE_TABLE_USERS = "create table "

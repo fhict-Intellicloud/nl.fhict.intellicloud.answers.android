@@ -16,19 +16,22 @@ import android.database.sqlite.SQLiteDatabase;
 public class QuestionDataSource implements IQuestionService {
 	private SQLiteDatabase database;
 	private LocalStorageSQLiteHelper dbHelper;
+	IAnswerService answerService;
 	private final String[] allColumns = { QuestionsEntry.COLUMN_ID, 
 									QuestionsEntry.COLUMN_BACKEND_ID,
-									QuestionsEntry.COLUMN_ANSWERER_ID, 
+									QuestionsEntry.COLUMN_ANSWERER_ID,
 									QuestionsEntry.COLUMN_ASKER_ID, 
 									QuestionsEntry.COLUMN_DATE, 
 									QuestionsEntry.COLUMN_QUESTION, 
 									QuestionsEntry.COLUMN_QUESTIONSTATE,
 									QuestionsEntry.COLUMN_IS_PRIVATE,
-									QuestionsEntry.COLUMN_TITLE};
+									QuestionsEntry.COLUMN_TITLE,
+									QuestionsEntry.COLUMN_ANSWER_ID};
 	
 	
 	public QuestionDataSource(Context context) {
 		dbHelper = new LocalStorageSQLiteHelper(context);
+		answerService = new AnswerDataSource(context);
 	}
 	
 	private void open() throws SQLException {
@@ -80,33 +83,19 @@ public class QuestionDataSource implements IQuestionService {
 		return filteredQuestions;
 	}
 
-	private User getUser(int id)
-	{
-		User user = null;
-		Cursor cursor = database.query(UsersEntry.TABLE_NAME, UsersEntry.ALL_COLUMNS, UsersEntry.COLUMN_ID + " = " + id , null, null, null, null);
-		if (cursor.moveToFirst())
-		{
-			user = new User(cursor.getInt(0), 
-					cursor.getString(1), 
-					cursor.getString(2), 
-					cursor.getString(3), 
-					UserType.valueOf(cursor.getString(4)));
-		}
-		cursor.close();
-		
-		return user;
-	}
+	
 	private Question getNextQuestionFromCursor(Cursor cursor)
 	{
 		Long unixMilliSeconds = cursor.getLong(3)*1000;
 		Question question = new Question(cursor.getInt(0), 
 								cursor.getString(4), 
-								getUser(cursor.getInt(2)), 
-								getUser(cursor.getInt(1)),
+								UserDataSource.GetUser(cursor.getInt(2), database), 
+								UserDataSource.GetUser(cursor.getInt(1), database),
 								QuestionState.valueOf(cursor.getString(5)), 
 								new Date(unixMilliSeconds));
 		question.setIsPrivate(cursor.getInt(7) > 0);
 		question.setTitle(cursor.getString(8));
+		question.setAnswer(answerService.GetAnswer(cursor.getInt(9)));
 		return question;
 	}
 }

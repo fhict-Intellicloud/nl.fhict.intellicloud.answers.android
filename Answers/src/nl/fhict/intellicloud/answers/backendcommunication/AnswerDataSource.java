@@ -22,7 +22,6 @@ public class AnswerDataSource implements IAnswerService {
 		private String[] allColumns = { AnswersEntry.COLUMN_ID, 
 										AnswersEntry.COLUMN_BACKEND_ID,
 										AnswersEntry.COLUMN_ANSWER, 
-										AnswersEntry.COLUMN_QUESTION_ID,
 										AnswersEntry.COLUMN_ANSWERER_ID,
 										AnswersEntry.COLUMN_ANSWERSTATE,
 										AnswersEntry.COLUMN_DATE};
@@ -49,7 +48,6 @@ public class AnswerDataSource implements IAnswerService {
 			Date currentDate = new Date();
 			values.put(AnswersEntry.COLUMN_ANSWER, answer.getAnswer());
 			values.put(AnswersEntry.COLUMN_ANSWERSTATE, answer.getAnwserState().toString());
-			values.put(AnswersEntry.COLUMN_QUESTION_ID, answer.getQuestion().getId());
 			values.put(AnswersEntry.COLUMN_ANSWERER_ID, answer.getAnswerer().getId());
 			values.put(AnswersEntry.COLUMN_DATE, currentDate.getTime());
 			
@@ -80,9 +78,14 @@ public class AnswerDataSource implements IAnswerService {
 		@Override
 		public Answer GetAnswerUsingQuestion(int questionId) {
 			// TODO Auto-generated method stub
-			open();
-			Answer answer = null;
-			Cursor cursor = database.query(AnswersEntry.TABLE_NAME, allColumns, AnswersEntry.COLUMN_QUESTION_ID + " = " + questionId, null, null, null, null);
+
+	
+			
+			Question question = questionDataSource.GetQuestion(questionId);
+			return question.getAnswer();
+			
+			/*//Code unnecessary due to QuestionDataSource
+			Cursor cursor = database.query(QuestionsEntry.TABLE_NAME, allColumns, QuestionsEntry.COLUMN_ANSWER_ID + " = " + questionId, null, null, null, null);
 			if (cursor.moveToFirst())
 			{
 				
@@ -92,6 +95,7 @@ public class AnswerDataSource implements IAnswerService {
 			cursor.close();
 			close();
 			return answer;
+			*/
 		}
 		@Override
 		public ArrayList<Answer> GetAnswers() {
@@ -146,13 +150,13 @@ public class AnswerDataSource implements IAnswerService {
 		}
 		private Answer getNextAnswerFromCursor(Cursor cursor)
 		{
-			Question questionForAnswer = questionDataSource.GetQuestion(cursor.getInt(2));
+			//Question questionForAnswer = questionDataSource.GetQuestion(cursor.getInt(2));
 			
 			Answer foundAnswer = new Answer(cursor.getInt(0), 
 											cursor.getString(1), 
-											questionForAnswer, 
-											questionForAnswer.getAnwserer(), 
-											AnswerState.valueOf(cursor.getString(3)));			
+											UserDataSource.GetUser(cursor.getInt(3), database), 
+											AnswerState.valueOf(cursor.getString(4)));
+			
 			
 			return foundAnswer;
 		}

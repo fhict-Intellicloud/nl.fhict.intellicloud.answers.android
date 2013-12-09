@@ -24,7 +24,7 @@ public class ReviewDataSource implements IReviewService {
 										ReviewsEntry.COLUMN_BACKEND_ID,
 										ReviewsEntry.COLUMN_REVIEWER_ID,
 										ReviewsEntry.COLUMN_REVIEWSTATE,
-										ReviewsEntry.COLUMN_ANSWER
+										ReviewsEntry.COLUMN_ANSWER_ID
 										};
 	private IAnswerService answerDataSource;
 											
@@ -49,7 +49,7 @@ public class ReviewDataSource implements IReviewService {
 		values.put(ReviewsEntry.COLUMN_REVIEW, review.getReview());
 		values.put(ReviewsEntry.COLUMN_REVIEWER_ID, review.getReviewer().getId());
 		values.put(ReviewsEntry.COLUMN_REVIEWSTATE, review.getReviewState().toString());
-		values.put(ReviewsEntry.COLUMN_ANSWER, review.getAnswer().getId());
+		values.put(ReviewsEntry.COLUMN_ANSWER_ID, review.getAnswer().getId());
 			
 		open();
 		database.insert(ReviewsEntry.TABLE_NAME, null, values);
@@ -63,7 +63,7 @@ public class ReviewDataSource implements IReviewService {
 		String answerFilter = null;
 		ArrayList<Review> filteredReviews = new ArrayList<Review>();
 		
-		answerFilter = ReviewsEntry.COLUMN_ANSWER + " = " + answerId;
+		answerFilter = ReviewsEntry.COLUMN_ANSWER_ID + " = " + answerId;
 				
 		
 		open();
