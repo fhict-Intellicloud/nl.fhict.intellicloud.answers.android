@@ -1,7 +1,5 @@
 package nl.fhict.intellicloud.answers;
 
-import java.util.Date;
-
 import nl.fhict.intellicloud.R;
 import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
 import nl.fhict.intellicloud.answers.backendcommunication.IAnswerService;
@@ -13,11 +11,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class ReviewOverviewActivity extends Activity {
 
-	int answerInt;
+	int reviewInt;
 	
 	Answer answer;
 	Question question;
@@ -27,23 +26,16 @@ public class ReviewOverviewActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_review_overview);
-		answerInt = getIntent().getExtras().getInt("Answer");
+		reviewInt = getIntent().getExtras().getInt("reviewInt");
 		
 		IAnswerService iAnswerService = new DummyBackend();
 		IQuestionService iQuestionService = new DummyBackend();
 		IReviewService iReviewService = new DummyBackend();
-		
-//		user1 = new User(1, "Remco", "Loeff", "", UserType.Customer);
-//		user2 = new User(1, "Wipneus", "Pim", "en", UserType.Customer);
-//		question = new Question(1, "Na veel speculaties over het sprookje van Hans en Grietje, "
-//		+ "ben ik nu wel heel benieuwd hoe dit afloopt. Dus bij deze de vraag hoe loopt het af?", user1, user2, QuestionState.Open, new Date());
-//		
-//		answer = new Answer(1,"Hans gaat dood en Grietje niet. Happy End", question, user2, AnswerState.UnderReview);
-		
+				
 		TextView tvTheQuestion = (TextView) findViewById(R.id.tvTheQuestion);
-		tvTheQuestion.setText(iQuestionService.GetQuestion(1).getQuestion());
+		tvTheQuestion.setText(iQuestionService.GetQuestion(reviewInt).getQuestion());
 		TextView tvTheAnswer = (TextView) findViewById(R.id.tvTheAnswer);
-		tvTheAnswer.setText(iAnswerService.GetAnswer(1).toString());
+		tvTheAnswer.setText(iAnswerService.GetAnswer(1).getAnswer());
 		tvTheAnswer.setOnClickListener(new OnClickListener() {	
 			@Override
 			public void onClick(View v) {
