@@ -3,6 +3,9 @@ package nl.fhict.intellicloud.answers;
 import nl.fhict.intellicloud.R;
 import nl.fhict.intellicloud.R.layout;
 import nl.fhict.intellicloud.R.menu;
+import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
+import nl.fhict.intellicloud.answers.backendcommunication.IAnswerService;
+import nl.fhict.intellicloud.answers.backendcommunication.IQuestionService;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,11 +20,13 @@ import java.util.Date;
 
 public class SendAnswerActivity extends Activity {
 
-    int answerInt;
+    IQuestionService qService;
+    IAnswerService aService;
+
+    int questionInt;
 
     Answer answer;
     Question question;
-    User user1, user2;
     EditText etAnswer;
 
 	@Override
@@ -29,13 +34,14 @@ public class SendAnswerActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_send_answer);
 
-        answerInt = getIntent().getExtras().getInt("Answer");
-        user1 = new User(1, "Henk", "Zwalp", "en", UserType.Customer);
-        user2 = new User(1, "Bob", "Alicen", "en", UserType.Customer);
-        question = new Question(1, "Hoe moet ik een vraag stellen?", user1, user2, QuestionState.Open, new Date());
+        qService = new DummyBackend();
+        aService = new DummyBackend();
+
+        questionInt = getIntent().getExtras().getInt("Question");
+        question = qService.GetQuestion(questionInt);
 
         TextView tvRequestor = (TextView) findViewById(R.id.tvRequestor);
-        tvRequestor.setText(answerInt + question.getAsker().getFirstName() + " " + question.getAsker().getLastName());
+        tvRequestor.setText(questionInt + question.getAsker().getFirstName() + " " + question.getAsker().getLastName());
         TextView tvTheQuestion = (TextView) findViewById(R.id.tvTheQuestion);
         tvTheQuestion.setText(question.getQuestion());
         Button btnAddAnswer = (Button) findViewById(R.id.btnAddAnswer);
@@ -45,14 +51,23 @@ public class SendAnswerActivity extends Activity {
         btnAddAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                answer = new Answer(answerInt,etAnswer.getText().toString(), question, user2, AnswerState.UnderReview);
+                addAnswer();
             }
         });
         btnRequestReview.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                answer = new Answer(answerInt,etAnswer.getText().toString(), question, user2, AnswerState.UnderReview);
+            public void onClick(View v) {
+                addAnswer();
             }
         });
 	}
+
+    /**
+     * Sends the answer to the backend to be added to the database
+     */
+    protected void addAnswer(){
+        String answerText = etAnswer.getText().toString();
+        answer = new Answer(questionInt,answerText, question, question.getAnwserer(), AnswerState.UnderReview);
+        aService.CreateAnswer(answer);
+    }
 }
