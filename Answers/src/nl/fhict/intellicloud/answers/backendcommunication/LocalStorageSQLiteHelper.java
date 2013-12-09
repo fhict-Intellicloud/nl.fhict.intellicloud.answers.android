@@ -30,7 +30,7 @@ public class LocalStorageSQLiteHelper extends SQLiteOpenHelper {
 	        db.execSQL(CreateStatements.CREATE_TABLE_QUESTIONS);
 	        db.execSQL(CreateStatements.CREATE_TABLE_USERS);
 	        db.execSQL(CreateStatements.CREATE_TABLE_REVIEWS);
-	        // db.execSQL(CreateStatements.CREATE_TABLE_FEEDBACK); //TODO: determine if necessary
+	        db.execSQL(CreateStatements.CREATE_TABLE_FEEDBACK); //TODO: determine if necessary
 	  }
 
 	  @Override
@@ -42,7 +42,7 @@ public class LocalStorageSQLiteHelper extends SQLiteOpenHelper {
 		    db.execSQL("DROP TABLE IF EXISTS " + QuestionsEntry.TABLE_NAME);
 		    db.execSQL("DROP TABLE IF EXISTS " + AnswersEntry.TABLE_NAME);
 		    db.execSQL("DROP TABLE IF EXISTS " + UsersEntry.TABLE_NAME);  
-		    //db.execSQL("DROP TABLE IF EXISTS " + FeedbackEntry.TABLE_NAME);   
+		    db.execSQL("DROP TABLE IF EXISTS " + FeedbackEntry.TABLE_NAME);   
 		    
 		    onCreate(db);
 	  }

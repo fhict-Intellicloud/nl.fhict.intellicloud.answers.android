@@ -1,6 +1,7 @@
 package nl.fhict.intellicloud.answers.backendcommunication;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -23,7 +24,8 @@ public class AnswerDataSource implements IAnswerService {
 										AnswersEntry.COLUMN_ANSWER, 
 										AnswersEntry.COLUMN_QUESTION,
 										AnswersEntry.COLUMN_ANSWERER_ID,
-										AnswersEntry.COLUMN_ANSWERSTATE };
+										AnswersEntry.COLUMN_ANSWERSTATE,
+										AnswersEntry.COLUMN_DATE};
 		
 		private IQuestionService questionDataSource = null;
 		
@@ -44,10 +46,12 @@ public class AnswerDataSource implements IAnswerService {
 		@Override
 		public void CreateAnswer(Answer answer) {
 			ContentValues values = new ContentValues();
-			
+			Date currentDate = new Date();
 			values.put(AnswersEntry.COLUMN_ANSWER, answer.getAnswer());
 			values.put(AnswersEntry.COLUMN_ANSWERSTATE, answer.getAnwserState().toString());
 			values.put(AnswersEntry.COLUMN_QUESTION, answer.getQuestion().getId());
+			values.put(AnswersEntry.COLUMN_ANSWERER_ID, answer.getAnswerer().getId());
+			values.put(AnswersEntry.COLUMN_DATE, currentDate.getTime());
 			
 			open();
 			database.insert(AnswersEntry.TABLE_NAME, null,
