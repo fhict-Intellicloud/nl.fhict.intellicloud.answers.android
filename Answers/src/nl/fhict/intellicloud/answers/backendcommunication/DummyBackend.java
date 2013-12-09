@@ -48,7 +48,6 @@ public class DummyBackend implements IAnswerService, IQuestionService,
 		dummyQuestions.add(new Question(6, "Is this an oke question?", null, null, QuestionState.UpForFeedback, new Date()));
 		
 		dummyAnswers = new ArrayList<Answer>();
-		
 		Question q = new Question(21, "HOI?", user1, user2, QuestionState.Open, new Date());
 		Answer anwser = new Answer(1,"HELL YEAH", user1, AnswerState.UnderReview);
 		

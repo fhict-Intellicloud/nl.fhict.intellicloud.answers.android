@@ -25,7 +25,13 @@
         android:layout_height="wrap_content"
         android:text="@string/answerHeader"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/tvTheQuestion"/>
+        android:layout_below="@+id/tvTheQuestion"
+        android:textColor="@color/slidingmenu_devider_color"/>
+        
+        <View 
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@color/slidingmenu_devider_color"/>
         
         <TextView
         android:id="@+id/tvTheAnswer"
@@ -42,12 +48,24 @@
         android:layout_height="wrap_content"
         android:text="@string/reviewHeader"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/tvTheAnswer"/>
+        android:layout_below="@+id/tvTheAnswer"
+        android:textColor="@color/slidingmenu_devider_color"/>
+        
+        <View 
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@color/slidingmenu_devider_color"/>
+        
+        <ListView
+        android:id="@+id/lvReviews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:layout_below="@+id/lvReviews" >
 
             <TextView
                 android:id="@+id/tvAcceptAnswer"

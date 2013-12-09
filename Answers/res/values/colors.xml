@@ -4,5 +4,6 @@
     <color name="intellicloud_color_two">#5cb888</color>
     <color name="slidingmenu_background_color">#5a5859</color>
     <color name="slidingmenu_devider_color">#c1c1c1</color>
-    <color name="search_quetion_color">#fff</color>
+    <color name="search_question_color">#fff</color>
+    <color name="intellicloud_color_disabled">#d4d4d4</color>
 </resources>

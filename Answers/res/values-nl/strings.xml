@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">Answers</string>
@@ -22,12 +23,13 @@
     <string name="minutesAgo">minuten geleden</string>
     <string name="minuteAgo">minuut geleden</string>  
     <string name="justPosted">zojuist</string>
-	<string name="unknownUser">Onbekender Gebruiker</string>
-    
+	<string name="unknownUser">Onbekende Gebruiker</string>
     <string name="filters">filters</string>
     <string name="logout">Uitloggen</string>
     <string name="triedToLogout">U probeerde uit te loggen</string>
     <string name="triedToSearch">U probeerde te zoeken</string>
+    <string name="acceptAnswer">Antwoord goedgekeurd</string>
+    <string name="declineAnswer">Antwoord afgekeurd</string>
     
     <!-- activity_add_review.xml -->
     <string name="title_activity_add_review">Voeg nieuwe review toe</string>
@@ -37,11 +39,19 @@
     <!-- activity_original_answer.xml -->
     <string name="title_activity_original_answer">Antwoord</string>
     <string name="orignialAnswer">ORIGINEEL ANTWOORD</string>
-    
-    <!-- activity_send_answer.xml -->
-    <string name="title_activity_send_answer">Review antwoord</string>
+
+    <!-- activity_review_answer.xml -->
+    <string name="title_activity_review_answer">Review antwoord</string>
     <string name="unknown_date">Onbekende datum</string>
 
+    <!-- activity_send_answer.xml -->
+    <string name="title_activity_send_answer">Antwoord</string>
+    <string name="addAnswer">Antwoord toevoegen</string>
+    <string name="requestReview">Review aanvragen</string>
+    <string name="title_activity_slide_in_menu">SlideInMenuActivity</string>
+    <string name="title_activity_sliding_fragment">SlidingFragmentActivity</string>
+
+    <!-- sliding menu titles -->
     <string-array
         name="filter_array">
         <item>Alles</item>
@@ -50,8 +60,11 @@
         <item>In behandeling</item>
         <item>Review</item>
     </string-array>
+
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Web search</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
+
+    <string name="sendReview">Verzend review</string>
 </resources>
