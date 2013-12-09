@@ -4,6 +4,10 @@ public class Answer {
 	
 	private int id;
 	private String answer;
+	
+
+	private String title;
+	private Boolean isPrivate;
 	private Question question;
 	private User answerer;
 	private AnswerState answerState;
@@ -54,5 +58,14 @@ public class Answer {
 	
 	public void setAnwserState(AnswerState anwserState) {
 		this.answerState = anwserState;
+	}
+	
+
+	public AnswerState getAnswerState() {
+		return answerState;
+	}
+
+	public void setAnswerState(AnswerState answerState) {
+		this.answerState = answerState;
 	}
 }

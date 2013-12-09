@@ -22,7 +22,9 @@ public class QuestionDataSource implements IQuestionService {
 									QuestionsEntry.COLUMN_ASKER_ID, 
 									QuestionsEntry.COLUMN_DATE, 
 									QuestionsEntry.COLUMN_QUESTION, 
-									QuestionsEntry.COLUMN_QUESTIONSTATE};
+									QuestionsEntry.COLUMN_QUESTIONSTATE,
+									QuestionsEntry.COLUMN_IS_PRIVATE,
+									QuestionsEntry.COLUMN_TITLE};
 	
 	
 	public QuestionDataSource(Context context) {
@@ -103,6 +105,8 @@ public class QuestionDataSource implements IQuestionService {
 								getUser(cursor.getInt(1)),
 								QuestionState.valueOf(cursor.getString(5)), 
 								new Date(unixMilliSeconds));
+		question.setIsPrivate(cursor.getInt(7) > 0);
+		question.setTitle(cursor.getString(8));
 		return question;
 	}
 }
