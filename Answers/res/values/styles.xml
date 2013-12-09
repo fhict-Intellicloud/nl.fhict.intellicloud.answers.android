@@ -22,6 +22,7 @@
     <style name="Theme.IntellicloudTheme" parent="android:style/Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/Theme.IntellicloudTheme.ActionBar</item>
         <item name="android:listViewStyle">@style/Theme.IntellicloudTheme.ListView</item>
+        <item name="android:buttonStyle">@style/Theme.IntellicloudTheme.Button</item>
     </style>
     
     <style name="Theme.IntellicloudTheme.ActionBar" parent="android:style/Widget.Holo.Light.ActionBar">
@@ -35,6 +36,12 @@
     
     <style name="Theme.IntellicloudTheme.ListView" parent="@android:style/Widget.Holo.Light.ListView">
         <item name="android:typeface">sans</item>
+    </style>
+
+    <style name="Theme.IntellicloudTheme.Button" parent="@android:style/Widget.Holo.Light.Button">
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_marginBottom">@dimen/button_padding</item>
     </style>
 
 </resources>

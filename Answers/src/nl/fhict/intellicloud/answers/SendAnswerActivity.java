@@ -37,7 +37,7 @@ public class SendAnswerActivity extends Activity {
         qService = new DummyBackend();
         aService = new DummyBackend();
 
-        questionInt = getIntent().getExtras().getInt("Question");
+        questionInt = getIntent().getExtras().getInt("questionInt");
         question = qService.GetQuestion(questionInt);
 
         TextView tvRequestor = (TextView) findViewById(R.id.tvRequestor);
@@ -51,13 +51,13 @@ public class SendAnswerActivity extends Activity {
         btnAddAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addAnswer();
+                addAnswer(); onBackPressed();
             }
         });
         btnRequestReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addAnswer();
+                addAnswer(); onBackPressed();
             }
         });
 	}

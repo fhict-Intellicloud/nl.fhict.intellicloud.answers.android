@@ -115,7 +115,7 @@ public class MainActivity extends Activity {
         // change text color
         int searchTextViewId = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
         TextView searchTextView = (TextView) searchView.findViewById(searchTextViewId);
-        searchTextView.setTextColor(getResources().getColor(R.color.search_quetion_color));
+        searchTextView.setTextColor(getResources().getColor(R.color.search_question_color));
         searchTextView.setTextSize(22);
         
         return super.onCreateOptionsMenu(menu);

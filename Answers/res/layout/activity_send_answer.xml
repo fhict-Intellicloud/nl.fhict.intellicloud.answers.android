@@ -36,20 +36,20 @@
         android:id="@+id/tvQuestionHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/question" />
+        android:text="@string/questionHeader" />
         
         <TextView
         android:id="@+id/tvTheQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/questionHeader"
+        android:text="@string/question"
         android:layout_marginTop="5dp"/>
 
     <TextView
             android:id="@+id/tvAnswerHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/answer" />
+            android:text="@string/answerHeader" />
         
             <EditText
         android:id="@+id/etAnswer"
@@ -68,7 +68,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/addAnswer"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="5dp" />
 
     <Button
         android:id="@+id/btnRequestReview"
