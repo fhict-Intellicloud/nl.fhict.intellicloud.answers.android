@@ -46,6 +46,13 @@
             android:name="nl.fhict.intellicloud.answers.SlidingFragmentActivity"
             android:label="@string/title_activity_sliding_fragment" >
         </activity>
+        
+        <!-- Internal content provider meant for the SyncService, is unavailable for other apps -->
+        <provider
+       		android:authorities="nl.fhict.intellicloud.answers.contentprovider"
+       		android:name=".backendcommunication.BackendContentProvider"
+       		android:exported="false" >
+		</provider> 
     </application>
 
 </manifest>
