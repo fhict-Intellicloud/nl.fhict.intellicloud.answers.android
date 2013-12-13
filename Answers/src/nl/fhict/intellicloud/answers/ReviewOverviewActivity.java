@@ -5,6 +5,8 @@ import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
 import nl.fhict.intellicloud.answers.backendcommunication.IAnswerService;
 import nl.fhict.intellicloud.answers.backendcommunication.IQuestionService;
 import nl.fhict.intellicloud.answers.backendcommunication.IReviewService;
+import nl.fhict.intellicloud.answers.backendcommunication.QuestionDataSource;
+import nl.fhict.intellicloud.answers.backendcommunication.ReviewDataSource;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,8 +31,8 @@ public class ReviewOverviewActivity extends Activity {
 		reviewInt = getIntent().getExtras().getInt("reviewInt");
 		
 		//IAnswerService iAnswerService = new DummyBackend();
-		IQuestionService iQuestionService = new DummyBackend();
-		//IReviewService iReviewService = new DummyBackend();
+		IQuestionService iQuestionService = new QuestionDataSource(getApplicationContext());
+		IReviewService iReviewService = new ReviewDataSource(getApplicationContext());
 		
 		question = iQuestionService.GetQuestion(reviewInt);
 		answer = question.getAnswer();
@@ -47,11 +49,18 @@ public class ReviewOverviewActivity extends Activity {
 			}
 		});
 		
+		ListView lvReviews = (ListView) findViewById(R.id.lvReviews);
+		if(iReviewService.GetReviews(question.getId()) != null){
+			//ADD Reviews in list
+		}
+		//TODO: If there are already reviews then add these reviews at this list. If not then leave the list null.
+		
 		TextView tvAccepAnswer = (TextView) findViewById(R.id.tvAcceptAnswer);
 		tvAccepAnswer.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				//TODO
+				//TODO accept the answer and add this to the right state. // NEED TO CHECK!!
+				question.setQuestionState(QuestionState.Closed);
 				Intent intent = new Intent(ReviewOverviewActivity.this, MainActivity.class);
 				startActivity(intent);
 			}
@@ -61,7 +70,6 @@ public class ReviewOverviewActivity extends Activity {
 		tvDeclineAnswer.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				//TODO
 				Intent intent = new Intent(ReviewOverviewActivity.this, AddReviewActivity.class);
 				startActivity(intent);
 			}
