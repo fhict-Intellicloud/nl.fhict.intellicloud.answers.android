@@ -39,7 +39,7 @@
     <!-- activity_original_answer.xml -->
     <string name="title_activity_original_answer">Answer</string>
     <string name="orignialAnswer">ORIGINAL ANSWER</string>
-    
+
     <!-- activity_review_answer.xml -->
     <string name="title_activity_review_answer">Review answer</string>
     <string name="unknown_date">Unknown date</string>
@@ -48,13 +48,11 @@
     <string name="title_activity_send_answer">Answer</string>
     <string name="addAnswer">Add answer</string>
     <string name="requestReview">Request review</string>
-
     <string name="title_activity_slide_in_menu">SlideInMenuActivity</string>
     <string name="title_activity_sliding_fragment">SlidingFragmentActivity</string>
 
     <!-- sliding menu titles -->
-    <string-array
-        name="filter_array">
+    <string-array name="filter_array">
         <item>All</item>
         <item>Open</item>
         <item>Rejected</item>
@@ -66,6 +64,8 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Web search</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
-    
     <string name="sendReview">Send review</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>
