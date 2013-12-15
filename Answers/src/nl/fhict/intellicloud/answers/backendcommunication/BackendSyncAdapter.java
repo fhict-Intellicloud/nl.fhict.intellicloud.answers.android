@@ -41,12 +41,15 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 	         */
 	        mContentResolver = context.getContentResolver();
 	        
+	        
 	    }
 
 		@Override
-		public void onPerformSync(Account arg0, Bundle arg1, String arg2,
-				ContentProviderClient arg3, SyncResult arg4) {
+		public void onPerformSync(Account account, Bundle bundle, String arg2,
+				ContentProviderClient contentProviderClient, SyncResult result) {
 			// TODO Auto-generated method stub
+			//We might be able to use the account variable here because we are using Google Sign In!
+			
 			
 		}
 }

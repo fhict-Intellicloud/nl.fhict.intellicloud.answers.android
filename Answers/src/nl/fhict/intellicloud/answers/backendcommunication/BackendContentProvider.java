@@ -70,7 +70,7 @@ public class BackendContentProvider extends ContentProvider {
 	  }
 
 	  @Override
-	  public Cursor query(Uri uri, String[] projection, String selection,
+	  public synchronized Cursor query(Uri uri, String[] projection, String selection,
 	      String[] selectionArgs, String sortOrder) {
 
 		// Uisng SQLiteQueryBuilder instead of query() method
@@ -136,7 +136,7 @@ public class BackendContentProvider extends ContentProvider {
 	  }
 
 	  @Override
-	  public Uri insert(Uri uri, ContentValues values) {
+	  public synchronized Uri insert(Uri uri, ContentValues values) {
 		  Uri _uri = null;
 		  SQLiteDatabase db = dbHelper.getWritableDatabase();
 		  long insert_id;
@@ -170,7 +170,7 @@ public class BackendContentProvider extends ContentProvider {
 	  }
 
 	  @Override
-	  public int delete(Uri uri, String selection, String[] selectionArgs) {
+	  public synchronized int delete(Uri uri, String selection, String[] selectionArgs) {
 	    int uriType = uriMatcher.match(uri);
 	    SQLiteDatabase db = dbHelper.getWritableDatabase();
 	    int rowsDeleted = 0;
@@ -235,7 +235,7 @@ public class BackendContentProvider extends ContentProvider {
 	      return rowsDeleted;
 	  }
 	  @Override
-	  public int update(Uri uri, ContentValues values, String selection,
+	  public synchronized int update(Uri uri, ContentValues values, String selection,
 	      String[] selectionArgs) {
 
 	    int uriType = uriMatcher.match(uri);
