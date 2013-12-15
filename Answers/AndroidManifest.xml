@@ -55,7 +55,7 @@
         <!-- Internal content provider meant for the SyncService, is unavailable for other apps -->
         <provider
        		android:authorities="nl.fhict.intellicloud.answers.contentprovider"
-       		android:name=".backendcommunication.BackendContentProvider"
+       		android:name=".answers.backendcommunication.BackendContentProvider"
        		android:exported="false" >
 		</provider> 
 		
@@ -72,6 +72,17 @@
                     android:resource="@xml/syncadapter" />
             
         </service>
+        
+		<!-- Authentication Service -->
+		<service
+            android:name="nl.fhict.intellicloud.answers.backendcommunication.AuthenticatorService">
+       		<intent-filter>
+            	<action android:name="android.accounts.AccountAuthenticator"/>
+        	</intent-filter>
+        	<meta-data
+            	android:name="android.accounts.AccountAuthenticator"
+            	android:resource="@xml/authenticator" />
+    	</service>
         
         
     

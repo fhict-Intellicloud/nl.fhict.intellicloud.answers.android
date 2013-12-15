@@ -1,6 +1,7 @@
 package nl.fhict.intellicloud.answers.backendcommunication;
 
 import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
@@ -12,7 +13,8 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 	    
 	    // Global variables
 	    // Define a variable to contain a content resolver instance
-	    ContentResolver mContentResolver;
+	    ContentResolver contentResolver;
+	    AccountManager accountManager;
 	    /**
 	     * Set up the sync adapter
 	     */
@@ -22,7 +24,8 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 	         * If your app uses a content resolver, get an instance of it
 	         * from the incoming Context
 	         */
-	        mContentResolver = context.getContentResolver();
+	        contentResolver = context.getContentResolver();
+	        accountManager = AccountManager.get(context);
 	    }
 	    
 	    /**
@@ -39,7 +42,8 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 	         * If your app uses a content resolver, get an instance of it
 	         * from the incoming Context
 	         */
-	        mContentResolver = context.getContentResolver();
+	        contentResolver = context.getContentResolver();
+	        accountManager = AccountManager.get(context);
 	        
 	        
 	    }
@@ -47,8 +51,10 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 		@Override
 		public void onPerformSync(Account account, Bundle bundle, String arg2,
 				ContentProviderClient contentProviderClient, SyncResult result) {
-			// TODO Auto-generated method stub
-			//We might be able to use the account variable here because we are using Google Sign In!
+			
+			//Get auth token //TODO
+			//String authToken = accountManager.blockingGetAuthToken(account, AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS, true);
+
 			
 			
 		}

@@ -5,6 +5,7 @@
     <string name="tabbarname_incomingquestions">Binnengekomen vragen</string>
     <string name="tabbarname_reviewquestions">Review vragen</string>
     <string name="action_settings">Instellingen</string>
+    <string name="sync_menu_entry">Intellicloud - Antwoorden</string>
 
     <!-- answer_list_item.xml & activity_answer_reviews.xml -->
     <string name="title_activity_answer_reviews">AnswerReviewsActivity</string>
