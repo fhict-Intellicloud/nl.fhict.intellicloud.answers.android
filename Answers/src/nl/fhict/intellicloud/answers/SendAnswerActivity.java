@@ -56,8 +56,7 @@ public class SendAnswerActivity extends Activity {
         });
         btnRequestReview.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                addAnswer(); onBackPressed();
+            public void onClick(View v) { addAnswer(); onBackPressed();
             }
         });
 	}
