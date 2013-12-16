@@ -16,6 +16,12 @@ public class SendAnswerActivityTest extends ActivityInstrumentationTestCase2<Sen
 
     public SendAnswerActivityTest(Class<SendAnswerActivity> activityClass) {
         super(activityClass);
+
+        try {
+            testAddAnswer();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 
     /**
@@ -48,6 +54,10 @@ public class SendAnswerActivityTest extends ActivityInstrumentationTestCase2<Sen
                 Assert.assertEquals(expected, actual);
             }
         });
+
+        //Close the activity
+        activity.finish();
+        setActivity(null);
     }
 
 }
