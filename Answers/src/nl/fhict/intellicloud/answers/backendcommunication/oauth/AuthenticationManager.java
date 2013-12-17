@@ -23,14 +23,24 @@ public class AuthenticationManager {
 	public static final String CLIENT_SECRET = "RgK9Kx23RitsfPEJVwA-Nhkh";
 	public static final String SCOPE = "openid%20profile%20email";
 	
+	private static AuthenticationManager manager;
+	
 	private JSONParser jsonParser;
 	
 	private String authorizationCode;
 	private AccessToken accessToken;
 	
-	public AuthenticationManager(String authorizationCode) {
+	public static AuthenticationManager getInstance() {
+		if(manager == null)
+			manager = new AuthenticationManager();
+		
+		return manager;
+	}
+	
+	public void Initialize(String authorizationCode) {
 		this.authorizationCode = authorizationCode;
 		this.jsonParser = JsonParserFactory.getInstance().newJsonParser();
+		this.accessToken = null;
 	}
 	
 	public String getAccessToken() {

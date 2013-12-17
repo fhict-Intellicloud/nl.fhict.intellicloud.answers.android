@@ -208,7 +208,7 @@ public class MainActivity extends Activity {
     			Toast.makeText(this, "Answers is successfully authorized.", Toast.LENGTH_LONG).show();
     			
     			String authorizationCode = data.getExtras().getString(AuthorizationActivity.AUTHORIZATION_CODE);
-    			this.authentication = new AuthenticationManager(authorizationCode);
+    			AuthenticationManager.getInstance().Initialize(authorizationCode);
     		} else {
     			Toast.makeText(this, "Failed to authorize Answers.", Toast.LENGTH_LONG).show();
     		}
