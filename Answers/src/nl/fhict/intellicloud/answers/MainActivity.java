@@ -3,6 +3,7 @@ package nl.fhict.intellicloud.answers;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import nl.fhict.intellicloud.R;
+import nl.fhict.intellicloud.answers.backendcommunication.oauth.AuthenticationManager;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -38,6 +39,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
+	private final int AUTHORIZE_REQUEST = 1000;
+	
+	private AuthenticationManager authentication;
+	
     private DrawerLayout mDrawerLayout;
     private RelativeLayout mLinearLayout;
     private ListView mDrawerList;
@@ -51,6 +56,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        Intent authorizationIntent = new Intent(this, AuthorizationActivity.class);
+        this.startActivityForResult(authorizationIntent, AUTHORIZE_REQUEST);
 
         mTitle = mDrawerTitle = getTitle();
         mFilterTitles = getResources().getStringArray(R.array.filter_array);
@@ -96,8 +104,6 @@ public class MainActivity extends Activity {
         if (savedInstanceState == null) {
             selectItem(0);
         }
-        
-        
     }
 
     @Override
@@ -193,5 +199,19 @@ public class MainActivity extends Activity {
     
     public void onLogoutClick(View v){
     	Toast.makeText(this, getResources().getString(R.string.triedToLogout), Toast.LENGTH_SHORT).show();
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if(requestCode == this.AUTHORIZE_REQUEST) {
+    		if(resultCode == Activity.RESULT_OK) {
+    			Toast.makeText(this, "Answers is successfully authorized.", Toast.LENGTH_LONG).show();
+    			
+    			String authorizationCode = data.getExtras().getString(AuthorizationActivity.AUTHORIZATION_CODE);
+    			this.authentication = new AuthenticationManager(authorizationCode);
+    		} else {
+    			Toast.makeText(this, "Failed to authorize Answers.", Toast.LENGTH_LONG).show();
+    		}
+    	}
     }
 }
