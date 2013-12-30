@@ -41,7 +41,10 @@ public class SendAnswerActivity extends Activity {
         question = qService.GetQuestion(questionInt);
 
         TextView tvRequestor = (TextView) findViewById(R.id.tvRequestor);
-        tvRequestor.setText(questionInt + question.getAsker().getFirstName() + " " + question.getAsker().getLastName());
+        if (question.getAsker() != null)
+        {
+        	tvRequestor.setText(questionInt + question.getAsker().getFirstName() + " " + question.getAsker().getLastName());
+        }
         TextView tvTheQuestion = (TextView) findViewById(R.id.tvTheQuestion);
         tvTheQuestion.setText(question.getQuestion());
         Button btnAddAnswer = (Button) findViewById(R.id.btnAddAnswer);

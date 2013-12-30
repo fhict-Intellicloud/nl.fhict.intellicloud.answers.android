@@ -1,11 +1,20 @@
 package nl.fhict.intellicloud.answers.backendcommunication;
 
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+
+import org.json.JSONArray;
+
 import nl.fhict.intellicloud.answers.*;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.util.Log;
 
 public class ServerAccessor {
+	private final String TAG = "SyncAdapter";
 	Context context;
 	String token;
 	public ServerAccessor(Context context, String accountToken)
@@ -14,7 +23,7 @@ public class ServerAccessor {
 		this.token = accountToken;
 	}
 	
-	public ArrayList<Question> getRemoteQuestions()
+	public  getRemoteQuestions()
 	{
 		return null;
 	}
@@ -53,15 +62,16 @@ public class ServerAccessor {
 	
 	public JSONArray getResultFromHttpRequest()
 	{
+		/*
 		Log.i(TAG, "Beginning network synchronization");
         try {
-            final URL location = new URL(FEED_URL);
+            //final URL location = new URL(FEED_URL);
             InputStream stream = null;
 
             try {
-                Log.i(TAG, "Streaming data from network: " + location);
-                stream = downloadUrl(location);
-                updateLocalFeedData(stream, syncResult);
+                Log.i(TAG, "Streaming data from network:");
+               // stream = downloadUrl(location);
+                //updateLocalFeedData(stream, syncResult);
                 // Makes sure that the InputStream is closed after the app is
                 // finished using it.
             } finally {
@@ -94,6 +104,7 @@ public class ServerAccessor {
             syncResult.databaseError = true;
             return;
         }
-        Log.i(TAG, "Network synchronization complete");
+        Log.i(TAG, "Network synchronization complete");*/
+		return null;
 	}
 }

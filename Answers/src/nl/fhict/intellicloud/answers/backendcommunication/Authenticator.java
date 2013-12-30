@@ -6,6 +6,7 @@ import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Base64;
 
 /*
  * Implement AbstractAccountAuthenticator and stub out all
@@ -52,7 +53,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
     // Getting a label for the auth token is not supported
     @Override
     public String getAuthTokenLabel(String s) {
-        throw new UnsupportedOperationException();
+        return getBase64AuthorizationHeader();
     }
     // Updating user credentials is not supported
     @Override
@@ -68,5 +69,15 @@ public class Authenticator extends AbstractAccountAuthenticator {
         AccountAuthenticatorResponse r,
         Account account, String[] strings) throws NetworkErrorException {
         throw new UnsupportedOperationException();
+    }
+    private String getBase64AuthorizationHeader() {
+        String json = String.format(
+                        "{" +
+                        "        \"issuer\":\"accounts.google.com\"," +
+                        "        \"access_token\":\"%s\"" +
+                        "}", "token");//AuthenticationManager.getInstance().getAccessToken()); //TODO
+        
+        byte[] encodedbytes = Base64.encode(json.getBytes(), Base64.DEFAULT);
+        return new String(encodedbytes);
     }
 }
