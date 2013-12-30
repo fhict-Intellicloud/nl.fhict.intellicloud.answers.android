@@ -1,7 +1,7 @@
 package nl.fhict.intellicloud.answers;
 
 import java.text.SimpleDateFormat;
-import nl.fhict.intellicloud.R;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -34,7 +34,11 @@ public class SlidingMenuListAdapter extends ArrayAdapter<String> {
 	    String drawerItem = values[position];
 	    
 	    ImageView questionStageImage = (ImageView) rowView.findViewById(R.id.ivSlidingItem);
-	    questionStageImage.setImageResource(getImageId(position));
+	    int imageId = getImageId(position);
+	    if (imageId != -1)
+	    {
+	    	questionStageImage.setImageResource(imageId);
+	  	}
 	    TextView firstLine = (TextView) rowView.findViewById(R.id.txtFirstLineSlidingItem);
 	    firstLine.setText(drawerItem); 
 
