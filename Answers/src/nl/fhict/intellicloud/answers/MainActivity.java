@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
 	//Static values for synchronization
 	private static final long SYNC_DEFAULT_INTERVAL = 60000L; //Every minute
     private static final String SYNC_AUTHORITY = "nl.fhict.intellicloud.answers.contentprovider";
-    private static final String SYNC_ACCOUNT = "default_account";
+    private static final String SYNC_ACCOUNT = "Intellicloud - Answers";
     private static final String SYNC_ACCOUNT_TYPE = "accounts.google.com";
 	
 	private AuthenticationManager authentication;
@@ -238,18 +238,29 @@ public class MainActivity extends Activity {
         syncResolver = getContentResolver();
         
         //Account is a dummy account - only added to satisfy the standard Android libraries - getting the correct token is handled internally
+        //If we want to have our account name show up in the settings menu, it should be inserted here.
         Account syncAccount = new Account(SYNC_ACCOUNT, SYNC_ACCOUNT_TYPE);
+        
+        //Authorize sync invokations from other sources
         ContentResolver.setSyncAutomatically(syncAccount, SYNC_AUTHORITY, true);
+        
+        //Explicitly adds account to Android's account system for syncing- makes it show up in settings menu
+      	accountManager.addAccountExplicitly(syncAccount, null, null);
+        accountManager.setAuthToken(syncAccount, SYNC_ACCOUNT_TYPE, AuthenticationManager.getInstance().getAccessToken());
+        
+        
+        
         //Start periodic sync
         ContentResolver.addPeriodicSync(
                 syncAccount,
                 SYNC_AUTHORITY,
                 new Bundle(),
                 SYNC_DEFAULT_INTERVAL);
+        
+        //Request a first sync- this method can also be used as a refresh button.
 		ContentResolver.requestSync(syncAccount, SYNC_AUTHORITY, new Bundle());
 		
-		accountManager.addAccountExplicitly(syncAccount, null, null);
-        accountManager.setAuthToken(syncAccount, SYNC_ACCOUNT_TYPE, AuthenticationManager.getInstance().getAccessToken());
+		
 		
     }
 }
