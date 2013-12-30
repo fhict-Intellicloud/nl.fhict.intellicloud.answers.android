@@ -1,7 +1,7 @@
 package nl.fhict.intellicloud.answers;
 
 import java.text.SimpleDateFormat;
-import nl.fhict.intellicloud.R;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;

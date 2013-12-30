@@ -2,7 +2,7 @@ package nl.fhict.intellicloud.answers;
 
 import java.util.ArrayList;
 
-import nl.fhict.intellicloud.R;
+
 import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
 import nl.fhict.intellicloud.answers.backendcommunication.IQuestionService;
 import android.app.Fragment;

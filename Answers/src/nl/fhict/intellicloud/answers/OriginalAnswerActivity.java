@@ -1,8 +1,5 @@
 package nl.fhict.intellicloud.answers;
 
-import nl.fhict.intellicloud.R;
-import nl.fhict.intellicloud.R.layout;
-import nl.fhict.intellicloud.R.menu;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;

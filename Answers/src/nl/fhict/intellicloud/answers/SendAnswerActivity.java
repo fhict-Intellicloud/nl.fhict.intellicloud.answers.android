@@ -1,8 +1,5 @@
 package nl.fhict.intellicloud.answers;
 
-import nl.fhict.intellicloud.R;
-import nl.fhict.intellicloud.R.layout;
-import nl.fhict.intellicloud.R.menu;
 import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
 import nl.fhict.intellicloud.answers.backendcommunication.IAnswerService;
 import nl.fhict.intellicloud.answers.backendcommunication.IQuestionService;
