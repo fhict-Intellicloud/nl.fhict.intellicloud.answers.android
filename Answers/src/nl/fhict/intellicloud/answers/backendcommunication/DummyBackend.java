@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import android.util.Base64;
+
 import nl.fhict.intellicloud.answers.Answer;
 import nl.fhict.intellicloud.answers.AnswerState;
 import nl.fhict.intellicloud.answers.Question;
@@ -12,6 +14,7 @@ import nl.fhict.intellicloud.answers.QuestionState;
 import nl.fhict.intellicloud.answers.Review;
 import nl.fhict.intellicloud.answers.User;
 import nl.fhict.intellicloud.answers.UserType;
+import nl.fhict.intellicloud.answers.backendcommunication.oauth.AuthenticationManager;
 /**
  * DummyBackend.java
  * 
@@ -170,4 +173,14 @@ public class DummyBackend implements IAnswerService, IQuestionService,
 		return null;
 	}
 
+	private String getBase64AuthorizationHeader() {
+		String json = String.format(
+				"{" +
+				"	\"issuer\":\"accounts.google.com\"," +
+				"	\"access_token\":\"%s\"" +
+				"}", AuthenticationManager.getInstance().getAccessToken());
+		
+		byte[] encodedbytes = Base64.encode(json.getBytes(), Base64.DEFAULT);
+		return new String(encodedbytes);
+	}
 }
