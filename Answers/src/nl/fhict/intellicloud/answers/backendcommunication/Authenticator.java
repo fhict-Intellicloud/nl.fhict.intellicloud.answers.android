@@ -1,8 +1,10 @@
 package nl.fhict.intellicloud.answers.backendcommunication;
 
+import nl.fhict.intellicloud.answers.backendcommunication.oauth.AuthenticationManager;
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
+import android.accounts.AccountManager;
 import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.os.Bundle;
@@ -48,7 +50,11 @@ public class Authenticator extends AbstractAccountAuthenticator {
             Account account,
             String s,
             Bundle bundle) throws NetworkErrorException {
-        throw new UnsupportedOperationException();
+    	final Bundle result = new Bundle();
+        result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
+        result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
+        result.putString(AccountManager.KEY_AUTHTOKEN, getBase64AuthorizationHeader());
+        return result;
     }
     // Getting a label for the auth token is not supported
     @Override
@@ -75,7 +81,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
                         "{" +
                         "        \"issuer\":\"accounts.google.com\"," +
                         "        \"access_token\":\"%s\"" +
-                        "}", "token");//AuthenticationManager.getInstance().getAccessToken()); //TODO
+                        "}", AuthenticationManager.getInstance().getAccessToken()); 
         
         byte[] encodedbytes = Base64.encode(json.getBytes(), Base64.DEFAULT);
         return new String(encodedbytes);

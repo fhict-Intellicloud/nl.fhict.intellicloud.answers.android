@@ -2,7 +2,6 @@ package nl.fhict.intellicloud.answers;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import nl.fhict.intellicloud.R;
 import nl.fhict.intellicloud.answers.backendcommunication.oauth.AuthenticationManager;
 
 import java.util.Calendar;
@@ -11,11 +10,14 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import android.R.color;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.SearchManager;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.ParseException;
@@ -41,6 +43,12 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 	private final int AUTHORIZE_REQUEST = 1000;
 	
+	//Static values for synchronization
+	private static final long SYNC_DEFAULT_INTERVAL = 60000L; //Every minute
+    private static final String SYNC_AUTHORITY = "nl.fhict.intellicloud.answers.contentprovider";
+    private static final String SYNC_ACCOUNT = "default_account";
+    private static final String SYNC_ACCOUNT_TYPE = "accounts.google.com";
+	
 	private AuthenticationManager authentication;
 	
     private DrawerLayout mDrawerLayout;
@@ -52,6 +60,9 @@ public class MainActivity extends Activity {
     private CharSequence mTitle;
     private String[] mFilterTitles;
 
+    private ContentResolver syncResolver;
+    
+    
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -209,9 +220,36 @@ public class MainActivity extends Activity {
     			
     			String authorizationCode = data.getExtras().getString(AuthorizationActivity.AUTHORIZATION_CODE);
     			AuthenticationManager.getInstance().Initialize(authorizationCode);
+    			
+    			//Authentication success, Activate sync service
+    			setupSyncService();
+    			
     		} else {
     			Toast.makeText(this, "Failed to authorize Answers.", Toast.LENGTH_LONG).show();
     		}
     	}
+    }
+    
+    private void setupSyncService()
+    {
+    	AccountManager accountManager = AccountManager.get(this);
+    	
+    	// Get the content resolver for your app
+        syncResolver = getContentResolver();
+        
+        //Account is a dummy account - only added to satisfy the standard Android libraries - getting the correct token is handled internally
+        Account syncAccount = new Account(SYNC_ACCOUNT, SYNC_ACCOUNT_TYPE);
+        ContentResolver.setSyncAutomatically(syncAccount, SYNC_AUTHORITY, true);
+        //Start periodic sync
+        ContentResolver.addPeriodicSync(
+                syncAccount,
+                SYNC_AUTHORITY,
+                new Bundle(),
+                SYNC_DEFAULT_INTERVAL);
+		ContentResolver.requestSync(syncAccount, SYNC_AUTHORITY, new Bundle());
+		
+		accountManager.addAccountExplicitly(syncAccount, null, null);
+        accountManager.setAuthToken(syncAccount, SYNC_ACCOUNT_TYPE, AuthenticationManager.getInstance().getAccessToken());
+		
     }
 }

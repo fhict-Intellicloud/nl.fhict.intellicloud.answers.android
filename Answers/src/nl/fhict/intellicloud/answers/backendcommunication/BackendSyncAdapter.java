@@ -34,8 +34,6 @@ import android.util.Log;
 
 public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 		private static final String TAG = "SyncAdapter";
-		private static final String AUTHORIZATION_HEADER = "AuthorizationToken";
-		private static final int HTTP_REQUEST_TIMEOUT_MS = 5 * 1000;
 		
 	    
 	    // Global variables
@@ -80,61 +78,35 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 				ContentProviderClient contentProviderClient, SyncResult result) {
 			
 			//Get auth token //TODO
-			
-			ServerAccessor accessor = new ServerAccessor(getContext(), authtoken);
+			ServerAccessor accessor = new ServerAccessor(getContext(), accountManager, contentProviderClient, account);
+			try {
+				accessor.syncQuestions();
+			} catch (AuthenticationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (OperationCanceledException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (AuthenticatorException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+				
 			
 			
 			
 			
 		}
-		private void syncQuestions(ContentProviderClient contentProviderClient, Account account)
-		{
-			
-		}
-		private JSONArray performNetworkRequest(String uri, Account account, ArrayList<NameValuePair> params) 
-				throws JSONException, ParseException, IOException, AuthenticationException, OperationCanceledException, AuthenticatorException
-		{
-			final JSONArray serverArray;
-	        
-	        HttpEntity entity = new UrlEncodedFormEntity(params);
-	        String token = accountManager.blockingGetAuthToken(account, null, false);
-	        final HttpPost post = new HttpPost(uri);
-	        
-	        // Send the updated friends data to the server
-	        Log.i(TAG, "Syncing to: " + uri);
-	        
-	        post.addHeader(entity.getContentType());
-	        post.addHeader(AUTHORIZATION_HEADER, token);
-	        post.setEntity(entity);
-	        final HttpResponse resp = getHttpClient().execute(post);
-	        final String response = EntityUtils.toString(resp.getEntity());
-	        if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-	            // Our request to the server was successful - so we assume
-	            // that they accepted all the changes we sent up, and
-	            // that the response includes the contacts that we need
-	            // to update on our side...
-	            serverArray = new JSONArray(response);
-	            Log.d(TAG, response);
-	            
-	        } else {
-	            if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
-	                Log.e(TAG, "Authentication exception in sending dirty contacts");
-	                throw new AuthenticationException();
-	            } else {
-	                Log.e(TAG, "Server error in sending dirty contacts: " + resp.getStatusLine());
-	                throw new IOException();
-	            }
-	        }
-
-			return serverArray;
-		}
-		public static HttpClient getHttpClient() {
-	        HttpClient httpClient = new DefaultHttpClient();
-	        final HttpParams params = httpClient.getParams();
-	        HttpConnectionParams.setConnectionTimeout(params, HTTP_REQUEST_TIMEOUT_MS);
-	        HttpConnectionParams.setSoTimeout(params, HTTP_REQUEST_TIMEOUT_MS);
-	        ConnManagerParams.setTimeout(params, HTTP_REQUEST_TIMEOUT_MS);
-	        return httpClient;
-	    }
+		
+		
 		
 }
