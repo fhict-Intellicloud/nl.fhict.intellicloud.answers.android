@@ -37,6 +37,10 @@ public class AuthenticationManager {
 		return manager;
 	}
 	
+	private AuthenticationManager()
+	{
+	}
+	
 	public void Initialize(String authorizationCode) {
 		this.authorizationCode = authorizationCode;
 		this.jsonParser = JsonParserFactory.getInstance().newJsonParser();
@@ -44,14 +48,16 @@ public class AuthenticationManager {
 	}
 	
 	public String getAccessToken() {
+		//checks whether the accessToken exists, if not, it requests one
 		if(this.accessToken == null)
 			this.accessToken = this.requestAccessToken();
+		//checks whether the accessToken is still valid, if not, it refreshes the accestoken.
 		if(!this.validateAccessToken(this.accessToken))
 			this.accessToken = this.refreshAccessToken(this.accessToken);
 		
 		return this.accessToken.getToken();
 	}
-	
+	//validates the accesstoken using an asynctask
 	private boolean validateAccessToken(AccessToken accessToken) {
 		String jsonResponse = null;
 		try {
@@ -64,6 +70,8 @@ public class AuthenticationManager {
 		return !parsedValues.containsKey("error");
 	}
 	
+	//The accesstoken expires after a certain period of time, once this happens it has to be refreshed
+	//using the RefreshAccesTokenTask
 	private AccessToken refreshAccessToken(AccessToken accessToken) {
 		String jsonResponse = null;
 		try {
@@ -81,6 +89,7 @@ public class AuthenticationManager {
 				accessToken.refreshToken);
 	}
 	
+	//Uses the RequestAccessTokenTask to request a new access token
 	private AccessToken requestAccessToken() {
 		String jsonResponse = null;
 		try {
@@ -101,6 +110,7 @@ public class AuthenticationManager {
 	private class RequestAccessTokenTask extends AsyncTask<String, Void, String> {
 		@Override
 		protected String doInBackground(String... params) {
+			//Define a HTTP post request to the google oauth service
 			HttpPost httpPost = new HttpPost("https://accounts.google.com/o/oauth2/token");
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
 		    nameValuePairs.add(new BasicNameValuePair("code", params[0]));
@@ -111,15 +121,18 @@ public class AuthenticationManager {
 		    
 		    StringWriter response = new StringWriter();
 			try {
+				//Uses the predefined Client_ID and client_secret to request an access token
 				HttpClient httpClient = new DefaultHttpClient();
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				
+				//Executes the post request and puts the data in an inputstream
+				//the response is then put into the stringwriter object so it can be processed using the tostring method
 				InputStream stream = httpClient.execute(httpPost).getEntity().getContent();
 				IOUtils.copy(stream, response);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+			//return the response as a string
 			return response.toString();
 		}
 	}
@@ -127,6 +140,7 @@ public class AuthenticationManager {
 	private class RefreshAccessTokenTask extends AsyncTask<AccessToken, Void, String> {
 		@Override
 		protected String doInBackground(AccessToken... params) {
+			//Define a HTTP post request to the google oauth service
 			HttpPost httpPost = new HttpPost("https://accounts.google.com/o/oauth2/token");
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
 		    nameValuePairs.add(new BasicNameValuePair("refresh_token", params[0].refreshToken));
@@ -139,12 +153,14 @@ public class AuthenticationManager {
 				HttpClient httpClient = new DefaultHttpClient();
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				
+				//Executes the post request and puts the data in an inputstream
+				//the response is then put into the stringwriter object so it can be processed using the tostring method
 				InputStream stream = httpClient.execute(httpPost).getEntity().getContent();
 				IOUtils.copy(stream, response);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+			//return the response as a string
 			return response.toString();
 		}
 	}
