@@ -24,7 +24,6 @@ public class AuthorizationActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_authorization);
-		//Initialize the view components
 		this.progressBar = (ProgressBar) findViewById(R.id.webViewProgressBar);
 		WebView webView = (WebView) findViewById(R.id.webViewAuthorization);
 		webView.getSettings().setJavaScriptEnabled(true);
@@ -38,9 +37,13 @@ public class AuthorizationActivity extends Activity {
 		getMenuInflater().inflate(R.menu.authorization, menu);
 		return true;
 	}
-	
+
+	/**
+	 * Starts the webview and checks whether the url contains the authorization code. Everytime the url changes
+	 * it compares the url with the callbackpattern, till it finds the authorization code.
+	 * @param webView
+	 */
 	private void loadAuthorization(WebView webView) {
-		//Set the webview url to the login page for google oauth2 authorization, it uses the scope and client_id defined in the authentication manager
     	webView.loadUrl(String.format(
 			 "https://accounts.google.com/o/oauth2/auth?client_id=%s&response_type=code&scope=%s&redirect_uri=http://localhost",
 			 AuthenticationManager.CLIENT_ID, 
@@ -51,14 +54,12 @@ public class AuthorizationActivity extends Activity {
     		public void onPageStarted(WebView view, String url, Bitmap favicon) {
     			progressBar.setVisibility(View.VISIBLE);
     		}
-    		//When a new url is being loaded, the application will compare the url with the callback pattern
+
    			@Override
    			public boolean shouldOverrideUrlLoading(WebView view, String url) {
    				view.loadUrl(url);
    				
    				Matcher matcher = callbackPattern.matcher(url);
-   				// If the url matches the callbackpattern the activity can send back the authorization code 
-   				// to the mainactivity using an intent
    				if(matcher.matches())
    					authorizationCodeReceived(matcher.group(1));
    				
@@ -71,7 +72,10 @@ public class AuthorizationActivity extends Activity {
    				progressBar.setVisibility(View.INVISIBLE);
    			}});
 	}
-	//Finishes the activity and sends back the authorization code through an intent
+	/**
+	 * ends the activity and puts the result in the intent
+	 * @param authorizationCode
+	 */
 	private void authorizationCodeReceived(String authorizationCode) {
 		Intent result = new Intent();
 		result.putExtra(AUTHORIZATION_CODE, authorizationCode);

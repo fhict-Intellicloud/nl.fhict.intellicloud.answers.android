@@ -46,18 +46,25 @@ public class AuthenticationManager {
 		this.jsonParser = JsonParserFactory.getInstance().newJsonParser();
 		this.accessToken = null;
 	}
-	
+	/**
+	 * after checking if the accesstoken exists and if its valid, this function returns the accesstoken
+	 * @return
+	 */
 	public String getAccessToken() {
-		//checks whether the accessToken exists, if not, it requests one
 		if(this.accessToken == null)
 			this.accessToken = this.requestAccessToken();
-		//checks whether the accessToken is still valid, if not, it refreshes the accestoken.
 		if(!this.validateAccessToken(this.accessToken))
 			this.accessToken = this.refreshAccessToken(this.accessToken);
 		
 		return this.accessToken.getToken();
 	}
-	//validates the accesstoken using an asynctask
+
+	/**
+	 * Tries to validate the access token using the ValidateAccessTokenTask. It uses the json parser for the response and then checks whether the map 
+	 * contains the key "error". If so, it will return false. 
+	 * @param accessToken
+	 * @return
+	 */
 	private boolean validateAccessToken(AccessToken accessToken) {
 		String jsonResponse = null;
 		try {
@@ -69,9 +76,12 @@ public class AuthenticationManager {
 		Map parsedValues = this.jsonParser.parseJson(jsonResponse);
 		return !parsedValues.containsKey("error");
 	}
-	
-	//The accesstoken expires after a certain period of time, once this happens it has to be refreshed
-	//using the RefreshAccesTokenTask
+	/**
+	 * The accesstoken expires after a certain period of time, once this happens it has to be refreshed
+	 * using the RefreshAccesTokenTask.
+	 * @param accessToken
+	 * @return
+	 */
 	private AccessToken refreshAccessToken(AccessToken accessToken) {
 		String jsonResponse = null;
 		try {
@@ -89,7 +99,11 @@ public class AuthenticationManager {
 				accessToken.refreshToken);
 	}
 	
-	//Uses the RequestAccessTokenTask to request a new access token
+	/**
+	 * Requests an accesstoken using the RequestAccessTokenTask. Once it is returned, the accesstoken is put in an 
+	 * AccessToken object
+	 * @return
+	 */
 	private AccessToken requestAccessToken() {
 		String jsonResponse = null;
 		try {
@@ -107,10 +121,14 @@ public class AuthenticationManager {
 				(String) parsedValues.get("refresh_token"));
 	}
 	
+	/**
+	 * An Asynctask to request the accesstoken. It uses the predefined CLIENT_ID and CLIENT_SECRET and the
+	 * authorization code to send a httpPost request to the google oauth2 service.
+	 * It then returns the response in a string.
+	 */
 	private class RequestAccessTokenTask extends AsyncTask<String, Void, String> {
 		@Override
 		protected String doInBackground(String... params) {
-			//Define a HTTP post request to the google oauth service
 			HttpPost httpPost = new HttpPost("https://accounts.google.com/o/oauth2/token");
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
 		    nameValuePairs.add(new BasicNameValuePair("code", params[0]));
@@ -121,26 +139,25 @@ public class AuthenticationManager {
 		    
 		    StringWriter response = new StringWriter();
 			try {
-				//Uses the predefined Client_ID and client_secret to request an access token
 				HttpClient httpClient = new DefaultHttpClient();
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-				
-				//Executes the post request and puts the data in an inputstream
-				//the response is then put into the stringwriter object so it can be processed using the tostring method
+
 				InputStream stream = httpClient.execute(httpPost).getEntity().getContent();
 				IOUtils.copy(stream, response);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			//return the response as a string
 			return response.toString();
 		}
 	}
-	
+	/**
+	 * After a certain time the accesstoken expires. It has to be refreshed using this function.
+	 * It sends a httpPost request to the google oauth2 service. The httpPost request contains the client_id, 
+	 * client_secret and the refreshtoken.
+	 */
 	private class RefreshAccessTokenTask extends AsyncTask<AccessToken, Void, String> {
 		@Override
 		protected String doInBackground(AccessToken... params) {
-			//Define a HTTP post request to the google oauth service
 			HttpPost httpPost = new HttpPost("https://accounts.google.com/o/oauth2/token");
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
 		    nameValuePairs.add(new BasicNameValuePair("refresh_token", params[0].refreshToken));
@@ -153,18 +170,19 @@ public class AuthenticationManager {
 				HttpClient httpClient = new DefaultHttpClient();
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				
-				//Executes the post request and puts the data in an inputstream
-				//the response is then put into the stringwriter object so it can be processed using the tostring method
 				InputStream stream = httpClient.execute(httpPost).getEntity().getContent();
 				IOUtils.copy(stream, response);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			//return the response as a string
 			return response.toString();
 		}
 	}
 	
+	/**
+	 * Requests tokeninfo from the oauth2 service from google using an httpGet request and returns the response in a string.
+	 *
+	 */
 	private class ValidateAccessTokenTask extends AsyncTask<AccessToken, Void, String> {
 		@Override
 		protected String doInBackground(AccessToken... params) {

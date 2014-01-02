@@ -211,22 +211,19 @@ public class MainActivity extends Activity {
     	Toast.makeText(this, getResources().getString(R.string.triedToLogout), Toast.LENGTH_SHORT).show();
     }
     
-    
-    //once the AuthroizationActivity sends back the result this function is called
+   /**
+    * The authorization code is pulled from the intent. It is then saved in a shared preference so users
+    * do not need to authorize the app again. After this is done, the AuthenticationManager is initialized.
+    */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	//Check if the returned requestCode is the code that was used starting the AuthorizationActivity 
     	if(requestCode == this.AUTHORIZE_REQUEST) {
     		if(resultCode == Activity.RESULT_OK) {
-    			//The authorization code is collected from the intent
-    			//When the authorization code is received, it is saved in the shared preferences
-    			//now the used does not have to authorize the app again
     			String authorizationCode = data.getExtras().getString(AuthorizationActivity.AUTHORIZATION_CODE);
     			
     			Editor editor = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE).edit();
     			editor.putString(PREFERENCES_KEY, authorizationCode);
     			editor.apply();
-    			//The authenticationmanager is called to get an access token
     			AuthenticationManager.getInstance().Initialize(authorizationCode);
     			Toast.makeText(this, "Answers is successfully authorized.", Toast.LENGTH_LONG).show();
     		} else {
