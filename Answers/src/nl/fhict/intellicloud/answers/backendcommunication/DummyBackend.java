@@ -173,13 +173,17 @@ public class DummyBackend implements IAnswerService, IQuestionService,
 		return null;
 	}
 
+	/**
+	 * This function is used to get the header for authorizing a request in the backend. It returns a base64
+	 * representation of the json containing the issuer and the access_token needed to authorize a request.
+	 * @return
+	 */
 	private String getBase64AuthorizationHeader() {
 		String json = String.format(
 				"{" +
 				"	\"issuer\":\"accounts.google.com\"," +
 				"	\"access_token\":\"%s\"" +
 				"}", AuthenticationManager.getInstance().getAccessToken());
-		
 		byte[] encodedbytes = Base64.encode(json.getBytes(), Base64.DEFAULT);
 		return new String(encodedbytes);
 	}
