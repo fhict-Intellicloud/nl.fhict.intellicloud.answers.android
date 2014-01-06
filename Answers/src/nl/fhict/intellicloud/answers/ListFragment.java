@@ -7,18 +7,24 @@ import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
 import nl.fhict.intellicloud.answers.backendcommunication.IQuestionService;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class ListFragment extends Fragment {
+
     public static final String ARG_FILTER_NUMBER = "filter_number";
     private IQuestionService questionService;
     private QuestionListOnClickListener qListOnClickListener;
+    IncomingQuestionsListAdapter iqla;
+
     public ListFragment() {
     	questionService = new DummyBackend();
     }
@@ -39,15 +45,37 @@ public class ListFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 		
 		ListView lv = (ListView)getActivity().findViewById(R.id.lvIncomingQuestions);
+        EditText inputSearch = (EditText)getActivity().findViewById(R.id.etInputSearch);
 	    
 	    
 	    int i = getArguments().getInt(ARG_FILTER_NUMBER);
 	    
 	    ArrayList<Question> list = createListWithFilter(questionService.GetQuestions(), i);
-	    IncomingQuestionsListAdapter iqla = new IncomingQuestionsListAdapter(getView().getContext(), list);
+	    iqla = new IncomingQuestionsListAdapter(getView().getContext(), list);
 	    lv.setAdapter(iqla);
         qListOnClickListener = new QuestionListOnClickListener(getActivity(), list);
         lv.setOnItemClickListener(qListOnClickListener);
+
+        inputSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                // When user changed the Text
+                ListFragment.this.iqla.getFilter().filter(cs);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
 	}
 	
 	private ArrayList<Question> createListWithFilter(ArrayList<Question> listToFilter, int filterId) {
