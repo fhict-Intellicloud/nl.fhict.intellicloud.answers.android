@@ -40,6 +40,10 @@ public class ServerAccessor {
 	private static final int HTTP_REQUEST_TIMEOUT_MS = 5 * 1000;
 	private static final String INTELLICLOUD_BASE_URL = "http://81.204.121.229/IntelliCloudService/";
 	private static final String URI_GET_QUESTIONS = INTELLICLOUD_BASE_URL + "questions/";
+	private static final String URI_GET_ANSWERS = INTELLICLOUD_BASE_URL + "answers/";
+	private static final String URI_GET_REVIEWS = INTELLICLOUD_BASE_URL + "reviews/";
+	private static final String URI_GET_USERS = INTELLICLOUD_BASE_URL + "users/";
+	private static final String URI_GET_FEEDBACK = INTELLICLOUD_BASE_URL + "feedback/";
 	
 	
 	Context context;

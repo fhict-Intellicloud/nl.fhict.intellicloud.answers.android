@@ -76,8 +76,7 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 		@Override
 		public void onPerformSync(Account account, Bundle bundle, String arg2,
 				ContentProviderClient contentProviderClient, SyncResult result) {
-			
-			//Get auth token //TODO
+			Log.d(TAG, "Starting sync...");
 			ServerAccessor accessor = new ServerAccessor(getContext(), accountManager, contentProviderClient, account);
 			try {
 				accessor.syncQuestions();

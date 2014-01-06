@@ -65,7 +65,8 @@
         <provider
        		android:authorities="nl.fhict.intellicloud.answers.contentprovider"
        		android:name=".backendcommunication.BackendContentProvider"
-       		android:exported="false" >
+       		android:exported="false"
+       		android:syncable="true" >
 		</provider> 
 		
         <!-- Synchronization service -->

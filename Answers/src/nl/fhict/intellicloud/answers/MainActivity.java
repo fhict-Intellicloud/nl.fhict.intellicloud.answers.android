@@ -232,14 +232,23 @@ public class MainActivity extends Activity {
     
     private void setupSyncService()
     {
-    	AccountManager accountManager = AccountManager.get(this);
-    	
+    	AccountManager accountManager = (AccountManager)getSystemService(
+                        ACCOUNT_SERVICE);
+
     	// Get the content resolver for your app
         syncResolver = getContentResolver();
+        
+        //Syncing parameters
+        Bundle params = new Bundle();
+        params.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, false);
+        params.putBoolean(ContentResolver.SYNC_EXTRAS_DO_NOT_RETRY, false);
+        params.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, false);
+      
         
         //Account is a dummy account - only added to satisfy the standard Android libraries - getting the correct token is handled internally
         //If we want to have our account name show up in the settings menu, it should be inserted here.
         Account syncAccount = new Account(SYNC_ACCOUNT, SYNC_ACCOUNT_TYPE);
+        ContentResolver.setIsSyncable(syncAccount, SYNC_AUTHORITY, 1);
         
         //Authorize sync invokations from other sources
         ContentResolver.setSyncAutomatically(syncAccount, SYNC_AUTHORITY, true);
@@ -254,11 +263,11 @@ public class MainActivity extends Activity {
         ContentResolver.addPeriodicSync(
                 syncAccount,
                 SYNC_AUTHORITY,
-                new Bundle(),
+                params,
                 SYNC_DEFAULT_INTERVAL);
         
         //Request a first sync- this method can also be used as a refresh button.
-		ContentResolver.requestSync(syncAccount, SYNC_AUTHORITY, new Bundle());
+		ContentResolver.requestSync(syncAccount, SYNC_AUTHORITY, params);
 		
 		
 		
