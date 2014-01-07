@@ -3,6 +3,7 @@ package nl.fhict.intellicloud.answers;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import nl.fhict.intellicloud.R;
+import nl.fhict.intellicloud.answers.backendcommunication.oauth.AuthenticationManager;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -15,7 +16,10 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.net.ParseException;
 import android.os.Bundle;
@@ -38,6 +42,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
+	private final int AUTHORIZE_REQUEST = 1000;
+	private final String PREFERENCES_NAME = "nl.fhict.intellicloud.answers";
+	private final String PREFERENCES_KEY = "AUTHORIZATON_CODE";
+	
     private DrawerLayout mDrawerLayout;
     private RelativeLayout mLinearLayout;
     private ListView mDrawerList;
@@ -51,6 +59,16 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        //Get the shared preference which should contain the authorization code
+        //If the code is saved in the shared, the application can start getting an access token
+        SharedPreferences preferences = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        if(preferences.contains(PREFERENCES_KEY))
+        	AuthenticationManager.getInstance().Initialize(preferences.getString(PREFERENCES_KEY, null));
+        // if the code is not saved yet it should be requested
+        // The authorization activity will start a webview for the user to enter his google login credentials
+        else
+			this.startActivityForResult(new Intent(this, AuthorizationActivity.class), AUTHORIZE_REQUEST);
 
         mTitle = mDrawerTitle = getTitle();
         mFilterTitles = getResources().getStringArray(R.array.filter_array);
@@ -96,8 +114,6 @@ public class MainActivity extends Activity {
         if (savedInstanceState == null) {
             selectItem(0);
         }
-        
-        
     }
 
     @Override
@@ -193,5 +209,26 @@ public class MainActivity extends Activity {
     
     public void onLogoutClick(View v){
     	Toast.makeText(this, getResources().getString(R.string.triedToLogout), Toast.LENGTH_SHORT).show();
+    }
+    
+   /**
+    * The authorization code is pulled from the intent. It is then saved in a shared preference so users
+    * do not need to authorize the app again. After this is done, the AuthenticationManager is initialized.
+    */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if(requestCode == this.AUTHORIZE_REQUEST) {
+    		if(resultCode == Activity.RESULT_OK) {
+    			String authorizationCode = data.getExtras().getString(AuthorizationActivity.AUTHORIZATION_CODE);
+    			
+    			Editor editor = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE).edit();
+    			editor.putString(PREFERENCES_KEY, authorizationCode);
+    			editor.apply();
+    			AuthenticationManager.getInstance().Initialize(authorizationCode);
+    			Toast.makeText(this, "Answers is successfully authorized.", Toast.LENGTH_LONG).show();
+    		} else {
+    			Toast.makeText(this, "Failed to authorize Answers.", Toast.LENGTH_LONG).show();
+    		}
+    	}
     }
 }
