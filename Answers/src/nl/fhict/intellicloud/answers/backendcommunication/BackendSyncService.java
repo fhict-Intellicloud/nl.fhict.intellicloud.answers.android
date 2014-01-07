@@ -3,12 +3,19 @@ package nl.fhict.intellicloud.answers.backendcommunication;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 public class BackendSyncService extends Service {
 	    // Storage for an instance of the sync adapter
 	    private static BackendSyncAdapter syncAdapter = null;
 	    // Object to use as a thread-safe lock
 	    private static final Object sSyncAdapterLock = new Object();
+	    
+	    public BackendSyncService()
+	    {
+	    	super();
+	    }
+	    
 	    /*
 	     * Instantiate the sync adapter object.
 	     */
@@ -21,6 +28,7 @@ public class BackendSyncService extends Service {
 	         */
 	        synchronized (sSyncAdapterLock) {
 	            if (syncAdapter == null) {
+	            	Log.d("SyncService", "Sync service started");
 	                syncAdapter = new BackendSyncAdapter(getApplicationContext(), true);
 	            }
 	        }

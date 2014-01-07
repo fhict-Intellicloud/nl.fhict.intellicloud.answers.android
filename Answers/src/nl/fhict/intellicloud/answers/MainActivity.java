@@ -2,6 +2,8 @@ package nl.fhict.intellicloud.answers;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import nl.fhict.intellicloud.answers.backendcommunication.BackendSyncService;
 import nl.fhict.intellicloud.answers.backendcommunication.oauth.AuthenticationManager;
 
 import java.util.Calendar;
@@ -48,9 +50,9 @@ public class MainActivity extends Activity {
 	
 	//Static values for synchronization
 	private static final long SYNC_DEFAULT_INTERVAL = 60000L; //Every minute
-    private static final String SYNC_AUTHORITY = "nl.fhict.intellicloud.answers.contentprovider";
+    private static final String SYNC_AUTHORITY = "nl.fhict.intellicloud.answers.android.contentprovider";
     private static final String SYNC_ACCOUNT = "Intellicloud - Answers";
-    private static final String SYNC_ACCOUNT_TYPE = "accounts.google.com";
+    private static final String SYNC_ACCOUNT_TYPE = "nl.fhict.intellicloud.answers.account";
 	
 	private AuthenticationManager authentication;
 
@@ -78,12 +80,17 @@ public class MainActivity extends Activity {
         //If the code is saved in the shared, the application can start getting an access token
         SharedPreferences preferences = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
         if(preferences.contains(PREFERENCES_KEY))
-        	AuthenticationManager.getInstance().Initialize(preferences.getString(PREFERENCES_KEY, null));
+        {
+        	AuthenticationManager authManager = AuthenticationManager.getInstance();
+        	authManager.Initialize(preferences.getString(PREFERENCES_KEY, null));
+        	setupSyncService(authManager);
+        }
         // if the code is not saved yet it should be requested
         // The authorization activity will start a webview for the user to enter his google login credentials
         else
+        {
 			this.startActivityForResult(new Intent(this, AuthorizationActivity.class), AUTHORIZE_REQUEST);
-
+        }
         mTitle = mDrawerTitle = getTitle();
         mFilterTitles = getResources().getStringArray(R.array.filter_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -238,9 +245,10 @@ public class MainActivity extends Activity {
     			Editor editor = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE).edit();
     			editor.putString(PREFERENCES_KEY, authorizationCode);
     			editor.apply();
-    			AuthenticationManager.getInstance().Initialize(authorizationCode);    			
+    			AuthenticationManager authManager = AuthenticationManager.getInstance();
+    			authManager.Initialize(authorizationCode);    			
     			//Authentication success, Activate sync service
-    			setupSyncService();
+    			setupSyncService(authManager);
     			
     			Toast.makeText(this, "Answers is successfully authorized.", Toast.LENGTH_LONG).show();
 
@@ -250,11 +258,11 @@ public class MainActivity extends Activity {
     	}
     }
     
-    private void setupSyncService()
+    private void setupSyncService(AuthenticationManager authManager)
     {
     	AccountManager accountManager = (AccountManager)getSystemService(
                         ACCOUNT_SERVICE);
-
+    	
     	// Get the content resolver for your app
         syncResolver = getContentResolver();
         
@@ -275,7 +283,7 @@ public class MainActivity extends Activity {
         
         //Explicitly adds account to Android's account system for syncing- makes it show up in settings menu
       	accountManager.addAccountExplicitly(syncAccount, null, null);
-        accountManager.setAuthToken(syncAccount, SYNC_ACCOUNT_TYPE, AuthenticationManager.getInstance().getAccessToken());
+        //accountManager.setAuthToken(syncAccount, SYNC_ACCOUNT_TYPE, authManager.getAccessToken());
         
         
         

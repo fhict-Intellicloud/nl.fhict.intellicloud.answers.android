@@ -33,7 +33,7 @@ public class BackendContentProvider extends ContentProvider {
 	  private static final int USERS_ID = 51;
 		
 	  
-	  private static final String AUTHORITY = "nl.fhict.intellicloud.answers.contentprovider";
+	  private static final String AUTHORITY = "nl.fhict.intellicloud.answers.android.contentprovider";
 	  private static final String URI_DOMAIN = "content://" + AUTHORITY;
 
 	  

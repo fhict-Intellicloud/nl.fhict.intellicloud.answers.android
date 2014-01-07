@@ -2,8 +2,8 @@
 
 <sync-adapter
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:contentAuthority="nl.fhict.intellicloud.answers.backendcommunication"
-        android:accountType="accounts.google.com"
+        android:contentAuthority="nl.fhict.intellicloud.answers.android.contentprovider"
+        android:accountType="nl.fhict.intellicloud.answers.account"
         android:userVisible="true"
         android:supportsUploading="true"
         android:allowParallelSyncs="true"

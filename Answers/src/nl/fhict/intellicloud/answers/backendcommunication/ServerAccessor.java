@@ -59,7 +59,7 @@ public class ServerAccessor {
 	}
 	public void syncQuestions() throws AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, JSONException, IOException
 	{
-		JSONArray questionIdArray = performNetworkRequest(URI_GET_QUESTIONS, null);
+		JSONArray questionIdArray = performNetworkRequest(URI_GET_QUESTIONS, new ArrayList<NameValuePair>());
 		
 		
 	}
