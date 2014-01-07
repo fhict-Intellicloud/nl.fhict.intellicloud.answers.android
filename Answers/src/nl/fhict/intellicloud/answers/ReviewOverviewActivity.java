@@ -1,8 +1,8 @@
 package nl.fhict.intellicloud.answers;
 
+import java.util.List;
+
 import nl.fhict.intellicloud.R;
-import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
-import nl.fhict.intellicloud.answers.backendcommunication.IAnswerService;
 import nl.fhict.intellicloud.answers.backendcommunication.IQuestionService;
 import nl.fhict.intellicloud.answers.backendcommunication.IReviewService;
 import nl.fhict.intellicloud.answers.backendcommunication.QuestionDataSource;
@@ -30,7 +30,6 @@ public class ReviewOverviewActivity extends Activity {
 		setContentView(R.layout.activity_review_overview);
 		reviewInt = getIntent().getExtras().getInt("reviewInt");
 		
-		//IAnswerService iAnswerService = new DummyBackend();
 		IQuestionService iQuestionService = new QuestionDataSource(getApplicationContext());
 		IReviewService iReviewService = new ReviewDataSource(getApplicationContext());
 		
@@ -50,10 +49,11 @@ public class ReviewOverviewActivity extends Activity {
 		});
 		
 		ListView lvReviews = (ListView) findViewById(R.id.lvReviews);
-		if(iReviewService.GetReviews(question.getId()) != null){
-			//ADD Reviews in list
+		List<Review> reviews = iReviewService.GetReviews(answer.getId());
+		if(reviews != null && reviews.size() > 0){
+			//TODO: ADD Reviews in list
+			//lvReviews.setAdapter();
 		}
-		//TODO: If there are already reviews then add these reviews at this list. If not then leave the list null.
 		
 		TextView tvAccepAnswer = (TextView) findViewById(R.id.tvAcceptAnswer);
 		tvAccepAnswer.setOnClickListener(new OnClickListener(){

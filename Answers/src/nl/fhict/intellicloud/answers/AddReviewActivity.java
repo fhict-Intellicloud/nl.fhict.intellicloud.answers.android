@@ -32,6 +32,7 @@ public class AddReviewActivity extends Activity {
 				etReviewField = (EditText) findViewById(R.id.etReviewField);
 				//TODO: CHECK HERE TO RIGHT REVIEW SETTINGS
 				Review review = new Review(etReviewField.getText().toString(), null, null, null);
+				//Review review1 = new Review(review, answer, reviewer, reviewState)
 				iReviewService.CreateReview(review);
 				Intent intent = new Intent(AddReviewActivity.this, MainActivity.class);
 				startActivity(intent);
