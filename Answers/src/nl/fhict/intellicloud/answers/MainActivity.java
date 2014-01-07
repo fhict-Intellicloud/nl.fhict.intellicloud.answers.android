@@ -41,7 +41,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements SearchView.OnQueryTextListener {
 	private final int AUTHORIZE_REQUEST = 1000;
 	private final String PREFERENCES_NAME = "nl.fhict.intellicloud.answers";
 	private final String PREFERENCES_KEY = "AUTHORIZATON_CODE";
@@ -133,6 +133,9 @@ public class MainActivity extends Activity {
         TextView searchTextView = (TextView) searchView.findViewById(searchTextViewId);
         searchTextView.setTextColor(getResources().getColor(R.color.search_question_color));
         searchTextView.setTextSize(22);
+
+        //Set this as the listener for the search text
+        searchView.setOnQueryTextListener(this);
         
         return super.onCreateOptionsMenu(menu);
     }
@@ -156,6 +159,23 @@ public class MainActivity extends Activity {
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    /**
+     * Is called when the text in the searchView changes
+     * @param searchText The new search query
+     * @return
+     */
+    @Override
+    public boolean onQueryTextChange(String searchText) {
+        ListFragment fragment = (ListFragment)getFragmentManager().findFragmentById(R.id.content_frame);
+        fragment.setSearchFilter(searchText);
+        return true;
     }
 
     /* The click listner for ListView in the navigation drawer */
