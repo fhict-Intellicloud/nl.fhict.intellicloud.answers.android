@@ -64,7 +64,7 @@ public class SendAnswerActivity extends Activity {
     /**
      * Sends the answer to the backend to be added to the database
      */
-    protected void addAnswer(){
+    public void addAnswer(){
         String answerText = etAnswer.getText().toString();
         
         answer = new Answer(answerText, question.getAnwserer(), AnswerState.UnderReview);

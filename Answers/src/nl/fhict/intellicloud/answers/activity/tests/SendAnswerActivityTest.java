@@ -1,4 +1,4 @@
-package nl.fhict.intellicloud.answers;
+package nl.fhict.intellicloud.answers.activity.tests;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,10 @@ import android.widget.EditText;
 import junit.framework.Assert;
 
 import nl.fhict.intellicloud.R;
+import nl.fhict.intellicloud.answers.Answer;
+import nl.fhict.intellicloud.answers.AnswerState;
+import nl.fhict.intellicloud.answers.Question;
+import nl.fhict.intellicloud.answers.SendAnswerActivity;
 import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
 import nl.fhict.intellicloud.answers.backendcommunication.IAnswerService;
 import nl.fhict.intellicloud.answers.backendcommunication.IQuestionService;
