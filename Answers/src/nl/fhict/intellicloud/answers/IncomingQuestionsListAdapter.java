@@ -13,17 +13,61 @@ import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> {
+public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> implements Filterable{
     private final Context context;
-    private final ArrayList<Question> values;
+    private ArrayList<Question> values;
+    private final ArrayList<Question> allQuestions;
+
+    Filter questionFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults filterResults = new FilterResults();
+            ArrayList<Question> tempList = new ArrayList<Question>();
+            //constraint is the result from text you want to filter against.
+            //objects is your data set you will filter from
+            if(constraint != null && allQuestions!=null) {
+                int length=allQuestions.size();
+                int i=0;
+                while(i<length){
+                    Question item = allQuestions.get(i);
+                    //do I want this question in the shown list?
+                    if(item.getQuestion().toLowerCase().contains(constraint.toString().toLowerCase()))
+                        tempList.add(item);
+                    //else if(item.getAsker().getFullName().contains(constraint))
+                    //    tempList.add(item);
+
+                    i++;
+                }
+                //following two lines is very important
+                //as publish result can only take FilterResults objects
+                filterResults.values = tempList;
+                filterResults.count = tempList.size();
+            }
+            return filterResults;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence contraint, FilterResults results) {
+            values = (ArrayList<Question>) results.values;
+            if (results.count > 0) {
+                notifyDataSetChanged();
+            } else {
+                notifyDataSetInvalidated();
+            }
+        }
+    };
 
     public IncomingQuestionsListAdapter(Context context, ArrayList<Question> values) {
         super(context, R.layout.listview_item_incoming, values);
         this.context = context;
         this.values = values;
+        allQuestions = values;
 	  }
 
 	  @Override
@@ -31,9 +75,9 @@ public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> {
 	    LayoutInflater inflater = (LayoutInflater) context
 	        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	    View rowView = inflater.inflate(R.layout.listview_item_incoming, parent, false);
-	    
+
 	    Question question = values.get(position);
-	    
+
 	    ImageView questionStageImage = (ImageView) rowView.findViewById(R.id.ivIncommingQuestionState);
 	    questionStageImage.setImageResource(getImageId(question.getQuestionState()));
 	    TextView userLine = (TextView) rowView.findViewById(R.id.txtUser);
@@ -101,4 +145,14 @@ public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> {
 			}
 			return getContext().getResources().getString(R.string.justPosted);
 	  }
+
+    @Override
+    public Filter getFilter(){
+        return questionFilter;
+    }
+
+    @Override
+    public int getCount() {
+        return values.size();
+    }
 }
