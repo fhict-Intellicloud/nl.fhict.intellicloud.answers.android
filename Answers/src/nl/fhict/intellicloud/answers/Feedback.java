@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Feedback {
 	private String content;
-	private Integer id;
+	private int id;
 	private User user;
 	private Question originalQuestion;
 	private Answer originalAnswer;
@@ -32,10 +32,10 @@ public class Feedback {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public User getUser() {
