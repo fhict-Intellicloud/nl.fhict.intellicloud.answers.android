@@ -28,7 +28,7 @@ public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> impleme
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults filterResults = new FilterResults();
             ArrayList<Question> tempList = new ArrayList<Question>();
-            
+
             //constraint is the L-piece that needs to fit right to finish two lines of tetris
             //allQuestions are the multiple options the L-piece can fit in
             if(constraint != null && allQuestions!=null) {
