@@ -7,17 +7,22 @@ import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.accounts.NetworkErrorException;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 
-/*
- * Implement AbstractAccountAuthenticator and stub out all
- * of its methods
- */
+
 public class Authenticator extends AbstractAccountAuthenticator {
+	private static final String PREFERENCES_NAME = "nl.fhict.intellicloud.answers";
+	private static final String PREFERENCES_KEY = "AUTHORIZATON_CODE";
+	private Context context;
+	
     // Simple constructor
     public Authenticator(Context context) {
-        super(context);
+    	super(context);
+    	this.context = context;
+        
     }
     // Editing properties is not supported
     @Override
@@ -43,13 +48,14 @@ public class Authenticator extends AbstractAccountAuthenticator {
             Bundle bundle) throws NetworkErrorException {
         return null;
     }
-    // Getting an authentication token is not supported
     @Override
     public Bundle getAuthToken(
             AccountAuthenticatorResponse r,
             Account account,
             String s,
             Bundle bundle) throws NetworkErrorException {
+    	
+    	
     	final Bundle result = new Bundle();
         result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
         result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
@@ -77,12 +83,17 @@ public class Authenticator extends AbstractAccountAuthenticator {
         throw new UnsupportedOperationException();
     }
     private String getBase64AuthorizationHeader() {
+    	SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+    	AuthenticationManager authManager = AuthenticationManager.getInstance();
+    	authManager.Initialize(preferences.getString(PREFERENCES_KEY, null));
+    	
+    	
         String json = String.format(
                         "{" +
                         "        \"issuer\":\"accounts.google.com\"," +
                         "        \"access_token\":\"%s\"" +
                         "}", AuthenticationManager.getInstance().getAccessToken()); 
-        
+        Log.d("AccountManager", "token = \n" + json);
         byte[] encodedbytes = Base64.encode(json.getBytes(), Base64.DEFAULT);
         return new String(encodedbytes);
     }

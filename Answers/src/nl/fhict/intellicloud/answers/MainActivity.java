@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.text.method.DateTimeKeyListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -81,6 +82,7 @@ public class MainActivity extends Activity {
         SharedPreferences preferences = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
         if(preferences.contains(PREFERENCES_KEY))
         {
+        	Log.d("SharedPrefs", preferences.getString(PREFERENCES_KEY, null));
         	AuthenticationManager authManager = AuthenticationManager.getInstance();
         	authManager.Initialize(preferences.getString(PREFERENCES_KEY, null));
         	setupSyncService(authManager);
@@ -245,6 +247,7 @@ public class MainActivity extends Activity {
     			Editor editor = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE).edit();
     			editor.putString(PREFERENCES_KEY, authorizationCode);
     			editor.apply();
+    			
     			AuthenticationManager authManager = AuthenticationManager.getInstance();
     			authManager.Initialize(authorizationCode);    			
     			//Authentication success, Activate sync service
@@ -283,8 +286,6 @@ public class MainActivity extends Activity {
         
         //Explicitly adds account to Android's account system for syncing- makes it show up in settings menu
       	accountManager.addAccountExplicitly(syncAccount, null, null);
-        //accountManager.setAuthToken(syncAccount, SYNC_ACCOUNT_TYPE, authManager.getAccessToken());
-        
         
         
         //Start periodic sync

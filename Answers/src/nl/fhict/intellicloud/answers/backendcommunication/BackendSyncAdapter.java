@@ -51,6 +51,7 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 	         */
 	        contentResolver = context.getContentResolver();
 	        accountManager = AccountManager.get(context);
+	        
 	    }
 	    
 	    /**
