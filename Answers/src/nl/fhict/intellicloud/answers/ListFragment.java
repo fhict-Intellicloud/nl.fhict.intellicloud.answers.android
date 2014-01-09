@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
 import nl.fhict.intellicloud.answers.backendcommunication.IQuestionService;
+import nl.fhict.intellicloud.answers.backendcommunication.QuestionDataSource;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -35,7 +36,7 @@ public class ListFragment extends Fragment {
     ArrayList<Question> list;
 
     public ListFragment() {
-    	questionService = new DummyBackend();
+    	questionService = new QuestionDataSource(getActivity().getApplicationContext());
     }
 
     @Override

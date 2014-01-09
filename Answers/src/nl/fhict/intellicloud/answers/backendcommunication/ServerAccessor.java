@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import nl.fhict.intellicloud.answers.*;
+import nl.fhict.intellicloud.answers.backendcommunication.IntellicloudDbContract.QuestionsEntry;
 import nl.fhict.intellicloud.answers.backendcommunication.oauth.AuthenticationManager;
 
 import android.accounts.Account;
@@ -33,10 +34,13 @@ import android.accounts.AccountManager;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.content.ContentProviderClient;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ParseException;
+import android.net.Uri;
+import android.os.RemoteException;
 import android.util.Base64;
 import android.util.Log;
 
@@ -47,12 +51,12 @@ public class ServerAccessor {
 	private static final String PREFERENCES_KEY = "AUTHORIZATON_CODE";
 	
 	private static final int HTTP_REQUEST_TIMEOUT_MS = 5 * 1000;
-	private static final String INTELLICLOUD_BASE_URL = "http://81.204.121.229/intellicloudservicenew/";
-	private static final String URI_GET_QUESTIONS = INTELLICLOUD_BASE_URL + "QuestionService.svc/questions?state=";
-	private static final String URI_GET_ANSWERS = INTELLICLOUD_BASE_URL + "answers";
-	private static final String URI_GET_REVIEWS = INTELLICLOUD_BASE_URL + "reviews";
-	private static final String URI_GET_USERS = INTELLICLOUD_BASE_URL + "users";
-	private static final String URI_GET_FEEDBACK = INTELLICLOUD_BASE_URL + "feedback";
+	private static final String INTELLICLOUD_BASE_URL = "http://81.204.121.229/intellicloudservice/";
+	private static final String URI_GET_QUESTIONS = INTELLICLOUD_BASE_URL + "QuestionService.svc/questions?state=0";
+	private static final String URI_GET_ANSWERS = INTELLICLOUD_BASE_URL + "AnswerService.svc/answers";
+	private static final String URI_GET_REVIEWS = INTELLICLOUD_BASE_URL + "ReviewService.svc/reviews";
+	private static final String URI_GET_USERS = INTELLICLOUD_BASE_URL + "UserService.svc/users";
+	private static final String URI_GET_FEEDBACK = INTELLICLOUD_BASE_URL + "FeedbackService.svc/feedback";
 	
 	
 	Context context;
@@ -75,17 +79,72 @@ public class ServerAccessor {
 	{
 		ArrayList<NameValuePair> downloadQuestionParams = new ArrayList<NameValuePair>();
 		JSONArray questionIdArray = performNetworkGetRequest(URI_GET_QUESTIONS);
-		Log.d("ServerAccessor", questionIdArray.toString());
+		//Log.d("ServerAccessor", questionIdArray.toString());
 		
 		ArrayList<JSONArray> serverQuestions = new ArrayList<JSONArray>();
 		
-		for (int i = 0; i < questionIdArray.length(); i++)
-		{
-			String currentId = questionIdArray.getString(i);
-			String questionUri = URI_GET_QUESTIONS + "/" + currentId;
-			serverQuestions.add(performNetworkGetRequest(questionUri));
-		}
+		Uri uri = BackendContentProvider.CONTENT_QUESTIONS;
+		Cursor questionsCursor;
+		try {
+			questionsCursor = contentProviderClient.query(uri, null, null, null, null);
 		
+		
+		
+			JSONArray questionsToUpload = new JSONArray();
+			JSONArray questionsToAddToDB = new JSONArray();
+			
+			int idColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_BACKEND_ID);
+			int timestampColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_TIMESTAMP);
+			for (int i = 0; i < questionIdArray.length(); i++)
+			{
+				
+				questionsCursor.moveToFirst();
+				boolean questionFoundInDb = false;
+				JSONObject serverQuestion = questionIdArray.getJSONObject(i);
+				while (!questionsCursor.isAfterLast() && !questionFoundInDb) {
+				
+					if (serverQuestion.getString("Id") == questionsCursor.getString(idColumn))
+					{
+						//questionFoundInDb
+						
+					}
+					
+				}
+				if (!questionFoundInDb)
+				{
+				
+				}
+				
+				
+				questionsCursor.moveToNext();
+				
+			}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		
+//		for (int i = 0; i < ; i++)
+//		{
+//			JSONObject question = questionIdArray.getJSONObject(i);
+//			
+//				if (resultCursor != null )
+//				{
+//					resultCursor.getString(resultCursor.getColumnIndex())
+//				}
+//			} catch (RemoteException e) {
+//				
+//				e.printStackTrace();
+//			}	
+//		}
+		
+		
+	}
+	private void addQuestionToDb(JSONObject question)
+	{
+		ContentValues values = new ContentValues();
+		//values.put(QuestionsEntry.COLUMN_ANSWER_ID , value)
+		//contentProviderClient.insert(BackendContentProvider.CONTENT_QUESTIONS, initialValues)
 		
 	}
 	private JSONArray performNetworkPostRequest(String uri, ArrayList<NameValuePair> params)
@@ -129,7 +188,7 @@ public class ServerAccessor {
         
 		
 		HttpGet request = new HttpGet(uri);
-		request.addHeader(HTTP.CONTENT_TYPE, "application/json; charset=UTF-8");
+		request.setHeader(HTTP.CONTENT_TYPE, "application/json; charset=UTF-8");
 	    request.addHeader(AUTHORIZATION_HEADER, getBase64AuthorizationHeader());
 		
 		//String token = accountManager.blockingGetAuthToken(account, TAG, false);
@@ -167,25 +226,22 @@ public class ServerAccessor {
     	SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
     	AuthenticationManager authManager = AuthenticationManager.getInstance();
     	authManager.Initialize(preferences.getString(PREFERENCES_KEY, null));
-//    	 String json = String.format(
-//                 "{" +
-//                 "        \"issuer\":\"accounts.google.com\"," +
-//                 "        \"access_token\":\"ya29.1.AADtN_WEtaKUWeOTaTGqKMkb-DyssDLSJntWtZK6u0LCmS-8HvBG7If57fXFaqg\"" +
-//                 "}"); 
+    	 String json = String.format(
+                 "{\"issuer\":\"accounts.google.com\",\"access_token\":\"ya29.1.AADtN_WEtaKUWeOTaTGqKMkb-DyssDLSJntWtZK6u0LCmS-8HvBG7If57fXFaqg\"}"); 
     
     	
-        String json = String.format(
-                        "{" +
-                        "        \"issuer\":\"accounts.google.com\"," +
-                        "        \"access_token\":\"%s\"" +
-                        "}", authManager
-                        .getAccessToken()); 
+//        String json = String.format(
+//                        "{" +
+//                        "        \"issuer\":\"accounts.google.com\"," +
+//                        "        \"access_token\":\"%s\"" +
+//                        "}", authManager
+//                        .getAccessToken()); 
         Log.d("AccountManager", "token = \n" + json);
         byte[] encodedbytes = Base64.encode(json.getBytes(), Base64.DEFAULT);
         
         String encoded = new String(encodedbytes);
-        
-        encoded = encoded.replace('\n', '\0');
+       
+        encoded = encoded.replace("\n", "");
         Log.d("AccountManager", "encoded = " + encoded);
         return encoded;
     }

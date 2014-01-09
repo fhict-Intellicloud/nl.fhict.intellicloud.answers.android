@@ -17,6 +17,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class QuestionDataSource implements IQuestionService {
 	private SQLiteDatabase database;
 	private LocalStorageSQLiteHelper dbHelper;
+	private Context context;
 	IAnswerService answerService;
 	private final String[] allColumns = { QuestionsEntry.COLUMN_ID, 
 									QuestionsEntry.COLUMN_BACKEND_ID,
@@ -32,7 +33,8 @@ public class QuestionDataSource implements IQuestionService {
 	
 	public QuestionDataSource(Context context) {
 		dbHelper = new LocalStorageSQLiteHelper(context);
-		answerService = new AnswerDataSource(context);
+		this.context = context;
+		
 	}
 	
 	private void open() throws SQLException {
@@ -87,6 +89,7 @@ public class QuestionDataSource implements IQuestionService {
 	
 	private Question getNextQuestionFromCursor(Cursor cursor)
 	{
+		answerService = new AnswerDataSource(context);
 		Long unixMilliSeconds = cursor.getLong(3)*1000;
 		Question question = new Question(cursor.getInt(0), 
 								cursor.getString(4), 

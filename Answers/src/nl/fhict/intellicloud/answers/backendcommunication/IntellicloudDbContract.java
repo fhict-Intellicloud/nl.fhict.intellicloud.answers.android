@@ -91,7 +91,7 @@ public class IntellicloudDbContract {
 		
 	}
 	public static class CreateStatements{
-		public static final String CREATE_TABLE_QUESTIONS = "create table "
+		public static final String CREATE_TABLE_QUESTIONS = "CREATE TABLE IF NOT EXISTS "
 				  + QuestionsEntry.TABLE_NAME + 
 				"(" + QuestionsEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
 				+ QuestionsEntry.COLUMN_BACKEND_ID + " INTEGER, "
@@ -105,7 +105,7 @@ public class IntellicloudDbContract {
 				+ QuestionsEntry.COLUMN_QUESTIONSTATE + " TEXT NOT NULL,"
 				+ QuestionsEntry.COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
 				+ " );";
-		  public static final String CREATE_TABLE_ANSWERS = "create table "
+		  public static final String CREATE_TABLE_ANSWERS = "CREATE TABLE IF NOT EXISTS "
 		      + AnswersEntry.TABLE_NAME + 
 	      		"(" + AnswersEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 	      		+ AnswersEntry.COLUMN_BACKEND_ID + " INTEGER, "
@@ -115,7 +115,7 @@ public class IntellicloudDbContract {
 	      		+ AnswersEntry.COLUMN_ANSWERSTATE + " TEXT NOT NULL,"
 	      		+ AnswersEntry.COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
 	      		+ " );";
-		  public static final String CREATE_TABLE_REVIEWS = "create table "
+		  public static final String CREATE_TABLE_REVIEWS = "CREATE TABLE IF NOT EXISTS "
 		      + ReviewsEntry.TABLE_NAME + 
 	      		"(" + ReviewsEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
 	      		+ ReviewsEntry.COLUMN_BACKEND_ID + " INTEGER,"
@@ -125,7 +125,7 @@ public class IntellicloudDbContract {
 	      		+ ReviewsEntry.COLUMN_REVIEWSTATE + " TEXT NOT NULL,"
 	      		+ ReviewsEntry.COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
 	      		+ " );";
-		  public static final String CREATE_TABLE_USERS = "create table "
+		  public static final String CREATE_TABLE_USERS = "CREATE TABLE IF NOT EXISTS "
 		      + UsersEntry.TABLE_NAME + 
 	      		"(" + UsersEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
 	      		+ UsersEntry.COLUMN_BACKEND_ID + " INTEGER,"
@@ -135,7 +135,7 @@ public class IntellicloudDbContract {
 	      		+ UsersEntry.COLUMN_USERTYPE + " TEXT NOT NULL,"
 	      		+ UsersEntry.COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
 	      		+ " );";
-		  public static final String CREATE_TABLE_FEEDBACK = "create table "
+		  public static final String CREATE_TABLE_FEEDBACK = "CREATE TABLE IF NOT EXISTS "
 			      + FeedbackEntry.TABLE_NAME + 
 		      		"(" + FeedbackEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
 		      		+ FeedbackEntry.COLUMN_BACKEND_ID + " INTEGER, "
