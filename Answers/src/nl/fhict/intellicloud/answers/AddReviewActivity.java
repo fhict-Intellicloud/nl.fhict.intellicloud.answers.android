@@ -9,8 +9,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 public class AddReviewActivity extends Activity {
 	
@@ -24,8 +24,8 @@ public class AddReviewActivity extends Activity {
 		
 		iReviewService = new DummyBackend();
 		
-		TextView tvAddReview = (TextView) findViewById(R.id.tvAddReview);
-		tvAddReview.setOnClickListener(new OnClickListener(){
+		Button btnSendReview = (Button) findViewById(R.id.btnSendReview);
+		btnSendReview.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
 				etReviewField = (EditText) findViewById(R.id.etReviewField);
@@ -33,6 +33,7 @@ public class AddReviewActivity extends Activity {
 				iReviewService.CreateReview(review);
 				Intent intent = new Intent(AddReviewActivity.this, MainActivity.class);
 				startActivity(intent);
+				finish();
 			}
 		});
 	}
@@ -40,7 +41,6 @@ public class AddReviewActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.add_review, menu);
 		return true;
 	}
 }

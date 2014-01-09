@@ -7,14 +7,11 @@
     <string name="action_settings">Settings</string>
 
     <!-- answer_list_item.xml & activity_answer_reviews.xml -->
-    <string name="title_activity_answer_reviews">AnswerReviewsActivity</string>
+    <string name="title_activity_answer_reviews">Review</string>
     <string name="requestor">Requestor</string>
     <string name="date">28 november 2013</string>
     <string name="question">Question</string>
-    <string name="questionHeader">THE QUESTION</string>
-    <string name="answer">Answer</string>
-    <string name="answerHeader">THE ANSWER</string>
-    <string name="reviewHeader">Review</string>
+    <string name="answer">Answer</string>    
     <string name="addReview">Add a new review</string>
     <string name="daysAgo">days ago</string>
     <string name="dayAgo">day ago</string>
@@ -26,35 +23,40 @@
     <string name="unknownUser">Unknown User</string>
     <string name="filters">filters</string>
     <string name="logout">Logout</string>
+    
+    <string name="reviewHeader">Review</string>
+    <string name="answerHeader">Answer</string>
+    <string name="questionHeader">Question</string>
+    <string name="feedbackHeader">Feedback</string>
+    <string name="followUpHeader">Follow-up response</string>
+    
     <string name="triedToLogout">You tried to logout</string>
     <string name="triedToSearch">You tried to search</string>
     <string name="acceptAnswer">Answer approved</string>
     <string name="declineAnswer">Answer rejected</string>
 
     <!-- activity_add_review.xml -->
-    <string name="title_activity_add_review">Add a new review</string>
+    <string name="title_activity_add_review">Review</string>
     <string name="feedback">YOUR FEEDBACK</string>
     <string name="add">Add</string>
 
     <!-- activity_original_answer.xml -->
     <string name="title_activity_original_answer">Answer</string>
     <string name="orignialAnswer">ORIGINAL ANSWER</string>
-    
+
     <!-- activity_review_answer.xml -->
     <string name="title_activity_review_answer">Review answer</string>
     <string name="unknown_date">Unknown date</string>
 
     <!-- activity_send_answer.xml -->
-    <string name="title_activity_send_answer">Answer</string>
+    <string name="title_activity_send_answer">Open questions</string>
     <string name="addAnswer">Add answer</string>
     <string name="requestReview">Request review</string>
-
     <string name="title_activity_slide_in_menu">SlideInMenuActivity</string>
     <string name="title_activity_sliding_fragment">SlidingFragmentActivity</string>
 
     <!-- sliding menu titles -->
-    <string-array
-        name="filter_array">
+    <string-array name="filter_array">
         <item>All</item>
         <item>Open</item>
         <item>Rejected</item>
@@ -66,6 +68,11 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Web search</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
-    
     <string name="sendReview">Send review</string>
+    <string name="sendAnswer">Send answer</string>
+    <string name="editTextPlaceholder">Write your answer here</string>
+    
+    <string name="title_activity_rejected_answer">Rejected question</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

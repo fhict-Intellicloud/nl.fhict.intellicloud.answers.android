@@ -56,7 +56,7 @@ public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> {
 		  
 		  switch(state){
 		  	case Open:
-		  		return R.drawable.search_icon_green;
+		  		return R.drawable.guestion_icon_green;
 		case Closed:
 				return R.drawable.rejected_icon_green;
 			case UpForAnswer:

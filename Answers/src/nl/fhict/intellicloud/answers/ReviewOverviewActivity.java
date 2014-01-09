@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,6 +24,9 @@ public class ReviewOverviewActivity extends Activity {
 	Question question;
 	User user1, user2;
 	
+	EditText etReviewField;
+	IReviewService iReviewService;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,41 +36,40 @@ public class ReviewOverviewActivity extends Activity {
 		//IAnswerService iAnswerService = new DummyBackend();
 		IQuestionService iQuestionService = new DummyBackend();
 		//IReviewService iReviewService = new DummyBackend();
+		iReviewService = new DummyBackend();
 		
 		question = iQuestionService.GetQuestion(reviewInt);
 		answer = question.getAnswer();
 		
-		TextView tvTheQuestion = (TextView) findViewById(R.id.tvTheQuestion);
-		tvTheQuestion.setText(question.getQuestion());
-		TextView tvTheAnswer = (TextView) findViewById(R.id.tvTheAnswer);
-		tvTheAnswer.setText(answer.getAnswer());
-		tvTheAnswer.setOnClickListener(new OnClickListener() {	
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(ReviewOverviewActivity.this, OriginalAnswerActivity.class);
-				startActivity(intent);
-			}
-		});
+		TextView tvQuestion = (TextView) findViewById(R.id.tvQuestion);
+		tvQuestion.setText(question.getQuestion());
+		TextView tvQuestionDetail = (TextView) findViewById(R.id.tvQuestionDetail);
+		tvQuestionDetail.setText(question.getQuestion());
 		
-		TextView tvAccepAnswer = (TextView) findViewById(R.id.tvAcceptAnswer);
-		tvAccepAnswer.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View v) {
-				//TODO
-				Intent intent = new Intent(ReviewOverviewActivity.this, MainActivity.class);
-				startActivity(intent);
-			}
-		});
+		TextView tvAnswer = (TextView) findViewById(R.id.tvAnswer);
+		tvAnswer.setText(answer.getAnswer());
 		
-		TextView tvDeclineAnswer = (TextView) findViewById(R.id.tvDeclineAnswer);
-		tvDeclineAnswer.setOnClickListener(new OnClickListener(){
+		Button btnDeclineAnswer = (Button) findViewById(R.id.btnDeclineAnswer);
+		btnDeclineAnswer.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				//TODO
 				Intent intent = new Intent(ReviewOverviewActivity.this, AddReviewActivity.class);
 				startActivity(intent);
+				finish();
 			}
 		});
+		
+		Button btnAcceptAnswer = (Button) findViewById(R.id.btnAcceptAnswer);
+		btnAcceptAnswer.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v){
+				Intent intent = new Intent(ReviewOverviewActivity.this, MainActivity.class);
+				startActivity(intent);
+				finish();
+			}
+		});
+		
+		
 	}
 
 	@Override

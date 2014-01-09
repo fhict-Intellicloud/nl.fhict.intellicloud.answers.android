@@ -33,6 +33,7 @@ public class SendAnswerActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_send_answer);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 
         qService = new DummyBackend();
         aService = new DummyBackend();
@@ -40,10 +41,11 @@ public class SendAnswerActivity extends Activity {
         questionInt = getIntent().getExtras().getInt("questionInt");
         question = qService.GetQuestion(questionInt);
 
-        TextView tvRequestor = (TextView) findViewById(R.id.tvRequestor);
-        tvRequestor.setText(questionInt + question.getAsker().getFirstName() + " " + question.getAsker().getLastName());
-        TextView tvTheQuestion = (TextView) findViewById(R.id.tvTheQuestion);
-        tvTheQuestion.setText(question.getQuestion());
+        TextView tvQuestion = (TextView) findViewById(R.id.tvQuestion);
+        tvQuestion.setText(question.getQuestion());
+        TextView tvQuestionDetail = (TextView) findViewById(R.id.tvQuestionDetail);
+        tvQuestionDetail.setText(question.getQuestion());
+        
         Button btnAddAnswer = (Button) findViewById(R.id.btnAddAnswer);
         Button btnRequestReview = (Button) findViewById(R.id.btnRequestReview);
         etAnswer = (EditText) findViewById(R.id.etAnswer);
@@ -57,7 +59,7 @@ public class SendAnswerActivity extends Activity {
         btnRequestReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addAnswer(); onBackPressed();
+                askFeedback(); onBackPressed();
             }
         });
 	}
@@ -66,9 +68,19 @@ public class SendAnswerActivity extends Activity {
      * Sends the answer to the backend to be added to the database
      */
     protected void addAnswer(){
+    	//TODO
         String answerText = etAnswer.getText().toString();
         
         answer = new Answer(answerText, question.getAnwserer(), AnswerState.UnderReview);
+        aService.CreateAnswer(answer, questionInt);
+    }
+    
+    protected void askFeedback(){
+    	//TODO
+        String answerText = etAnswer.getText().toString();
+        answer = new Answer(answerText, question.getAnwserer(), AnswerState.UnderReview);
+        question = new Question(question.getId(), question.getQuestion(), question.getAsker(), null, QuestionState.UpForFeedback, null);
+        qService.UpdateQuestion(question);
         aService.CreateAnswer(answer, questionInt);
     }
 }

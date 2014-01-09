@@ -2,83 +2,86 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:padding="20dp">
-        
-        <TextView
-        android:id="@+id/tvTheQuestionHeader"
+    android:orientation="vertical"
+    android:padding="20dp" >
+
+    <TextView
+        android:id="@+id/tvQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:textSize="18dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvQuestionDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/questionHeader" />
-        
-        <TextView
-        android:id="@+id/tvTheQuestion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/question"
         android:layout_marginTop="5dp"
-        android:maxLines="10"/>
-        
-        <TextView
-        android:id="@+id/tvTheAnswerHeader"
+        android:maxLines="6"
+        android:textSize="12dp" />
+
+    <TextView
+        android:id="@+id/tvAnswerHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/answerHeader"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/tvTheQuestion"
-        android:textColor="@color/slidingmenu_devider_color"/>
-        
-        <View 
+        android:text="@string/answerHeader" />
+
+    <View
         android:layout_width="fill_parent"
         android:layout_height="2dp"
-        android:background="@color/slidingmenu_devider_color"/>
-        
-        <TextView
-        android:id="@+id/tvTheAnswer"
+        android:background="@color/slidingmenu_devider_color" />
+
+    <TextView
+        android:id="@+id/tvAnswer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/answer"
         android:layout_marginTop="5dp"
         android:maxLines="10"
-        android:layout_below="@+id/tvTheAnswerHeader"/>
-        
-        <TextView
+        android:text="@string/answer" />
+
+    <TextView
         android:id="@+id/tvReviewHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/reviewHeader"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/tvTheAnswer"
-        android:textColor="@color/slidingmenu_devider_color"/>
-        
-        <View 
+        android:text="@string/reviewHeader"
+        android:textColor="@color/slidingmenu_devider_color" />
+
+    <View
         android:layout_width="fill_parent"
         android:layout_height="2dp"
-        android:background="@color/slidingmenu_devider_color"/>
-        
-        <ListView
+        android:background="@color/slidingmenu_devider_color" />
+
+    <ListView
         android:id="@+id/lvReviews"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnAcceptAnswer"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_below="@+id/lvReviews" >
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:text="@string/sendAnswer" />
 
-            <TextView
-                android:id="@+id/tvAcceptAnswer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/acceptAnswer" />
+        <Button
+            android:id="@+id/btnDeclineAnswer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:text="@string/declineAnswer" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvDeclineAnswer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/declineAnswer" />
-            
-        </LinearLayout>
-        
-        </LinearLayout>
+</LinearLayout>
