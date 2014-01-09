@@ -60,6 +60,7 @@ public class SendAnswerActivity extends Activity {
             @Override
             public void onClick(View v) {
                 askFeedback(); onBackPressed();
+
             }
         });
 	}
@@ -68,7 +69,6 @@ public class SendAnswerActivity extends Activity {
      * Sends the answer to the backend to be added to the database
      */
     protected void addAnswer(){
-    	//TODO
         String answerText = etAnswer.getText().toString();
         
         answer = new Answer(answerText, question.getAnwserer(), AnswerState.UnderReview);

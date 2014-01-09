@@ -70,9 +70,9 @@
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     <string name="sendReview">Send review</string>
     <string name="sendAnswer">Send answer</string>
-    <string name="editTextPlaceholder">Write your answer here</string>
-    
+    <string name="editTextPlaceholder">Write your answer here</string> 
     <string name="title_activity_rejected_answer">Rejected question</string>
+    <string name="title_activity_authorization">Sign in</string>
     <string name="hello_world">Hello world!</string>
 
 </resources>

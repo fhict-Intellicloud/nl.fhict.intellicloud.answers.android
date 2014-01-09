@@ -72,6 +72,6 @@
     <string name="sendReview">Verzend review</string>
     <string name="sendAnswer">Verzend antwoord</string>
     <string name="editTextPlaceholder">Vul uw antwoord in</string>
-    
+    <string name="title_activity_authorization">Aanmelden</string>
     <string name="title_activity_rejected_answer">Afgekeurde vraag</string>
 </resources>
