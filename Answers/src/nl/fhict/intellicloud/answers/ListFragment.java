@@ -5,20 +5,35 @@ import java.util.ArrayList;
 
 import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
 import nl.fhict.intellicloud.answers.backendcommunication.IQuestionService;
+
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 public class ListFragment extends Fragment {
+
     public static final String ARG_FILTER_NUMBER = "filter_number";
     private IQuestionService questionService;
     private QuestionListOnClickListener qListOnClickListener;
+    IncomingQuestionsListAdapter iqla;
+    ArrayList<Question> list;
+
     public ListFragment() {
     	questionService = new DummyBackend();
     }
@@ -40,16 +55,16 @@ public class ListFragment extends Fragment {
 		
 		ListView lv = (ListView)getActivity().findViewById(R.id.lvIncomingQuestions);
 	    
-	    
 	    int i = getArguments().getInt(ARG_FILTER_NUMBER);
 	    
-	    ArrayList<Question> list = createListWithFilter(questionService.GetQuestions(), i);
-	    IncomingQuestionsListAdapter iqla = new IncomingQuestionsListAdapter(getView().getContext(), list);
+	    list = createListWithFilter(questionService.GetQuestions(), i);
+	    iqla = new IncomingQuestionsListAdapter(getView().getContext(), list);
 	    lv.setAdapter(iqla);
         qListOnClickListener = new QuestionListOnClickListener(getActivity(), list);
         lv.setOnItemClickListener(qListOnClickListener);
+
 	}
-	
+
 	private ArrayList<Question> createListWithFilter(ArrayList<Question> listToFilter, int filterId) {
 		ArrayList<Question> list = new ArrayList<Question>();
 		switch(filterId) {
@@ -86,5 +101,13 @@ public class ListFragment extends Fragment {
 			break;
 		}
 		return list;
-	}       
+	}
+
+    /**
+     * Sets the filter of the Question array
+     * @param searchText The new search query
+     */
+    public void setSearchFilter(String searchText){
+        iqla.getFilter().filter(searchText);
+    }
 }
