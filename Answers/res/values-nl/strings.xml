@@ -7,14 +7,11 @@
     <string name="action_settings">Instellingen</string>
 
     <!-- answer_list_item.xml & activity_answer_reviews.xml -->
-    <string name="title_activity_answer_reviews">AnswerReviewsActivity</string>
+    <string name="title_activity_answer_reviews">Review</string>
     <string name="requestor">Vraagsteller</string>
     <string name="date">28 november 2013</string>
     <string name="question">Vraag</string>
-    <string name="questionHeader">DE VRAAG</string>
     <string name="answer">Antwoord</string>
-    <string name="answerHeader">HET ANTWOORD</string>
-    <string name="reviewHeader">REVIEWS</string>
     <string name="addReview">Voeg een nieuwe review toe</string>
     <string name="daysAgo">dagen geleden</string>
     <string name="dayAgo">dag geleden</string>
@@ -25,14 +22,20 @@
     <string name="justPosted">zojuist</string>
 	<string name="unknownUser">Onbekende Gebruiker</string>
     <string name="filters">filters</string>
-    <string name="logout">Uitloggen</string>
+    <string name="logout">Uitloggen</string>    
     <string name="triedToLogout">U probeerde uit te loggen</string>
     <string name="triedToSearch">U probeerde te zoeken</string>
     <string name="acceptAnswer">Antwoord goedgekeurd</string>
     <string name="declineAnswer">Antwoord afgekeurd</string>
+
+    <string name="questionHeader">Vraag</string>
+    <string name="answerHeader">Antwoord</string>
+    <string name="reviewHeader">Review</string>
+    <string name="feedbackHeader">Feedback</string>
+    <string name="followUpHeader">Vervolg antwoord</string>
     
     <!-- activity_add_review.xml -->
-    <string name="title_activity_add_review">Voeg nieuwe review toe</string>
+    <string name="title_activity_add_review">Review</string>
     <string name="feedback">UW OPMERKINGEN</string>
     <string name="add">Voeg toe</string>
 
@@ -45,7 +48,7 @@
     <string name="unknown_date">Onbekende datum</string>
 
     <!-- activity_send_answer.xml -->
-    <string name="title_activity_send_answer">Antwoord</string>
+    <string name="title_activity_send_answer">Openstaande vragen</string>
     <string name="addAnswer">Antwoord toevoegen</string>
     <string name="requestReview">Review aanvragen</string>
     <string name="title_activity_slide_in_menu">SlideInMenuActivity</string>
@@ -67,4 +70,8 @@
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
 
     <string name="sendReview">Verzend review</string>
+    <string name="sendAnswer">Verzend antwoord</string>
+    <string name="editTextPlaceholder">Vul uw antwoord in</string>
+    <string name="title_activity_authorization">Aanmelden</string>
+    <string name="title_activity_rejected_answer">Afgekeurde vraag</string>
 </resources>

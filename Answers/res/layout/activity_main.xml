@@ -47,18 +47,6 @@
 			            android:textColor="#fff"
 			            android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
 			    </LinearLayout>
-			<TextView 
-	            android:id="@+id/txtFilter"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:paddingTop="15dp"
-	            android:textColor="#fff"
-	            android:text="@string/filters"
-	            android:textSize="15dp"/>
-			<View
-			    android:layout_width="fill_parent"
-			    android:layout_height="2dp"
-			    android:background="@color/slidingmenu_devider_color"/>
 		    <ListView
 		        android:id="@+id/lvDrawer"
 		        android:layout_width="fill_parent"

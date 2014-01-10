@@ -3,79 +3,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:padding="20dp">
-
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" 
-    android:padding="20dp">
-    <ImageView
-        android:id="@+id/ivRequestor"
+    android:padding="@dimen/activity_horizontal_margin">     
+     <TextView
+        android:id="@+id/tvQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher" />
-    
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="10dp" >
+        android:singleLine="true"
+        android:textSize="18dp"
+        android:textStyle="bold"/>
         
-        <TextView
-        android:id="@+id/tvRequestor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/requestor" 
-        android:paddingTop="20dp"/>
- 
-        </LinearLayout>
-        </LinearLayout>
-        
-        <TextView
-        android:id="@+id/tvQuestionHeader"
+    <TextView
+        android:id="@+id/tvQuestionDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/questionHeader" />
-        
-        <TextView
-        android:id="@+id/tvTheQuestion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/question"
-        android:layout_marginTop="5dp"/>
+        android:textSize="12dp"
+        android:maxLines="6"/>
 
     <TextView
-            android:id="@+id/tvAnswerHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/answerHeader" />
+        android:id="@+id/tvAnswerHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/answerHeader" 
+        android:textSize="16dp"
+        android:layout_marginTop="20dp"/>
+    <View
+        android:id="@+id/vUnderAnswerHeader" 
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@color/slidingmenu_devider_color"/>
         
-            <EditText
+    <EditText
         android:id="@+id/etAnswer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvAnswerHeader"
-        android:layout_below="@+id/tvAnswerHeader"
         android:layout_marginTop="18dp"
         android:ems="10"
-        android:inputType="textMultiLine" >
-        <requestFocus />
+        android:inputType="textMultiLine"
+        android:hint="@string/editTextPlaceholder" 
+        android:maxLines="5">
     </EditText>
-
-    <Button
-        android:id="@+id/btnAddAnswer"
+	
+    <LinearLayout 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/addAnswer"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="5dp" />
-
-    <Button
-        android:id="@+id/btnRequestReview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/requestReview"
-        android:layout_gravity="center_horizontal" />
-
+	    android:layout_height="match_parent"
+	    android:orientation="horizontal" >
+	    <Button
+	        android:id="@+id/btnAddAnswer"
+	        android:layout_width="fill_parent"
+	        android:layout_weight="1"
+	        android:layout_height="wrap_content"
+	        android:text="@string/sendAnswer"
+	        android:layout_gravity="center_horizontal" 
+	        android:layout_marginRight="2dp"
+	        android:layout_marginTop="1dp"/>
+	
+	    <Button
+	        android:id="@+id/btnRequestReview"
+	        android:layout_width="fill_parent"
+	        android:layout_weight="1"
+	        android:layout_height="wrap_content"
+	        android:text="@string/requestReview"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginLeft="2dp"
+	        android:layout_marginTop="1dp"/>
+    </LinearLayout>
 </LinearLayout>

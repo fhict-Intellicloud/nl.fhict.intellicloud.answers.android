@@ -2,6 +2,8 @@ package nl.fhict.intellicloud.answers;
 
 import java.text.SimpleDateFormat;
 import nl.fhict.intellicloud.R;
+import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -22,6 +24,9 @@ public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> impleme
     private final Context context;
     private ArrayList<Question> values;
     private final ArrayList<Question> allQuestions;
+    TextView timeLine;
+    TextView userLine;
+    TextView questionLine;
 
     Filter questionFilter = new Filter() {
         @Override
@@ -84,7 +89,7 @@ public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> impleme
 
 	    ImageView questionStageImage = (ImageView) rowView.findViewById(R.id.ivIncommingQuestionState);
 	    questionStageImage.setImageResource(getImageId(question.getQuestionState()));
-	    TextView userLine = (TextView) rowView.findViewById(R.id.txtUser);
+	    userLine = (TextView) rowView.findViewById(R.id.txtUser);
 	    if(question.getAsker() != null) {
 	    	userLine.setText(question.getAsker().getFullName());
 	    }
@@ -92,19 +97,39 @@ public class IncomingQuestionsListAdapter extends ArrayAdapter<Question> impleme
 	    {
 	    	userLine.setText(R.string.unknownUser);
 	    }
-	    TextView timeLine = (TextView) rowView.findViewById(R.id.txtTimeAgo);
+	    timeLine = (TextView) rowView.findViewById(R.id.txtTimeAgo);
 	    timeLine.setText(setTime(question.getDate())); 
-	    TextView questionLine = (TextView) rowView.findViewById(R.id.txtQuestion);
+	    questionLine = (TextView) rowView.findViewById(R.id.txtQuestion);
 	    questionLine.setText(question.getQuestion());
 	    questionLine.setMaxWidth(rowView.getWidth()-questionStageImage.getWidth());
+	    
+	    DummyBackend db = new DummyBackend();
+		Question q = values.get(position);
+		if(db.isQuestionClaimed(q.getId())){
+			  timeLine.setTextColor(getContext().getResources().getColor(R.color.intellicloud_color_disabled));
+			  questionLine.setTextColor(getContext().getResources().getColor(R.color.intellicloud_color_disabled));
+			  userLine.setTextColor(getContext().getResources().getColor(R.color.intellicloud_color_disabled));
+		}
 	    return rowView;
 	  }
+	  
+	  @Override
+      public boolean isEnabled(int position) {
+		  DummyBackend db = new DummyBackend();
+		  Question q = values.get(position);
+		  if(!db.isQuestionClaimed(q.getId())){
+			  return true;
+		  }
+		  else {
+			  return false;
+		  }
+        }
 	  
 	  private int getImageId(QuestionState state){
 		  
 		  switch(state){
 		  	case Open:
-		  		return R.drawable.search_icon_green;
+		  		return R.drawable.guestion_icon_green;
 		case Closed:
 				return R.drawable.rejected_icon_green;
 			case UpForAnswer:
