@@ -43,7 +43,8 @@
 			        <TextView 
 			            android:id="@+id/txtUserIdText"
 			            android:layout_width="match_parent"
-			            android:layout_height="96dp"
+			            android:layout_height="match_parent"
+			            android:gravity="center_vertical"
 			            android:textColor="#fff"
 			            android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
 			    </LinearLayout>
@@ -52,6 +53,8 @@
 		        android:layout_width="fill_parent"
 	        	android:layout_height="fill_parent"
 		        android:choiceMode="singleChoice"
+		        android:paddingStart="5dp"
+		        android:paddingLeft="5dp"
 		        android:divider="@color/slidingmenu_devider_color"
 		        android:dividerHeight="0.5dp"/>
 	    	</LinearLayout>
