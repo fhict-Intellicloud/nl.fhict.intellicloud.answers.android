@@ -47,8 +47,10 @@ public class SlidingMenuListAdapter extends ArrayAdapter<String> {
 	  
 	  private int getImageId(int drawerItemPosition) {
 		  switch(drawerItemPosition) {
+		  	case 0:
+		  		return R.drawable.all_icon_white;
 			case 1:
-				return R.drawable.search_icon_white;
+				return R.drawable.guestion_icon_white;
 			case 2:
 				  return R.drawable.rejected_icon_white;
 			case 3:

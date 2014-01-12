@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,56 +27,56 @@ public class ReviewOverviewActivity extends Activity {
 	Question question;
 	User user1, user2;
 	
+	EditText etReviewField;
+	IReviewService iReviewService;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_review_overview);
 		reviewInt = getIntent().getExtras().getInt("reviewInt");
-		
+
 		IQuestionService iQuestionService = new QuestionDataSource(getApplicationContext());
-		IReviewService iReviewService = new ReviewDataSource(getApplicationContext());
-		
+		final IReviewService iReviewService = new ReviewDataSource(getApplicationContext());
 		question = iQuestionService.GetQuestion(reviewInt);
 		answer = question.getAnswer();
 		
-		TextView tvTheQuestion = (TextView) findViewById(R.id.tvTheQuestion);
-		tvTheQuestion.setText(question.getQuestion());
-		TextView tvTheAnswer = (TextView) findViewById(R.id.tvTheAnswer);
-		tvTheAnswer.setText(answer.getAnswer());
-		tvTheAnswer.setOnClickListener(new OnClickListener() {	
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(ReviewOverviewActivity.this, OriginalAnswerActivity.class);
-				startActivity(intent);
-			}
-		});
+		TextView tvQuestion = (TextView) findViewById(R.id.tvQuestion);
+		tvQuestion.setText(question.getQuestion());
+		TextView tvQuestionDetail = (TextView) findViewById(R.id.tvQuestionDetail);
+		tvQuestionDetail.setText(question.getQuestion());
 		
+		TextView tvAnswer = (TextView) findViewById(R.id.tvAnswer);
+		tvAnswer.setText(answer.getAnswer());
+		
+		Button btnDeclineAnswer = (Button) findViewById(R.id.btnDeclineAnswer);
+		btnDeclineAnswer.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v){
+				Intent intent = new Intent(ReviewOverviewActivity.this, AddReviewActivity.class);
+				
 		ListView lvReviews = (ListView) findViewById(R.id.lvReviews);
 		List<Review> reviews = iReviewService.GetReviews(answer.getId());
 		if(reviews != null && reviews.size() > 0){
 			//TODO: ADD Reviews in list
 			//lvReviews.setAdapter();
 		}
-		
-		TextView tvAccepAnswer = (TextView) findViewById(R.id.tvAcceptAnswer);
-		tvAccepAnswer.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View v) {
-				//TODO accept the answer and add this to the right state. // NEED TO CHECK!!
-				question.setQuestionState(QuestionState.Closed);
-				Intent intent = new Intent(ReviewOverviewActivity.this, MainActivity.class);
 				startActivity(intent);
+				finish();
 			}
 		});
 		
-		TextView tvDeclineAnswer = (TextView) findViewById(R.id.tvDeclineAnswer);
-		tvDeclineAnswer.setOnClickListener(new OnClickListener(){
+		Button btnAcceptAnswer = (Button) findViewById(R.id.btnAcceptAnswer);
+		btnAcceptAnswer.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
 				Intent intent = new Intent(ReviewOverviewActivity.this, AddReviewActivity.class);
 				startActivity(intent);
+				finish();
 			}
 		});
+		
+		
 	}
 
 	@Override

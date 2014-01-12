@@ -107,35 +107,37 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
 	    
         mDrawerList.setAdapter(smla);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-        // enable ActionBar app icon to behave as action to toggle nav drawer
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
         
-
-        // ActionBarDrawerToggle ties together the the proper interactions
-        // between the sliding drawer and the action bar app icon
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                R.drawable.ic_navigation_drawer,  /* nav drawer image to replace 'Up' caret */
-                R.string.drawer_open,  /* "open drawer" description for accessibility */
-                R.string.drawer_close  /* "close drawer" description for accessibility */
-                ) {
-            public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle); 
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);                
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        if (savedInstanceState == null) {
-            selectItem(0);
+        if(getActionBar() != null) {
+	        // enable ActionBar app icon to behave as action to toggle nav drawer
+	        getActionBar().setDisplayHomeAsUpEnabled(true);
+	        getActionBar().setHomeButtonEnabled(true);
+	        
+	
+	        // ActionBarDrawerToggle ties together the the proper interactions
+	        // between the sliding drawer and the action bar app icon
+	        mDrawerToggle = new ActionBarDrawerToggle(
+	                this,                  /* host Activity */
+	                mDrawerLayout,         /* DrawerLayout object */
+	                R.drawable.ic_navigation_drawer,  /* nav drawer image to replace 'Up' caret */
+	                R.string.drawer_open,  /* "open drawer" description for accessibility */
+	                R.string.drawer_close  /* "close drawer" description for accessibility */
+	                ) {
+	            public void onDrawerClosed(View view) {
+	                getActionBar().setTitle(mTitle); 
+	                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+	            }
+	
+	            public void onDrawerOpened(View drawerView) {
+	                getActionBar().setTitle(mDrawerTitle);                
+	                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+	            }
+	        };
+	        mDrawerLayout.setDrawerListener(mDrawerToggle);
+	
+	        if (savedInstanceState == null) {
+	            selectItem(0);
+	        }
         }
     }
 
@@ -209,7 +211,7 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
         }
     }
 
-    private void selectItem(int position) {
+    public void selectItem(int position) {
         // update the main content by replacing fragments
         Fragment fragment = new ListFragment();
         Bundle args = new Bundle();
@@ -228,7 +230,9 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-        getActionBar().setTitle(mTitle);
+        if(getActionBar() != null) {
+        	getActionBar().setTitle(mTitle);
+        }
     }
 
     /**

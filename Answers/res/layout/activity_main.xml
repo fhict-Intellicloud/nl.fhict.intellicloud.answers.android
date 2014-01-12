@@ -43,27 +43,18 @@
 			        <TextView 
 			            android:id="@+id/txtUserIdText"
 			            android:layout_width="match_parent"
-			            android:layout_height="96dp"
+			            android:layout_height="match_parent"
+			            android:gravity="center_vertical"
 			            android:textColor="#fff"
 			            android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
 			    </LinearLayout>
-			<TextView 
-	            android:id="@+id/txtFilter"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:paddingTop="15dp"
-	            android:textColor="#fff"
-	            android:text="@string/filters"
-	            android:textSize="15dp"/>
-			<View
-			    android:layout_width="fill_parent"
-			    android:layout_height="2dp"
-			    android:background="@color/slidingmenu_devider_color"/>
 		    <ListView
 		        android:id="@+id/lvDrawer"
 		        android:layout_width="fill_parent"
 	        	android:layout_height="fill_parent"
 		        android:choiceMode="singleChoice"
+		        android:paddingStart="5dp"
+		        android:paddingLeft="5dp"
 		        android:divider="@color/slidingmenu_devider_color"
 		        android:dividerHeight="0.5dp"/>
 	    	</LinearLayout>

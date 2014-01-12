@@ -31,13 +31,18 @@
         android:name="android.test.InstrumentationTestRunner"
         android:targetPackage="nl.fhict.intellicloud" />
 
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:targetPackage="nl.fhict.intellicloud" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.IntellicloudTheme">
+
+        android:theme="@style/Theme.IntellicloudTheme" >
         <uses-library android:name="android.test.runner" />
-        
+
 
         <activity
             android:name="nl.fhict.intellicloud.answers.MainActivity"
@@ -65,7 +70,8 @@
         </activity>
         <activity
             android:name="nl.fhict.intellicloud.answers.SendAnswerActivity"
-            android:label="@string/title_activity_send_answer" >
+            android:label="@string/title_activity_send_answer" 
+            android:parentActivityName="nl.fhict.intellicloud.answers.MainActivity">
         </activity>
         <activity
             android:name="nl.fhict.intellicloud.answers.SlideInMenuActivity"
@@ -75,6 +81,7 @@
             android:name="nl.fhict.intellicloud.answers.SlidingFragmentActivity"
             android:label="@string/title_activity_sliding_fragment" >
         </activity>
+
         
         <!-- Internal content provider meant for the SyncService, is unavailable for other apps -->
         <provider
@@ -114,5 +121,11 @@
         
         
     
+
+        <activity
+            android:name="nl.fhict.intellicloud.answers.RejectedAnswerActivity"
+            android:label="@string/title_activity_rejected_answer" 
+            android:parentActivityName="nl.fhict.intellicloud.answers.MainActivity" >
+        </activity>
     </application>
 </manifest>

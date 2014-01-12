@@ -24,7 +24,22 @@ import nl.fhict.intellicloud.answers.backendcommunication.oauth.AuthenticationMa
  *
  */
 public class DummyBackend implements IAnswerService, IQuestionService,
-		IReviewService {
+		IReviewService, IClaimService {
+	@Override
+	public void claimQuestion(int questionId) {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void releaseClaimQuestion(int questionId) {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public boolean isQuestionClaimed(int questionId) {
+		// TODO Auto-generated method stub
+		return true;
+	}
 	@Override
 	public void UpdateQuestion(Question question) {
 		// TODO Auto-generated method stub
@@ -187,4 +202,6 @@ public class DummyBackend implements IAnswerService, IQuestionService,
 		byte[] encodedbytes = Base64.encode(json.getBytes(), Base64.DEFAULT);
 		return new String(encodedbytes);
 	}
+	
+	
 }

@@ -1,0 +1,112 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".RejectedAnswerActivity" >
+
+    <TextView
+        android:id="@+id/tvRejectQuestion"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:singleLine="true"
+        android:textSize="18sp" 
+	    android:textStyle="bold"/>
+    
+    <TextView
+        android:id="@+id/tvRejectedQuestionDetail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:layout_below="@+id/tvRejectQuestion"
+        android:maxLines="6"/>
+    
+    <TextView
+        android:id="@+id/tvAnswerHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/answerHeader"
+        android:textSize="16sp" 
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/tvRejectedQuestionDetail"/>
+    
+    <View
+        android:id="@+id/vUnderAnswerHeader" 
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@color/slidingmenu_devider_color"
+        android:layout_below="@+id/tvAnswerHeader"/>
+    
+    <TextView
+        android:id="@+id/tvRejectedQuestionAnswer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:layout_below="@+id/vUnderAnswerHeader"
+        android:textSize="12sp"
+        android:maxLines="6"/>
+    
+    <TextView
+        android:id="@+id/tvFeedbackHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/feedbackHeader"
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"
+        android:layout_below="@+id/tvRejectedQuestionAnswer" />
+    
+    <View 
+        android:id="@+id/vUnderFeedbackHeader" 
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/tvFeedbackHeader"
+        android:background="@color/slidingmenu_devider_color"/>
+    
+    <TextView
+        android:id="@+id/tvRejectedQuestionFeedback"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:layout_below="@+id/vUnderFeedbackHeader"
+        android:textSize="12sp"
+        android:maxLines="6"/>
+    
+     <TextView
+        android:id="@+id/tvFollowUpHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/followUpHeader"
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"
+        android:layout_below="@+id/tvRejectedQuestionFeedback"/>
+     
+     <View 
+        android:id="@+id/vUnderFollowUpHeader" 
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@color/slidingmenu_devider_color"
+        android:layout_below="@+id/tvFollowUpHeader"/>
+     
+     <EditText
+        android:id="@+id/etFollowUpResponse"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vUnderFollowUpHeader"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:maxLines="5" >
+        <requestFocus />
+   	 </EditText>
+    
+     <Button
+        android:id="@+id/btnSendFollowUpAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etFollowUpResponse"
+        android:text="@string/sendAnswer"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="5dp" 
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"/>
+
+</RelativeLayout>

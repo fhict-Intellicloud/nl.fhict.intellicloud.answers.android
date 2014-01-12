@@ -33,6 +33,7 @@ public class QuestionListOnClickListener implements OnItemClickListener {
                 activity.startActivity(openIntent);
                 break;
             case UpForAnswer:
+            	
                 break;
             case UpForFeedback:
                 Intent feedbackIntent = new Intent(activity.getApplicationContext(), ReviewOverviewActivity.class);
@@ -40,6 +41,9 @@ public class QuestionListOnClickListener implements OnItemClickListener {
                 activity.startActivity(feedbackIntent);
                 break;
             case Closed:
+            	Intent upForAnswerIntent = new Intent(activity.getApplicationContext(), RejectedAnswerActivity.class);
+            	upForAnswerIntent.putExtra("questionInt", question.getId());
+                activity.startActivity(upForAnswerIntent);
                 break;
         }
 	}
