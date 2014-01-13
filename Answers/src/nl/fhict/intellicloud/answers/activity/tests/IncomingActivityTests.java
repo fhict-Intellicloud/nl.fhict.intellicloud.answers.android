@@ -22,7 +22,7 @@ public class IncomingActivityTests extends ActivityUnitTestCase<MainActivity>  {
 	}
 	
 	public void testStringsFilterList() {
-	    int drawerList = nl.fhict.intellicloud.R.id.lvDrawer;
+	    int drawerList = R.id.lvDrawer;
 	    assertNotNull(activity.findViewById(drawerList));
 	    ListView view = (ListView) activity.findViewById(drawerList);
 	    
@@ -30,7 +30,7 @@ public class IncomingActivityTests extends ActivityUnitTestCase<MainActivity>  {
 	    assertEquals(5, qu);
 	    
 	    //check the filter titles
-	    String[] filterArray = this.getActivity().getResources().getStringArray(nl.fhict.intellicloud.R.array.filter_array);
+	    String[] filterArray = this.getActivity().getResources().getStringArray(R.array.filter_array);
 	    
 	    assertEquals(filterArray[0], view.getItemAtPosition(0));
 	    assertEquals(filterArray[1], view.getItemAtPosition(1));

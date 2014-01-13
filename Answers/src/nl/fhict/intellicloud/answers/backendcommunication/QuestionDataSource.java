@@ -49,7 +49,7 @@ public class QuestionDataSource implements IQuestionService {
 	public Question GetQuestion(int id) {
 		open();
 		Question question = null;
-		Cursor cursor = database.query(QuestionsEntry.TABLE_NAME, allColumns, QuestionsEntry.COLUMN_ID + " = " + id, null, null, null, null);
+		Cursor cursor = database.query(QuestionsEntry.TABLE_NAME, allColumns, QuestionsEntry.COLUMN_BACKEND_ID + " = " + id, null, null, null, null);
 		if (cursor.moveToFirst())
 		{
 			
@@ -90,12 +90,12 @@ public class QuestionDataSource implements IQuestionService {
 	private Question getNextQuestionFromCursor(Cursor cursor)
 	{
 		answerService = new AnswerDataSource(context);
-		Long unixMilliSeconds = cursor.getLong(3)*1000;
-		Question question = new Question(cursor.getInt(0), 
-								cursor.getString(4), 
-								UserDataSource.GetUser(cursor.getInt(2), database), 
-								UserDataSource.GetUser(cursor.getInt(1), database),
-								QuestionState.valueOf(cursor.getString(5)), 
+		Long unixMilliSeconds = cursor.getLong(4)*1000;
+		Question question = new Question(cursor.getInt(1), 
+								cursor.getString(5), 
+								UserDataSource.GetUser(cursor.getInt(3), database), 
+								UserDataSource.GetUser(cursor.getInt(2), database),
+								QuestionState.valueOf(cursor.getString(6)), 
 								new Date(unixMilliSeconds));
 		question.setIsPrivate(cursor.getInt(7) > 0);
 		question.setTitle(cursor.getString(8));
@@ -111,7 +111,7 @@ public class QuestionDataSource implements IQuestionService {
 
 	
 		open();
-		database.update(QuestionsEntry.TABLE_NAME, values, QuestionsEntry.COLUMN_ID + " = " + question.getId(), null);
+		database.update(QuestionsEntry.TABLE_NAME, values, QuestionsEntry.COLUMN_BACKEND_ID + " = " + question.getId(), null);
 		close();
 		
 	}

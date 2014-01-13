@@ -16,6 +16,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.params.ConnManagerParams;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -53,9 +54,11 @@ public class ServerAccessor {
 	private static final int HTTP_REQUEST_TIMEOUT_MS = 5 * 1000;
 	private static final String INTELLICLOUD_BASE_URL = "http://81.204.121.229/intellicloudservice/";
 	private static final String URI_GET_QUESTIONS = INTELLICLOUD_BASE_URL + "QuestionService.svc/questions?state=0";
-	private static final String URI_GET_ANSWERS = INTELLICLOUD_BASE_URL + "AnswerService.svc/answers";
+	private static final String URI_GET_ANSWERS = INTELLICLOUD_BASE_URL + "AnswerService.svc/answers?state=0&search=null";
+	private static final String URI_POST_ANSWERS = INTELLICLOUD_BASE_URL + "AnswerService.svc/answers";
 	private static final String URI_GET_REVIEWS = INTELLICLOUD_BASE_URL + "ReviewService.svc/reviews";
-	private static final String URI_GET_USERS = INTELLICLOUD_BASE_URL + "UserService.svc/users";
+	private static final String URI_POST_REVIEWS = INTELLICLOUD_BASE_URL + "ReviewService.svc/reviews";
+	private static final String URI_GET_USERS = INTELLICLOUD_BASE_URL + "UserService.svc/users?after=null";
 	private static final String URI_GET_FEEDBACK = INTELLICLOUD_BASE_URL + "FeedbackService.svc/feedback";
 	
 	
@@ -75,83 +78,49 @@ public class ServerAccessor {
 		
 		
 	}
-	public void syncQuestions() throws AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, JSONException, IOException
+	public void syncQuestions() throws AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, JSONException, IOException, RemoteException
 	{
-		ArrayList<NameValuePair> downloadQuestionParams = new ArrayList<NameValuePair>();
-		JSONArray questionIdArray = performNetworkGetRequest(URI_GET_QUESTIONS);
+		JSONArray questionResultArray = performNetworkGetRequest(URI_GET_QUESTIONS);
 		//Log.d("ServerAccessor", questionIdArray.toString());
-		
-		ArrayList<JSONArray> serverQuestions = new ArrayList<JSONArray>();
-		
-		Uri uri = BackendContentProvider.CONTENT_QUESTIONS;
-		Cursor questionsCursor;
-		try {
-			questionsCursor = contentProviderClient.query(uri, null, null, null, null);
-		
-		
-		
-			JSONArray questionsToUpload = new JSONArray();
-			JSONArray questionsToAddToDB = new JSONArray();
-			
-			int idColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_BACKEND_ID);
-			int timestampColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_TIMESTAMP);
-			for (int i = 0; i < questionIdArray.length(); i++)
-			{
-				
-				questionsCursor.moveToFirst();
-				boolean questionFoundInDb = false;
-				JSONObject serverQuestion = questionIdArray.getJSONObject(i);
-				while (!questionsCursor.isAfterLast() && !questionFoundInDb) {
-				
-					if (serverQuestion.getString("Id") == questionsCursor.getString(idColumn))
-					{
-						//questionFoundInDb
-						
-					}
-					
-				}
-				if (!questionFoundInDb)
-				{
-				
-				}
-				
-				
-				questionsCursor.moveToNext();
-				
-			}
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-//		
-//		for (int i = 0; i < ; i++)
-//		{
-//			JSONObject question = questionIdArray.getJSONObject(i);
-//			
-//				if (resultCursor != null )
-//				{
-//					resultCursor.getString(resultCursor.getColumnIndex())
-//				}
-//			} catch (RemoteException e) {
-//				
-//				e.printStackTrace();
-//			}	
-//		}
-		
-		
+		QuestionsSync questionsSync = new QuestionsSync(context, contentProviderClient);
+		questionsSync.syncQuestions(questionResultArray);
 	}
-	private void addQuestionToDb(JSONObject question)
+	public void syncUsers() throws AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, JSONException, IOException, RemoteException
 	{
-		ContentValues values = new ContentValues();
-		//values.put(QuestionsEntry.COLUMN_ANSWER_ID , value)
-		//contentProviderClient.insert(BackendContentProvider.CONTENT_QUESTIONS, initialValues)
+		JSONArray userResultArray = performNetworkGetRequest(URI_GET_USERS);
+		
+		UserSync userSync = new UserSync(context, contentProviderClient);
+		userSync.syncUsers(userResultArray);
+	}
+	public void syncAnswers() throws AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, JSONException, IOException, RemoteException
+	{
+		JSONArray answerResultArray = performNetworkGetRequest(URI_GET_ANSWERS);
+		
+		AnswerSync answerSync = new AnswerSync(context, contentProviderClient);
+		ArrayList<JSONObject> newAnswers = answerSync.syncAnswers(answerResultArray);
+		for (JSONObject sendObject : newAnswers)
+		{
+			performNetworkPostRequest(URI_POST_ANSWERS, sendObject);
+		}
 		
 	}
-	private JSONArray performNetworkPostRequest(String uri, ArrayList<NameValuePair> params)
+	public void syncReviews() throws AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, JSONException, IOException, RemoteException
+	{
+		JSONArray answerResultArray = performNetworkGetRequest(URI_GET_REVIEWS);
+		
+		ReviewSync reviewSync = new ReviewSync(context, contentProviderClient);
+		ArrayList<JSONObject> newAnswers = reviewSync.syncReviews(answerResultArray);
+		for (JSONObject sendObject : newAnswers)
+		{
+			performNetworkPostRequest(URI_POST_REVIEWS, sendObject);
+		}
+		
+	}
+	private JSONArray performNetworkPostRequest(String uri, JSONObject params)
 			throws JSONException, ParseException, IOException, AuthenticationException, OperationCanceledException, AuthenticatorException
 	{
 		final JSONArray serverArray;
-		HttpEntity entity = new UrlEncodedFormEntity(params);
+		StringEntity entity = new StringEntity(params.toString());
 		HttpPost request = new HttpPost(uri);
 		request.setEntity(entity);
 		request.addHeader(HTTP.CONTENT_TYPE, "application/json; charset=UTF-8");

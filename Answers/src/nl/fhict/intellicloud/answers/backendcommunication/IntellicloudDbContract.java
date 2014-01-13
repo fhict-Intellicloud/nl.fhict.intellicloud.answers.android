@@ -102,7 +102,7 @@ public class IntellicloudDbContract {
 				+ QuestionsEntry.COLUMN_DATE + " INTEGER, "
 				+ QuestionsEntry.COLUMN_IS_PRIVATE + " INTEGER,"
 	      		+ QuestionsEntry.COLUMN_TITLE + " TEXT, "
-				+ QuestionsEntry.COLUMN_QUESTIONSTATE + " TEXT NOT NULL,"
+				+ QuestionsEntry.COLUMN_QUESTIONSTATE + " TEXT,"
 				+ QuestionsEntry.COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
 				+ " );";
 		  public static final String CREATE_TABLE_ANSWERS = "CREATE TABLE IF NOT EXISTS "
@@ -110,9 +110,10 @@ public class IntellicloudDbContract {
 	      		"(" + AnswersEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 	      		+ AnswersEntry.COLUMN_BACKEND_ID + " INTEGER, "
 	      		+ AnswersEntry.COLUMN_ANSWER + " TEXT, "
-	      		+ AnswersEntry.COLUMN_ANSWERER_ID + "INTEGER, "
+	      		+ AnswersEntry.COLUMN_ANSWERER_ID + " INTEGER, "
+	      		+ AnswersEntry.COLUMN_DATE + " INTEGER,"
 //	      		+ AnswersEntry.COLUMN_QUESTION_ID + " INTEGER, "
-	      		+ AnswersEntry.COLUMN_ANSWERSTATE + " TEXT NOT NULL,"
+	      		+ AnswersEntry.COLUMN_ANSWERSTATE + " TEXT, "
 	      		+ AnswersEntry.COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
 	      		+ " );";
 		  public static final String CREATE_TABLE_REVIEWS = "CREATE TABLE IF NOT EXISTS "
@@ -122,7 +123,7 @@ public class IntellicloudDbContract {
 	      		+ ReviewsEntry.COLUMN_REVIEW + " TEXT, "
 	      		+ ReviewsEntry.COLUMN_REVIEWER_ID + " INTEGER, "
 	      		+ ReviewsEntry.COLUMN_ANSWER_ID + " INTEGER, "
-	      		+ ReviewsEntry.COLUMN_REVIEWSTATE + " TEXT NOT NULL,"
+	      		+ ReviewsEntry.COLUMN_REVIEWSTATE + " TEXT,"
 	      		+ ReviewsEntry.COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
 	      		+ " );";
 		  public static final String CREATE_TABLE_USERS = "CREATE TABLE IF NOT EXISTS "
@@ -132,7 +133,7 @@ public class IntellicloudDbContract {
 	      		+ UsersEntry.COLUMN_FIRSTNAME + " TEXT, "
 	      		+ UsersEntry.COLUMN_LASTNAME + " TEXT, "
 	      		+ UsersEntry.COLUMN_INFIX + " TEXT, "
-	      		+ UsersEntry.COLUMN_USERTYPE + " TEXT NOT NULL,"
+	      		+ UsersEntry.COLUMN_USERTYPE + " TEXT,"
 	      		+ UsersEntry.COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
 	      		+ " );";
 		  public static final String CREATE_TABLE_FEEDBACK = "CREATE TABLE IF NOT EXISTS "

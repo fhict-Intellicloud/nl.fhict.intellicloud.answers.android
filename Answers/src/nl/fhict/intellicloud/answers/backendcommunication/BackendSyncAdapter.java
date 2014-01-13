@@ -30,6 +30,7 @@ import android.content.Context;
 import android.content.SyncResult;
 import android.net.ParseException;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.util.Log;
 
 public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
@@ -80,6 +81,9 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 			Log.d(TAG, "Starting sync...");
 			ServerAccessor accessor = new ServerAccessor(getContext(), accountManager, contentProviderClient, account);
 			try {
+				accessor.syncAnswers();
+				accessor.syncReviews();
+				accessor.syncUsers();
 				accessor.syncQuestions();
 			} catch (AuthenticationException e) {
 				// TODO Auto-generated catch block
@@ -97,6 +101,10 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

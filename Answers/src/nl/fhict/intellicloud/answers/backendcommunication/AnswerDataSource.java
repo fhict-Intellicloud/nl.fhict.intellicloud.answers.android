@@ -68,7 +68,7 @@ public class AnswerDataSource implements IAnswerService {
 		public Answer GetAnswer(int id) {
 			open();
 			Answer answer = null;
-			Cursor cursor = database.query(AnswersEntry.TABLE_NAME, allColumns, AnswersEntry.COLUMN_ID + " = " + id, null, null, null, null);
+			Cursor cursor = database.query(AnswersEntry.TABLE_NAME, allColumns, AnswersEntry.COLUMN_BACKEND_ID + " = " + id, null, null, null, null);
 			if (cursor.moveToFirst())
 			{
 				
@@ -149,7 +149,7 @@ public class AnswerDataSource implements IAnswerService {
 			values.put(AnswersEntry.COLUMN_ANSWER, answer.getAnswer());
 		
 			open();
-			database.update(AnswersEntry.TABLE_NAME, values, AnswersEntry.COLUMN_ID + " = " + answer.getId(), null);
+			database.update(AnswersEntry.TABLE_NAME, values, AnswersEntry.COLUMN_BACKEND_ID + " = " + answer.getId(), null);
 			close();
 			
 		}
@@ -157,10 +157,10 @@ public class AnswerDataSource implements IAnswerService {
 		{
 			//Question questionForAnswer = questionDataSource.GetQuestion(cursor.getInt(2));
 			
-			Answer foundAnswer = new Answer(cursor.getString(1), 
+			Answer foundAnswer = new Answer(cursor.getString(2), 
 											UserDataSource.GetUser(cursor.getInt(3), database), 
 											AnswerState.valueOf(cursor.getString(4)));
-			foundAnswer.setId(cursor.getInt(0));
+			foundAnswer.setId(cursor.getInt(1));
 			
 			
 			return foundAnswer;
