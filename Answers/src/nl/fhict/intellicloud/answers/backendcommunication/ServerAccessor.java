@@ -50,6 +50,7 @@ public class ServerAccessor {
 	private static final String AUTHORIZATION_HEADER = "AuthorizationToken";
 	private static final String PREFERENCES_NAME = "nl.fhict.intellicloud.answers";
 	private static final String PREFERENCES_KEY = "AUTHORIZATON_CODE";
+	private static final String PREFERENCES_TOKEN = "AUTHORIZATON_TOKEN";
 	
 	private static final int HTTP_REQUEST_TIMEOUT_MS = 5 * 1000;
 	private static final String INTELLICLOUD_BASE_URL = "http://81.204.121.229/intellicloudservice/";
@@ -81,26 +82,33 @@ public class ServerAccessor {
 	public void syncQuestions() throws AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, JSONException, IOException, RemoteException
 	{
 		JSONArray questionResultArray = performNetworkGetRequest(URI_GET_QUESTIONS);
-		//Log.d("ServerAccessor", questionIdArray.toString());
-		QuestionsSync questionsSync = new QuestionsSync(context, contentProviderClient);
-		questionsSync.syncQuestions(questionResultArray);
+		if (questionResultArray != null)
+		{
+			//Log.d("ServerAccessor", questionIdArray.toString());
+			QuestionsSync questionsSync = new QuestionsSync(context, contentProviderClient);
+			questionsSync.syncQuestions(questionResultArray);
+		}
 	}
 	public void syncUsers() throws AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, JSONException, IOException, RemoteException
 	{
 		JSONArray userResultArray = performNetworkGetRequest(URI_GET_USERS);
-		
-		UserSync userSync = new UserSync(context, contentProviderClient);
-		userSync.syncUsers(userResultArray);
+		if (userResultArray != null)
+		{
+			UserSync userSync = new UserSync(context, contentProviderClient);
+			userSync.syncUsers(userResultArray);
+		}
 	}
 	public void syncAnswers() throws AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, JSONException, IOException, RemoteException
 	{
 		JSONArray answerResultArray = performNetworkGetRequest(URI_GET_ANSWERS);
-		
-		AnswerSync answerSync = new AnswerSync(context, contentProviderClient);
-		ArrayList<JSONObject> newAnswers = answerSync.syncAnswers(answerResultArray);
-		for (JSONObject sendObject : newAnswers)
+		if (answerResultArray != null)
 		{
-			performNetworkPostRequest(URI_POST_ANSWERS, sendObject);
+			AnswerSync answerSync = new AnswerSync(context, contentProviderClient);
+			ArrayList<JSONObject> newAnswers = answerSync.syncAnswers(answerResultArray);
+			for (JSONObject sendObject : newAnswers)
+			{
+				performNetworkPostRequest(URI_POST_ANSWERS, sendObject);
+			}
 		}
 		
 	}
@@ -192,19 +200,18 @@ public class ServerAccessor {
 	}
 	
 	 private String getBase64AuthorizationHeader() {
-    	SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
-    	AuthenticationManager authManager = AuthenticationManager.getInstance();
-    	authManager.Initialize(preferences.getString(PREFERENCES_KEY, null));
-    	 String json = String.format(
-                 "{\"issuer\":\"accounts.google.com\",\"access_token\":\"ya29.1.AADtN_WEtaKUWeOTaTGqKMkb-DyssDLSJntWtZK6u0LCmS-8HvBG7If57fXFaqg\"}"); 
-    
+    	SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_MULTI_PROCESS);
+//    	AuthenticationManager authManager = AuthenticationManager.getInstance();
+//    	authManager.Initialize(preferences.getString(PREFERENCES_KEY, null));
+//    	 String json = String.format(
+//                 "{\"issuer\":\"accounts.google.com\",\"access_token\":\"ya29.1.AADtN_WEtaKUWeOTaTGqKMkb-DyssDLSJntWtZK6u0LCmS-8HvBG7If57fXFaqg\"}"); 
+    	Log.d(TAG, "authToken = " + preferences.getString(PREFERENCES_KEY, null));
     	
-//        String json = String.format(
-//                        "{" +
-//                        "        \"issuer\":\"accounts.google.com\"," +
-//                        "        \"access_token\":\"%s\"" +
-//                        "}", authManager
-//                        .getAccessToken()); 
+        String json = String.format(
+                        "{" +
+                        "        \"issuer\":\"accounts.google.com\"," +
+                        "        \"access_token\":\"%s\"" +
+                        "}", preferences.getString(PREFERENCES_TOKEN, null));
         Log.d("AccountManager", "token = \n" + json);
         byte[] encodedbytes = Base64.encode(json.getBytes(), Base64.DEFAULT);
         

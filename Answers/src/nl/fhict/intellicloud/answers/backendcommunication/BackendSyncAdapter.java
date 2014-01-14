@@ -81,10 +81,10 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 			Log.d(TAG, "Starting sync...");
 			ServerAccessor accessor = new ServerAccessor(getContext(), accountManager, contentProviderClient, account);
 			try {
+				accessor.syncQuestions();
 				accessor.syncAnswers();
 				accessor.syncReviews();
 				accessor.syncUsers();
-				accessor.syncQuestions();
 			} catch (AuthenticationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -108,13 +108,10 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			finally
+			{
 				
-			
-			
-			
-			
-		}
-		
-		
+			}
+		}	
 		
 }

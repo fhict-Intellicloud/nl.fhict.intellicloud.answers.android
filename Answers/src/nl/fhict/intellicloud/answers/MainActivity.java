@@ -59,6 +59,7 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
 
 	private final String PREFERENCES_NAME = "nl.fhict.intellicloud.answers";
 	private final String PREFERENCES_KEY = "AUTHORIZATON_CODE";
+	private final String PREFERENCES_TOKEN = "AUTHORIZATON_TOKEN";
 	
     private DrawerLayout mDrawerLayout;
     private RelativeLayout mLinearLayout;
@@ -79,12 +80,16 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
         
         //Get the shared preference which should contain the authorization code
         //If the code is saved in the shared, the application can start getting an access token
-        SharedPreferences preferences = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences preferences = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_MULTI_PROCESS);
         if(preferences.contains(PREFERENCES_KEY))
         {
         	Log.d("SharedPrefs", preferences.getString(PREFERENCES_KEY, null));
         	AuthenticationManager authManager = AuthenticationManager.getInstance();
         	authManager.Initialize(preferences.getString(PREFERENCES_KEY, null));
+        	Editor editor = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_MULTI_PROCESS).edit();
+			editor.putString(PREFERENCES_TOKEN, authManager.getAccessToken());
+			editor.apply();
+        	
         	setupSyncService(authManager);
         }
         // if the code is not saved yet it should be requested
@@ -267,13 +272,15 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
     	if(requestCode == this.AUTHORIZE_REQUEST) {
     		if(resultCode == Activity.RESULT_OK) {
     			String authorizationCode = data.getExtras().getString(AuthorizationActivity.AUTHORIZATION_CODE);
+    			AuthenticationManager authManager = AuthenticationManager.getInstance();
+    			authManager.Initialize(authorizationCode);
     			
-    			Editor editor = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE).edit();
+    			Editor editor = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_MULTI_PROCESS).edit();
     			editor.putString(PREFERENCES_KEY, authorizationCode);
+    			editor.putString(PREFERENCES_TOKEN, authManager.getAccessToken());
     			editor.apply();
     			
-    			AuthenticationManager authManager = AuthenticationManager.getInstance();
-    			authManager.Initialize(authorizationCode);    			
+    			    			
     			//Authentication success, Activate sync service
     			setupSyncService(authManager);
     			
