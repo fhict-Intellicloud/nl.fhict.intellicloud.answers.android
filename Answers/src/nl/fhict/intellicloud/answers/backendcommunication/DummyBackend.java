@@ -38,7 +38,7 @@ public class DummyBackend implements IAnswerService, IQuestionService,
 	@Override
 	public boolean isQuestionClaimed(int questionId) {
 		// TODO Auto-generated method stub
-		return true;
+		return false;
 	}
 	@Override
 	public void UpdateQuestion(Question question) {
