@@ -1,11 +1,13 @@
 package nl.fhict.intellicloud.answers;
 
 
+import nl.fhict.intellicloud.answers.backendcommunication.AnswerDataSource;
 import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
 import nl.fhict.intellicloud.answers.backendcommunication.IAnswerService;
 import nl.fhict.intellicloud.answers.backendcommunication.IQuestionService;
-import android.os.Bundle;
+import nl.fhict.intellicloud.answers.backendcommunication.QuestionDataSource;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.widget.TextView;
 
@@ -24,8 +26,8 @@ public class RejectedAnswerActivity extends Activity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		questionInt = getIntent().getExtras().getInt("questionInt");
-		qService = new DummyBackend();
-		aService = new DummyBackend();
+		qService = new QuestionDataSource(this);
+		aService = new AnswerDataSource(this);
 		
 		question = qService.GetQuestion(questionInt);
 		

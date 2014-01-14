@@ -127,6 +127,7 @@ public class BackendContentProvider extends ContentProvider {
 		// make sure that potential listeners are getting notified
 		cursor.setNotificationUri(getContext().getContentResolver(), uri);
 		
+		
 		return cursor;
 	  }
 
@@ -166,6 +167,8 @@ public class BackendContentProvider extends ContentProvider {
 		    	
 		    default: throw new SQLException("Failed to insert row into " + uri);
 	    }
+		//Also send a notifyChange to the main URI  
+		getContext().getContentResolver().notifyChange(uri, null);   
 	    return _uri;       
 	  }
 
@@ -223,15 +226,16 @@ public class BackendContentProvider extends ContentProvider {
 		  int rowsDeleted;
 		  String id = uri.getLastPathSegment();
 	      if (TextUtils.isEmpty(selection)) {
-	        rowsDeleted = db.delete(columnIdName,
-	            table + "=" + id, 
+	        rowsDeleted = db.delete(table,
+	            columnIdName + "=" + id, 
 	            null);
 	      } else {
-	        rowsDeleted = db.delete(columnIdName,
-	            table + "=" + id 
+	        rowsDeleted = db.delete(table,
+	            columnIdName + "=" + id 
 	            + " and " + selection,
 	            selectionArgs);
 	      }
+	      getContext().getContentResolver().notifyChange(uri, null);
 	      return rowsDeleted;
 	  }
 	  @Override

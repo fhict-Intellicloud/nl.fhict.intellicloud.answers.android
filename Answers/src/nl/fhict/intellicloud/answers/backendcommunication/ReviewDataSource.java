@@ -76,6 +76,7 @@ public class ReviewDataSource implements IReviewService {
 			
 			cursor.moveToNext();
 		}
+		cursor.close();
 		close();
 		return filteredReviews;
 	}

@@ -1,19 +1,15 @@
 package nl.fhict.intellicloud.answers;
 
-import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
+import nl.fhict.intellicloud.answers.backendcommunication.AnswerDataSource;
 import nl.fhict.intellicloud.answers.backendcommunication.IAnswerService;
 import nl.fhict.intellicloud.answers.backendcommunication.IQuestionService;
-
-import android.content.Intent;
-import android.os.Bundle;
+import nl.fhict.intellicloud.answers.backendcommunication.QuestionDataSource;
 import android.app.Activity;
-import android.view.Menu;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.util.Date;
 
 public class SendAnswerActivity extends Activity {
 
@@ -32,8 +28,8 @@ public class SendAnswerActivity extends Activity {
 		setContentView(R.layout.activity_send_answer);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        qService = new DummyBackend();
-        aService = new DummyBackend();
+        qService = new QuestionDataSource(this);
+        aService = new AnswerDataSource(this);
 
         questionInt = getIntent().getExtras().getInt("questionInt");
         question = qService.GetQuestion(questionInt);

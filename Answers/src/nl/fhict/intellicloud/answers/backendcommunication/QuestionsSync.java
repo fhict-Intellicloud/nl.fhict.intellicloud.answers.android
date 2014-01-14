@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import nl.fhict.intellicloud.answers.QuestionState;
+import nl.fhict.intellicloud.answers.backendcommunication.IntellicloudDbContract.AnswersEntry;
 import nl.fhict.intellicloud.answers.backendcommunication.IntellicloudDbContract.QuestionsEntry;
 
 import org.apache.http.NameValuePair;
@@ -21,124 +22,146 @@ import android.database.Cursor;
 import android.net.ParseException;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.util.Log;
 
 public class QuestionsSync {
 	private Context context;
 	private int idColumn;
-//	private int timestampColumn;
-//	private int questionColumn;
-//	private int dateColumn;
-//	private int titleColumn;
-//	private int answerIdColumn;
-//	private int answererIdColumn;
-//	private int isPrivateColumn;
-//	private int askerIdColumn;
-//	private int questionStateColumn;
+	//	private int timestampColumn;
+	//	private int questionColumn;
+	//	private int dateColumn;
+	//	private int titleColumn;
+	//	private int answerIdColumn;
+	//	private int answererIdColumn;
+	//	private int isPrivateColumn;
+	//	private int askerIdColumn;
+	//	private int questionStateColumn;
 	private ContentProviderClient contentProviderClient;
-	
+
 	public QuestionsSync(Context context, ContentProviderClient contentProviderClient)
 	{
 		this.context = context;
 		this.contentProviderClient = contentProviderClient;
 	}
-	
+
 	public void syncQuestions(JSONArray questionResultArray) throws AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, JSONException, IOException, RemoteException
 	{
-		
+
 		//JSONArray questionsToUpload = new JSONArray();
-		JSONArray questionsToAddToDB = new JSONArray();
-		
+		ArrayList<JSONObject> questionsToAddToDB = new ArrayList<JSONObject>();
+		//Log.d("sync", questionResultArray.toString());
 		Uri uri = BackendContentProvider.CONTENT_QUESTIONS;
+		
 		Cursor questionsCursor;
-		try {
-			questionsCursor = contentProviderClient.query(uri, null, null, null, null);
 		
+		questionsCursor = contentProviderClient.query(uri, null, null, null, null);
+		Log.d("sync", "uri");
+		idColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_BACKEND_ID);
+		int localIdColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_BACKEND_ID);
+		//			timestampColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_TIMESTAMP);
+		//			questionColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_QUESTION);
+		//			dateColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_DATE);
+		//			titleColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_TITLE);
+		//			answerIdColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_ANSWER_ID);
+		//			answererIdColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_ANSWERER_ID);
+		//			isPrivateColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_IS_PRIVATE);
+		//			askerIdColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_ASKER_ID);
+		//			questionStateColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_QUESTIONSTATE);
+
+		questionsCursor.moveToFirst();
 		
+		for (int i = 0; i < questionResultArray.length(); i++)
+		{
+			questionsToAddToDB.add(questionResultArray.getJSONObject(i));
+		}
 		
-			
-			
-			idColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_BACKEND_ID);
-//			timestampColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_TIMESTAMP);
-//			questionColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_QUESTION);
-//			dateColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_DATE);
-//			titleColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_TITLE);
-//			answerIdColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_ANSWER_ID);
-//			answererIdColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_ANSWERER_ID);
-//			isPrivateColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_IS_PRIVATE);
-//			askerIdColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_ASKER_ID);
-//			questionStateColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_QUESTIONSTATE);
-			
-			
+		while (!questionsCursor.isAfterLast()) {
+			Log.d("sync", "while");
+			JSONObject serverQuestion = null;
+			boolean questionFoundInResult = false;
 			
 			for (int i = 0; i < questionResultArray.length(); i++)
 			{
 				
-				questionsCursor.moveToFirst();
-				boolean questionFoundInDb = false;
-				JSONObject serverQuestion = questionResultArray.getJSONObject(i);
-				
-				while (!questionsCursor.isAfterLast() && !questionFoundInDb) {
-				
-					if (serverQuestion.getString("Id") == questionsCursor.getString(idColumn))
-					{
-						questionFoundInDb=true;
-						//Check if updated
-						
-						break;
-					}
-				}
-				if (!questionFoundInDb)
+				serverQuestion = questionResultArray.getJSONObject(i);
+				Log.d("sync", serverQuestion.toString());
+				if (getIdFromURI(serverQuestion.getString("Id")) == (questionsCursor.getInt(idColumn)))
 				{
-					questionsToAddToDB.put(serverQuestion);
-					
+					questionFoundInResult = true;
+					questionsToAddToDB.remove(i);
+					break;
+
 				}
-				
-				
+			}
+			if (!questionFoundInResult)
+			{
+				String deleteUri = uri + "/" + questionsCursor.getInt(localIdColumn);
 				questionsCursor.moveToNext();
+				contentProviderClient.delete(Uri.parse(deleteUri), null, null);
 				
 			}
-			questionsCursor.close();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			questionsCursor.moveToNext();
 		}
-		
-		for (int i = 0; i < questionsToAddToDB.length(); i++)
+
+		questionsCursor.close();
+
+
+		for (int i = 0; i < questionsToAddToDB.size(); i++)
 		{
-			addQuestionToDb(questionsToAddToDB.getJSONObject(i));
+			addQuestionToDb(questionsToAddToDB.get(i));
 		}
-		
-		
-		
+
+
+
 	}
 	private void addQuestionToDb(JSONObject question) throws JSONException, RemoteException
 	{
+
+
 		ContentValues values = new ContentValues();
-		values.put(QuestionsEntry.COLUMN_BACKEND_ID, question.optString("Id"));
 		values.put(QuestionsEntry.COLUMN_TIMESTAMP, question.optString("LastChangedTime"));
 		values.put(QuestionsEntry.COLUMN_QUESTION, question.optString("Content"));
 		values.put(QuestionsEntry.COLUMN_DATE, question.optString("Date"));
 		values.put(QuestionsEntry.COLUMN_TITLE, question.optString("Title"));
 		values.put(QuestionsEntry.COLUMN_IS_PRIVATE, question.optString("IsPrivate"));
 		values.put(QuestionsEntry.COLUMN_QUESTIONSTATE, QuestionState.Open.toString()); //No questionState?
-		
-		JSONObject answer = question.optJSONObject("Answer");
+
+		String answer = question.optString("Answer");
 		if (answer != null)
 		{
-			values.put(QuestionsEntry.COLUMN_ANSWER_ID, answer.getString("Id"));
+			values.put(QuestionsEntry.COLUMN_ANSWER_ID, getIdFromURI(answer));
 		}
-		JSONObject answerer = question.optJSONObject("Answerer");
+		String answerer = question.optString("Answerer");
 		if (answer != null)
 		{
-			values.put(QuestionsEntry.COLUMN_ANSWERER_ID, answerer.getString("Id"));
+			values.put(QuestionsEntry.COLUMN_ANSWERER_ID, getIdFromURI(answerer));
 		}
-		JSONObject asker = question.optJSONObject("Answer");
+		String asker = question.optString("Asker");
 		if (answer != null)
 		{
-			values.put(QuestionsEntry.COLUMN_ASKER_ID, asker.getString("Id"));
+			values.put(QuestionsEntry.COLUMN_ASKER_ID, getIdFromURI(asker));
 		}
-		
-		
+		String backendid = question.optString("Id");
+		if (backendid != null)
+		{
+			values.put(QuestionsEntry.COLUMN_BACKEND_ID, getIdFromURI(backendid));
+		}
+
+
 		contentProviderClient.insert(BackendContentProvider.CONTENT_QUESTIONS, values);
 	}
+	private int getIdFromURI(String uri)
+	{
+		String[] uriparts = uri.split("/");
+		for (int i = 0; i < uriparts.length; i++)
+		{
+			int result = Integer.getInteger(uriparts[i], -1);
+			if (result != -1)
+			{
+				return result;
+			}
+		}
+		return -1;
+	}
 }
+

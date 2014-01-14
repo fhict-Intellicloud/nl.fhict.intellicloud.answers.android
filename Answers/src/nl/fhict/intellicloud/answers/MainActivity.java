@@ -87,7 +87,7 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
         	AuthenticationManager authManager = AuthenticationManager.getInstance();
         	authManager.Initialize(preferences.getString(PREFERENCES_KEY, null));
         	Editor editor = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_MULTI_PROCESS).edit();
-			editor.putString(PREFERENCES_TOKEN, authManager.getAccessToken());
+			//editor.putString(PREFERENCES_TOKEN, authManager.getAccessToken());
 			editor.apply();
         	
         	setupSyncService(authManager);

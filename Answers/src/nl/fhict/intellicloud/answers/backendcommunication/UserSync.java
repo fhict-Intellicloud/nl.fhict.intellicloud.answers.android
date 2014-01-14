@@ -1,9 +1,12 @@
 package nl.fhict.intellicloud.answers.backendcommunication;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import nl.fhict.intellicloud.answers.QuestionState;
+import nl.fhict.intellicloud.answers.UserType;
 import nl.fhict.intellicloud.answers.backendcommunication.IntellicloudDbContract.QuestionsEntry;
+import nl.fhict.intellicloud.answers.backendcommunication.IntellicloudDbContract.ReviewsEntry;
 import nl.fhict.intellicloud.answers.backendcommunication.IntellicloudDbContract.UsersEntry;
 
 import org.apache.http.auth.AuthenticationException;
@@ -20,11 +23,13 @@ import android.database.Cursor;
 import android.net.ParseException;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.util.Log;
 
 public class UserSync {
 
 	private Context context;
 	private int idColumn;
+	private int localIdColumn;
 	//		private int timestampColumn;
 	//		private int questionColumn;
 	//		private int dateColumn;
@@ -44,70 +49,89 @@ public class UserSync {
 
 	public void syncUsers(JSONArray userResultArray) throws AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, JSONException, IOException, RemoteException
 	{
-		JSONArray usersToAddToDB = new JSONArray();
+		ArrayList<JSONObject> usersToAddToDB = new ArrayList<JSONObject>();
 
 		Uri uri = BackendContentProvider.CONTENT_USERS;
 		Cursor usersCursor;
-		try {
-			usersCursor = contentProviderClient.query(uri, null, null, null, null);
+		
+		usersCursor = contentProviderClient.query(uri, null, null, null, null);
 
+		idColumn = usersCursor.getColumnIndex(UsersEntry.COLUMN_BACKEND_ID);
+		localIdColumn = usersCursor.getColumnIndex(UsersEntry.COLUMN_ID);
+		//				timestampColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_TIMESTAMP);
 
-
-
-
-			idColumn = usersCursor.getColumnIndex(UsersEntry.COLUMN_BACKEND_ID);
-			//				timestampColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_TIMESTAMP);
-
+		for (int i = 0; i < userResultArray.length(); i++)
+		{
+			usersToAddToDB.add(userResultArray.getJSONObject(i));
+		}
+		
+		while (!usersCursor.isAfterLast()) {
+			Log.d("sync", "while");
+			JSONObject serverUser = null;
+			boolean userFoundInResult = false;
+			
 			for (int i = 0; i < userResultArray.length(); i++)
 			{
-
-				usersCursor.moveToFirst();
-				boolean userFoundInDb = false;
-				JSONObject serverUser = userResultArray.getJSONObject(i);
-
-				while (!usersCursor.isAfterLast() && !userFoundInDb) {
-
-					if (serverUser.getString("Id") == usersCursor.getString(idColumn))
-					{
-						userFoundInDb=true;
-						//Check if updated
-
-						break;
-					}
-				}
-				if (!userFoundInDb)
+				
+				serverUser = userResultArray.getJSONObject(i);
+				Log.d("sync", serverUser.toString());
+				if (getIdFromURI(serverUser.getString("Id")) == (usersCursor.getInt(idColumn)))
 				{
-					usersToAddToDB.put(serverUser);
+					userFoundInResult = true;
+					usersToAddToDB.remove(i);
+					break;
+
 				}
-				usersCursor.moveToNext();
-
 			}
-			usersCursor.close();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (!userFoundInResult)
+			{
+				String deleteUri = uri + "/" + usersCursor.getInt(localIdColumn);
+				usersCursor.moveToNext();
+				contentProviderClient.delete(Uri.parse(deleteUri), null, null);
+				
+			}
+			usersCursor.moveToNext();
 		}
 
-		for (int i = 0; i < usersToAddToDB.length(); i++)
+		usersCursor.close();
+
+
+		for (int i = 0; i < usersToAddToDB.size(); i++)
 		{
-			addUserToDb(usersToAddToDB.getJSONObject(i));
+			addUserToDb(usersToAddToDB.get(i));
 		}
 
 
-
+		
 	}
 	private void addUserToDb(JSONObject user) throws JSONException, RemoteException
 	{
 		ContentValues values = new ContentValues();
-		values.put(UsersEntry.COLUMN_BACKEND_ID, user.optString("Id"));
 		values.put(UsersEntry.COLUMN_FIRSTNAME, user.optString("FirstName"));
 		values.put(UsersEntry.COLUMN_LASTNAME, user.optString("LastName"));
 		values.put(UsersEntry.COLUMN_INFIX, user.optString("Infix"));
 		values.put(UsersEntry.COLUMN_TIMESTAMP, user.optString("CreationTime"));
-		values.put(UsersEntry.COLUMN_USERTYPE, user.optString("UserType"));
+		values.put(UsersEntry.COLUMN_USERTYPE,UserType.Employee.toString());
 		
-
-		contentProviderClient.insert(BackendContentProvider.CONTENT_QUESTIONS, values);
+		String backendid = user.optString("Id");
+		if (backendid != null)
+		{
+			values.put(UsersEntry.COLUMN_BACKEND_ID, getIdFromURI(backendid));
+		}
+		contentProviderClient.insert(BackendContentProvider.CONTENT_USERS, values);
+	}
+	private int getIdFromURI(String uri)
+	{
+		String[] uriparts = uri.split("/");
+		for (int i = 0; i < uriparts.length; i++)
+		{
+			int result = Integer.getInteger(uriparts[i], -1);
+			if (result != -1)
+			{
+				return result;
+			}
+		}
+		return -1;
 	}
 }
 

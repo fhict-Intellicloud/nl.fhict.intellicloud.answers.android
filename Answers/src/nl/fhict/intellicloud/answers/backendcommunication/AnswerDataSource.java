@@ -26,12 +26,12 @@ public class AnswerDataSource implements IAnswerService {
 										AnswersEntry.COLUMN_ANSWERSTATE,
 										AnswersEntry.COLUMN_DATE};
 		
-		private IQuestionService questionDataSource = null;
+		
 		
 		
 		public AnswerDataSource(Context context) {
 			dbHelper = new LocalStorageSQLiteHelper(context);
-			questionDataSource = new QuestionDataSource(context);
+			//
 		}
 		
 		private void open() throws SQLException {
@@ -59,9 +59,9 @@ public class AnswerDataSource implements IAnswerService {
 			ArrayList<Answer> newList = GetAnswers();
 			
 			Answer dbAnswer = newList.get(newList.size()-1);
-			Question questionForAnswer = questionDataSource.GetQuestion(questionId);
-			questionForAnswer.setAnswer(dbAnswer);
-			questionDataSource.UpdateQuestion(questionForAnswer);
+			//			Question questionForAnswer = questionDataSource.GetQuestion(questionId);
+			//			questionForAnswer.setAnswer(dbAnswer);
+			//questionDataSource.UpdateQuestion(questionForAnswer);
 		}
 
 		@Override
@@ -84,10 +84,10 @@ public class AnswerDataSource implements IAnswerService {
 		public Answer GetAnswerUsingQuestion(int questionId) {
 			// TODO Auto-generated method stub
 
-	
-			
-			Question question = questionDataSource.GetQuestion(questionId);
-			return question.getAnswer();
+//			QuestionDataSource questionDataSource = new QuestionDataSource(context);
+//			
+//			Question question = questionDataSource.GetQuestion(questionId);
+			return null;
 			
 			/*//Code unnecessary due to QuestionDataSource
 			Cursor cursor = database.query(QuestionsEntry.TABLE_NAME, allColumns, QuestionsEntry.COLUMN_ANSWER_ID + " = " + questionId, null, null, null, null);
@@ -134,6 +134,7 @@ public class AnswerDataSource implements IAnswerService {
 				filteredAnswers.add(getNextAnswerFromCursor(cursor));		
 				cursor.moveToNext();
 			}
+			cursor.close();
 			close();
 			return filteredAnswers;
 			

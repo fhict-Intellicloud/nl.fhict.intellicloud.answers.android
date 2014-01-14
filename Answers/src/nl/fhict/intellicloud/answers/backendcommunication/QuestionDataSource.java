@@ -47,6 +47,7 @@ public class QuestionDataSource implements IQuestionService {
 
 	@Override
 	public Question GetQuestion(int id) {
+		answerService = new AnswerDataSource(context);
 		open();
 		Question question = null;
 		Cursor cursor = database.query(QuestionsEntry.TABLE_NAME, allColumns, QuestionsEntry.COLUMN_BACKEND_ID + " = " + id, null, null, null, null);
@@ -68,6 +69,7 @@ public class QuestionDataSource implements IQuestionService {
 
 	@Override
 	public ArrayList<Question> GetQuestions(int employeeId) {
+		answerService = new AnswerDataSource(context);
 		String employeeFilter = null;
 		if (employeeId >= 0)
 		{
@@ -82,6 +84,7 @@ public class QuestionDataSource implements IQuestionService {
 			filteredQuestions.add(getNextQuestionFromCursor(cursor));
 			cursor.moveToNext();
 		}
+		cursor.close();
 		close();
 		return filteredQuestions;
 	}
@@ -89,7 +92,7 @@ public class QuestionDataSource implements IQuestionService {
 	
 	private Question getNextQuestionFromCursor(Cursor cursor)
 	{
-		answerService = new AnswerDataSource(context);
+		
 		Long unixMilliSeconds = cursor.getLong(4)*1000;
 		Question question = new Question(cursor.getInt(1), 
 								cursor.getString(5), 

@@ -78,7 +78,7 @@ public class IntellicloudDbContract {
 		
 	}
 	public static abstract class UsersEntry implements BaseColumns {
-		public static final String TABLE_NAME = "feedback";
+		public static final String TABLE_NAME = "users";
 		public static final String COLUMN_ID = "id";
 		public static final String COLUMN_BACKEND_ID = "backend_id";
 		public static final String COLUMN_FIRSTNAME = "first_name";

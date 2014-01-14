@@ -54,13 +54,14 @@ public class ServerAccessor {
 	
 	private static final int HTTP_REQUEST_TIMEOUT_MS = 5 * 1000;
 	private static final String INTELLICLOUD_BASE_URL = "http://81.204.121.229/intellicloudservice/";
-	private static final String URI_GET_QUESTIONS = INTELLICLOUD_BASE_URL + "QuestionService.svc/questions?state=0";
-	private static final String URI_GET_ANSWERS = INTELLICLOUD_BASE_URL + "AnswerService.svc/answers?state=0&search=null";
-	private static final String URI_POST_ANSWERS = INTELLICLOUD_BASE_URL + "AnswerService.svc/answers";
-	private static final String URI_GET_REVIEWS = INTELLICLOUD_BASE_URL + "ReviewService.svc/reviews";
-	private static final String URI_POST_REVIEWS = INTELLICLOUD_BASE_URL + "ReviewService.svc/reviews";
-	private static final String URI_GET_USERS = INTELLICLOUD_BASE_URL + "UserService.svc/users?after=null";
-	private static final String URI_GET_FEEDBACK = INTELLICLOUD_BASE_URL + "FeedbackService.svc/feedback";
+	private static final String INTELLICLOUD_NEW_BASE_URL = "http://81.204.121.229/intellicloudservicenew/";
+	private static final String URI_GET_QUESTIONS = INTELLICLOUD_NEW_BASE_URL + "QuestionService.svc/questions?state=0";
+	private static final String URI_GET_ANSWERS = INTELLICLOUD_NEW_BASE_URL + "AnswerService.svc/answers?state=0&search=null";
+	private static final String URI_POST_ANSWERS = INTELLICLOUD_NEW_BASE_URL + "AnswerService.svc/answers";
+	private static final String URI_GET_REVIEWS = INTELLICLOUD_NEW_BASE_URL + "ReviewService.svc/reviews";
+	private static final String URI_POST_REVIEWS = INTELLICLOUD_NEW_BASE_URL + "ReviewService.svc/reviews";
+	private static final String URI_GET_USERS = INTELLICLOUD_NEW_BASE_URL + "UserService.svc/users?after=2000-01-01T19:20:30";
+	private static final String URI_GET_FEEDBACK = INTELLICLOUD_NEW_BASE_URL + "FeedbackService.svc/feedback";
 	
 	
 	Context context;
@@ -184,7 +185,7 @@ public class ServerAccessor {
             // that the response includes the contacts that we need
             // to update on our side...
             serverArray = new JSONArray(response);
-            Log.d(TAG, response);
+            //Log.d(TAG, response);
             
         } else {
             if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {

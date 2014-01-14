@@ -108,6 +108,10 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			finally
 			{
 				
