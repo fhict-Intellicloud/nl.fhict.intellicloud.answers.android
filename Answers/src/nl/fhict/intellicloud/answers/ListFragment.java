@@ -60,7 +60,8 @@ public class ListFragment extends Fragment {
     	 
     	 FilterList listFilter = new FilterList();
     	 list = listFilter.createListWithFilter(questionService.GetQuestions(), i);
-    	 
+    	 iqla.clear();
+    	 iqla.addAll(list);
     	 iqla.notifyDataSetChanged();
     	
     	 
