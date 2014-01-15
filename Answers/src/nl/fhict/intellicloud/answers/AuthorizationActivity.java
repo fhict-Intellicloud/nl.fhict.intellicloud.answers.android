@@ -1,6 +1,6 @@
 package nl.fhict.intellicloud.answers;
 
-import nl.fhict.intellicloud.R;
+
 import nl.fhict.intellicloud.answers.backendcommunication.oauth.AuthenticationManager;
 import android.os.Bundle;
 import android.app.Activity;

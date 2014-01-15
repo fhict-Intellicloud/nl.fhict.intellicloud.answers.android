@@ -17,6 +17,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class QuestionDataSource implements IQuestionService {
 	private SQLiteDatabase database;
 	private LocalStorageSQLiteHelper dbHelper;
+	private Context context;
 	IAnswerService answerService;
 	private final String[] allColumns = { QuestionsEntry.COLUMN_ID, 
 									QuestionsEntry.COLUMN_BACKEND_ID,
@@ -32,7 +33,8 @@ public class QuestionDataSource implements IQuestionService {
 	
 	public QuestionDataSource(Context context) {
 		dbHelper = new LocalStorageSQLiteHelper(context);
-		answerService = new AnswerDataSource(context);
+		this.context = context;
+		
 	}
 	
 	private void open() throws SQLException {
@@ -45,9 +47,10 @@ public class QuestionDataSource implements IQuestionService {
 
 	@Override
 	public Question GetQuestion(int id) {
+		answerService = new AnswerDataSource(context);
 		open();
 		Question question = null;
-		Cursor cursor = database.query(QuestionsEntry.TABLE_NAME, allColumns, QuestionsEntry.COLUMN_ID + " = " + id, null, null, null, null);
+		Cursor cursor = database.query(QuestionsEntry.TABLE_NAME, allColumns, QuestionsEntry.COLUMN_BACKEND_ID + " == " + id, null, null, null, null);
 		if (cursor.moveToFirst())
 		{
 			
@@ -66,6 +69,7 @@ public class QuestionDataSource implements IQuestionService {
 
 	@Override
 	public ArrayList<Question> GetQuestions(int employeeId) {
+		answerService = new AnswerDataSource(context);
 		String employeeFilter = null;
 		if (employeeId >= 0)
 		{
@@ -80,6 +84,7 @@ public class QuestionDataSource implements IQuestionService {
 			filteredQuestions.add(getNextQuestionFromCursor(cursor));
 			cursor.moveToNext();
 		}
+		cursor.close();
 		close();
 		return filteredQuestions;
 	}
@@ -87,12 +92,13 @@ public class QuestionDataSource implements IQuestionService {
 	
 	private Question getNextQuestionFromCursor(Cursor cursor)
 	{
-		Long unixMilliSeconds = cursor.getLong(3)*1000;
-		Question question = new Question(cursor.getInt(0), 
-								cursor.getString(4), 
-								UserDataSource.GetUser(cursor.getInt(2), database), 
-								UserDataSource.GetUser(cursor.getInt(1), database),
-								QuestionState.valueOf(cursor.getString(5)), 
+		
+		Long unixMilliSeconds = cursor.getLong(4);
+		Question question = new Question(cursor.getInt(1), 
+								cursor.getString(5), 
+								UserDataSource.GetUser(cursor.getInt(3), database), 
+								UserDataSource.GetUser(cursor.getInt(2), database),
+								QuestionState.valueOf(cursor.getString(6)), 
 								new Date(unixMilliSeconds));
 		question.setIsPrivate(cursor.getInt(7) > 0);
 		question.setTitle(cursor.getString(8));
@@ -104,11 +110,14 @@ public class QuestionDataSource implements IQuestionService {
 	public void UpdateQuestion(Question question) {
 		ContentValues values = new ContentValues();
 		values.put(QuestionsEntry.COLUMN_QUESTIONSTATE, question.getQuestionState().toString());
-		values.put(QuestionsEntry.COLUMN_ANSWER_ID, question.getAnswer().getId());
+		if (question.getAnswer() != null)
+		{
+			values.put(QuestionsEntry.COLUMN_ANSWER_ID, question.getAnswer().getId());
+		}
 
 	
 		open();
-		database.update(QuestionsEntry.TABLE_NAME, values, QuestionsEntry.COLUMN_ID + " = " + question.getId(), null);
+		database.update(QuestionsEntry.TABLE_NAME, values, QuestionsEntry.COLUMN_BACKEND_ID + " = " + question.getId(), null);
 		close();
 		
 	}

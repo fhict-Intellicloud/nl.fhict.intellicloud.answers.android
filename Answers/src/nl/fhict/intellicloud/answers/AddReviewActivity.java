@@ -1,6 +1,6 @@
 package nl.fhict.intellicloud.answers;
 
-import nl.fhict.intellicloud.R;
+
 import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
 import nl.fhict.intellicloud.answers.backendcommunication.IReviewService;
 import nl.fhict.intellicloud.answers.backendcommunication.ReviewDataSource;

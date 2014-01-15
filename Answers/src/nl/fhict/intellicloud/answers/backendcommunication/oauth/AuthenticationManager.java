@@ -16,6 +16,7 @@ import org.apache.http.message.BasicNameValuePair;
 import com.json.parsers.JSONParser;
 import com.json.parsers.JsonParserFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class AuthenticationManager {
 	
@@ -111,7 +112,7 @@ public class AuthenticationManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		Log.d("Authenticator", "Incoming Json Response = " + jsonResponse);
 		Map parsedValues = this.jsonParser.parseJson(jsonResponse);
 		return new AccessToken(
 				(String) parsedValues.get("id_token"),

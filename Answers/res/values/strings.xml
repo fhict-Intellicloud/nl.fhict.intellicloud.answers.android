@@ -5,6 +5,9 @@
     <string name="tabbarname_incomingquestions">Incoming questions</string>
     <string name="tabbarname_reviewquestions">Review questions</string>
     <string name="action_settings">Settings</string>
+    <string name="sync_menu_entry">Intellicloud - Answers</string>
+    <string name="sync_perm_label">Intellicloud Synchronization</string>
+    <string name="sync_perm_description">Permission to schedule and manage the synchronization of your Intellicloud account and data via the Android Synchronization system.</string>
 
     <!-- answer_list_item.xml & activity_answer_reviews.xml -->
     <string name="title_activity_answer_reviews">Review</string>

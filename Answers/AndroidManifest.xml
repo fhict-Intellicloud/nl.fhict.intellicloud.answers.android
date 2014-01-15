@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="nl.fhict.intellicloud"
+    package="nl.fhict.intellicloud.answers"
     android:versionCode="1"
     android:versionName="1.0" >
-
+	<permission android:name="nl.fhict.intellicloud.answers.android.permission.INTELLICLOUD_SYNC"
+        	android:label="@string/sync_perm_label"
+        	android:description="@string/sync_perm_description"
+        	android:permissionGroup="android.permission-group.SYNC_SETTINGS"
+        	android:protectionLevel="normal" />
+	
+	
+	
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_SYNC_STATS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="nl.fhict.intellicloud.answers.android.permission.INTELLICLOUD_SYNC"/>
+    
         
     <uses-sdk
         android:minSdkVersion="14"
@@ -25,6 +42,7 @@
 
         android:theme="@style/Theme.IntellicloudTheme" >
         <uses-library android:name="android.test.runner" />
+
 
         <activity
             android:name="nl.fhict.intellicloud.answers.MainActivity"
@@ -63,11 +81,51 @@
             android:name="nl.fhict.intellicloud.answers.SlidingFragmentActivity"
             android:label="@string/title_activity_sliding_fragment" >
         </activity>
+
+        
+        <!-- Internal content provider meant for the SyncService, is unavailable for other apps -->
+        <provider
+       		android:authorities="nl.fhict.intellicloud.answers.android.contentprovider"
+       		android:name=".backendcommunication.BackendContentProvider"
+       		android:exported="false"
+       		android:syncable="true" >
+		</provider> 
+		
+        <!-- Synchronization service -->
+		<service
+			android:name=".backendcommunication.BackendSyncService"
+			android:exported="true"
+			android:process=":sync"
+			android:permission="nl.fhict.intellicloud.answers.android.permission.INTELLICLOUD_SYNC"
+			>
+            <intent-filter>nl.fhict.intellicloud.answers.backendcommunication
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+            <meta-data android:name="android.content.SyncAdapter"
+                    android:resource="@xml/syncadapter" />
+            
+        </service>
+        
+		<!-- Authentication Service -->
+		<service
+            android:name=".backendcommunication.AuthenticatorService"
+            android:exported="true"
+            android:permission="nl.fhict.intellicloud.answers.android.permission.INTELLICLOUD_SYNC">
+       		<intent-filter>
+            	<action android:name="android.accounts.AccountAuthenticator"/>
+        	</intent-filter>
+        	<meta-data
+            	android:name="android.accounts.AccountAuthenticator"
+            	android:resource="@xml/authenticator" />
+    	</service>
+        
+        
+    
+
         <activity
             android:name="nl.fhict.intellicloud.answers.RejectedAnswerActivity"
             android:label="@string/title_activity_rejected_answer" 
             android:parentActivityName="nl.fhict.intellicloud.answers.MainActivity" >
         </activity>
     </application>
-
 </manifest>

@@ -34,6 +34,7 @@ public class IntellicloudDbContract {
 		public static final String COLUMN_IS_PRIVATE = "is_private";
 		public static final String COLUMN_TITLE = "title";
 		public static final String COLUMN_ANSWER_ID = "answer";
+		public static final String COLUMN_TIMESTAMP = "timestamp";
 
 	}
 	public static abstract class AnswersEntry implements BaseColumns {
@@ -42,9 +43,10 @@ public class IntellicloudDbContract {
 		public static final String COLUMN_BACKEND_ID = "backend_id";
 		public static final String COLUMN_ANSWER = "answer";
 		public static final String COLUMN_ANSWERER_ID = "answerer_id";
-//		public static final String COLUMN_QUESTION_ID = "question";
+		public static final String COLUMN_QUESTION_ID = "question";
 		public static final String COLUMN_ANSWERSTATE = "answer_state";
 		public static final String COLUMN_DATE = "date";
+		public static final String COLUMN_TIMESTAMP = "timestamp";
 		
 		
 		
@@ -58,6 +60,7 @@ public class IntellicloudDbContract {
 		public static final String COLUMN_ANSWER_ID = "answer_id";
 		public static final String COLUMN_REVIEWSTATE = "review_state";
 		public static final String COLUMN_DATE = "date";
+		public static final String COLUMN_TIMESTAMP = "timestamp";
 		
 	}
 	public static abstract class FeedbackEntry implements BaseColumns {
@@ -71,22 +74,24 @@ public class IntellicloudDbContract {
 		public static final String COLUNN_ANSWER_ID = "answer_id";
 		public static final String COLUMN_FEEDBACK_STATE = "feedback_state";
 		public static final String COLUMN_FEEDBACK_TYPE = "feedback_type";
+		public static final String COLUMN_TIMESTAMP = "timestamp";
 		
 	}
 	public static abstract class UsersEntry implements BaseColumns {
-		public static final String TABLE_NAME = "feedback";
+		public static final String TABLE_NAME = "users";
 		public static final String COLUMN_ID = "id";
 		public static final String COLUMN_BACKEND_ID = "backend_id";
 		public static final String COLUMN_FIRSTNAME = "first_name";
 		public static final String COLUMN_LASTNAME = "last_name";
 		public static final String COLUMN_INFIX = "infix";
 		public static final String COLUMN_USERTYPE = "user_type";
+		public static final String COLUMN_TIMESTAMP = "timestamp";
 		
 		public static final String[] ALL_COLUMNS = {COLUMN_ID, COLUMN_BACKEND_ID, COLUMN_FIRSTNAME, COLUMN_LASTNAME, COLUMN_INFIX, COLUMN_USERTYPE};
 		
 	}
 	public static class CreateStatements{
-		public static final String CREATE_TABLE_QUESTIONS = "create table "
+		public static final String CREATE_TABLE_QUESTIONS = "CREATE TABLE IF NOT EXISTS "
 				  + QuestionsEntry.TABLE_NAME + 
 				"(" + QuestionsEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
 				+ QuestionsEntry.COLUMN_BACKEND_ID + " INTEGER, "
@@ -94,40 +99,44 @@ public class IntellicloudDbContract {
 				+ QuestionsEntry.COLUMN_ASKER_ID + " INTEGER, "
 				+ QuestionsEntry.COLUMN_ANSWERER_ID + " INTEGER, "
 				+ QuestionsEntry.COLUMN_ANSWER_ID + " INTEGER, "
-				+ QuestionsEntry.COLUMN_DATE + " DATETIME, "
+				+ QuestionsEntry.COLUMN_DATE + " INTEGER, "
 				+ QuestionsEntry.COLUMN_IS_PRIVATE + " INTEGER,"
 	      		+ QuestionsEntry.COLUMN_TITLE + " TEXT, "
-				+ QuestionsEntry.COLUMN_QUESTIONSTATE + " TEXT NOT NULL"
+				+ QuestionsEntry.COLUMN_QUESTIONSTATE + " TEXT,"
+				+ QuestionsEntry.COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
 				+ " );";
-		  public static final String CREATE_TABLE_ANSWERS = "create table "
+		  public static final String CREATE_TABLE_ANSWERS = "CREATE TABLE IF NOT EXISTS "
 		      + AnswersEntry.TABLE_NAME + 
 	      		"(" + AnswersEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 	      		+ AnswersEntry.COLUMN_BACKEND_ID + " INTEGER, "
 	      		+ AnswersEntry.COLUMN_ANSWER + " TEXT, "
-	      		+ AnswersEntry.COLUMN_ANSWERER_ID + "INTEGER, "
-//	      		+ AnswersEntry.COLUMN_QUESTION_ID + " INTEGER, "
-	      		+ AnswersEntry.COLUMN_ANSWERSTATE + " TEXT NOT NULL,"
-	      		
+	      		+ AnswersEntry.COLUMN_ANSWERER_ID + " INTEGER, "
+	      		+ AnswersEntry.COLUMN_DATE + " INTEGER,"
+	      		+ AnswersEntry.COLUMN_QUESTION_ID + " INTEGER, "
+	      		+ AnswersEntry.COLUMN_ANSWERSTATE + " TEXT, "
+	      		+ AnswersEntry.COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
 	      		+ " );";
-		  public static final String CREATE_TABLE_REVIEWS = "create table "
+		  public static final String CREATE_TABLE_REVIEWS = "CREATE TABLE IF NOT EXISTS "
 		      + ReviewsEntry.TABLE_NAME + 
 	      		"(" + ReviewsEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
 	      		+ ReviewsEntry.COLUMN_BACKEND_ID + " INTEGER,"
 	      		+ ReviewsEntry.COLUMN_REVIEW + " TEXT, "
 	      		+ ReviewsEntry.COLUMN_REVIEWER_ID + " INTEGER, "
 	      		+ ReviewsEntry.COLUMN_ANSWER_ID + " INTEGER, "
-	      		+ ReviewsEntry.COLUMN_REVIEWSTATE + " TEXT NOT NULL"
+	      		+ ReviewsEntry.COLUMN_REVIEWSTATE + " TEXT,"
+	      		+ ReviewsEntry.COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
 	      		+ " );";
-		  public static final String CREATE_TABLE_USERS = "create table "
+		  public static final String CREATE_TABLE_USERS = "CREATE TABLE IF NOT EXISTS "
 		      + UsersEntry.TABLE_NAME + 
 	      		"(" + UsersEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
 	      		+ UsersEntry.COLUMN_BACKEND_ID + " INTEGER,"
 	      		+ UsersEntry.COLUMN_FIRSTNAME + " TEXT, "
 	      		+ UsersEntry.COLUMN_LASTNAME + " TEXT, "
 	      		+ UsersEntry.COLUMN_INFIX + " TEXT, "
-	      		+ UsersEntry.COLUMN_USERTYPE + " TEXT NOT NULL"
+	      		+ UsersEntry.COLUMN_USERTYPE + " TEXT,"
+	      		+ UsersEntry.COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
 	      		+ " );";
-		  public static final String CREATE_TABLE_FEEDBACK = "create table "
+		  public static final String CREATE_TABLE_FEEDBACK = "CREATE TABLE IF NOT EXISTS "
 			      + FeedbackEntry.TABLE_NAME + 
 		      		"(" + FeedbackEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
 		      		+ FeedbackEntry.COLUMN_BACKEND_ID + " INTEGER, "
@@ -137,7 +146,7 @@ public class IntellicloudDbContract {
 		      		+ FeedbackEntry.COLUMN_QUESTION_ID + " INTEGER,"
 		      		+ FeedbackEntry.COLUNN_ANSWER_ID + " INTEGER,"
 		      		+ FeedbackEntry.COLUMN_USER_ID + " INTEGER,"
-		      		
+		      		+ FeedbackEntry.COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
 		      		+ " );";
 			 
 		 

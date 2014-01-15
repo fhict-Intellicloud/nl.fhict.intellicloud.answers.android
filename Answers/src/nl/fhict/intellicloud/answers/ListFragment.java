@@ -2,14 +2,17 @@ package nl.fhict.intellicloud.answers;
 
 import java.util.ArrayList;
 
-import nl.fhict.intellicloud.R;
-import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
-import nl.fhict.intellicloud.answers.backendcommunication.IQuestionService;
+
+import nl.fhict.intellicloud.answers.backendcommunication.*;
+
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.database.ContentObserver;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -31,11 +34,13 @@ public class ListFragment extends Fragment {
     public static final String ARG_FILTER_NUMBER = "filter_number";
     private IQuestionService questionService;
     private QuestionListOnClickListener qListOnClickListener;
+    private ListView lv;
     IncomingQuestionsListAdapter iqla;
     ArrayList<Question> list;
+    ContentObserver backendContentObserver;
 
     public ListFragment() {
-    	questionService = new DummyBackend();
+    	
     }
 
     @Override
@@ -44,16 +49,31 @@ public class ListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
         int i = getArguments().getInt(ARG_FILTER_NUMBER);
         String filter = getResources().getStringArray(R.array.filter_array)[i];
-
+        questionService = new QuestionDataSource(getActivity());
         getActivity().setTitle(filter);
         return rootView;
     }
+    private void refreshList()
+    {
+    	
+    	 int i = getArguments().getInt(ARG_FILTER_NUMBER);
+    	 
+    	 FilterList listFilter = new FilterList();
+    	 list = listFilter.createListWithFilter(questionService.GetQuestions(), i);
+    	 iqla.clear();
+    	 iqla.addAll(list);
+    	 iqla.notifyDataSetChanged();
+    	
+    	 
+    	 
+    }
+    
     
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		
-		ListView lv = (ListView)getActivity().findViewById(R.id.lvIncomingQuestions);
+				
+		lv = (ListView)getActivity().findViewById(R.id.lvIncomingQuestions);
 	    
 	    int i = getArguments().getInt(ARG_FILTER_NUMBER);
 	    
@@ -64,9 +84,24 @@ public class ListFragment extends Fragment {
 	    lv.setAdapter(iqla);
         qListOnClickListener = new QuestionListOnClickListener(getActivity(), list);
         lv.setOnItemClickListener(qListOnClickListener);
+        backendContentObserver = new ContentObserver(null) 
+        {
+        	public void onChange(boolean selfChange) {   
+        		getActivity().runOnUiThread(new Runnable() {
+            	    @Override
+            	    public void run() {
+            	        refreshList();
+            	    }
+            	});
+            }
+        	
+        };
+ 
+		getActivity().getContentResolver().registerContentObserver(BackendContentProvider.CONTENT_QUESTIONS, true, backendContentObserver);
+
 
 	}
-
+	
 
     /**
      * Sets the filter of the Question array
@@ -75,4 +110,10 @@ public class ListFragment extends Fragment {
     public void setSearchFilter(String searchText){
         iqla.getFilter().filter(searchText);
     }
+
+	@Override
+	public void onDestroy() {
+		getActivity().getApplicationContext().getContentResolver().unregisterContentObserver(backendContentObserver);
+		super.onDestroy();
+	}
 }

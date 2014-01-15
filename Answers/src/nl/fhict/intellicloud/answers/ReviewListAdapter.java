@@ -2,7 +2,7 @@ package nl.fhict.intellicloud.answers;
 
 import java.util.List;
 
-import nl.fhict.intellicloud.R;
+
 import nl.fhict.intellicloud.answers.backendcommunication.IQuestionService;
 import nl.fhict.intellicloud.answers.backendcommunication.QuestionDataSource;
 import android.app.Activity;

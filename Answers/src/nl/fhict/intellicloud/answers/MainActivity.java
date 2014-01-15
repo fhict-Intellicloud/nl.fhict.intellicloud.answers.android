@@ -2,7 +2,8 @@ package nl.fhict.intellicloud.answers;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import nl.fhict.intellicloud.R;
+
+import nl.fhict.intellicloud.answers.backendcommunication.BackendSyncService;
 import nl.fhict.intellicloud.answers.backendcommunication.oauth.AuthenticationManager;
 
 import java.util.Calendar;
@@ -11,11 +12,14 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import android.R.color;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.SearchManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +30,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.text.method.DateTimeKeyListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,8 +48,18 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements SearchView.OnQueryTextListener {
 	private final int AUTHORIZE_REQUEST = 1000;
+	
+	//Static values for synchronization
+	private static final long SYNC_DEFAULT_INTERVAL = 60000L; //Every minute
+    private static final String SYNC_AUTHORITY = "nl.fhict.intellicloud.answers.android.contentprovider";
+    private static final String SYNC_ACCOUNT = "Intellicloud - Answers";
+    private static final String SYNC_ACCOUNT_TYPE = "nl.fhict.intellicloud.answers.account";
+	
+	private AuthenticationManager authentication;
+
 	private final String PREFERENCES_NAME = "nl.fhict.intellicloud.answers";
 	private final String PREFERENCES_KEY = "AUTHORIZATON_CODE";
+	private final String PREFERENCES_TOKEN = "AUTHORIZATON_TOKEN";
 	
     private DrawerLayout mDrawerLayout;
     private RelativeLayout mLinearLayout;
@@ -55,6 +70,9 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
     private CharSequence mTitle;
     private String[] mFilterTitles;
 
+    private ContentResolver syncResolver;
+    
+    
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,14 +80,24 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
         
         //Get the shared preference which should contain the authorization code
         //If the code is saved in the shared, the application can start getting an access token
-        SharedPreferences preferences = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences preferences = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_MULTI_PROCESS);
         if(preferences.contains(PREFERENCES_KEY))
-        	AuthenticationManager.getInstance().Initialize(preferences.getString(PREFERENCES_KEY, null));
+        {
+        	Log.d("SharedPrefs", preferences.getString(PREFERENCES_KEY, null));
+        	AuthenticationManager authManager = AuthenticationManager.getInstance();
+        	authManager.Initialize(preferences.getString(PREFERENCES_KEY, null));
+        	Editor editor = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_MULTI_PROCESS).edit();
+			//editor.putString(PREFERENCES_TOKEN, authManager.getAccessToken());
+			editor.apply();
+        	
+        	setupSyncService(authManager);
+        }
         // if the code is not saved yet it should be requested
         // The authorization activity will start a webview for the user to enter his google login credentials
         else
+        {
 			this.startActivityForResult(new Intent(this, AuthorizationActivity.class), AUTHORIZE_REQUEST);
-
+        }
         mTitle = mDrawerTitle = getTitle();
         mFilterTitles = getResources().getStringArray(R.array.filter_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -244,15 +272,64 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
     	if(requestCode == this.AUTHORIZE_REQUEST) {
     		if(resultCode == Activity.RESULT_OK) {
     			String authorizationCode = data.getExtras().getString(AuthorizationActivity.AUTHORIZATION_CODE);
+    			AuthenticationManager authManager = AuthenticationManager.getInstance();
+    			authManager.Initialize(authorizationCode);
     			
-    			Editor editor = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE).edit();
+    			Editor editor = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_MULTI_PROCESS).edit();
     			editor.putString(PREFERENCES_KEY, authorizationCode);
+    			editor.putString(PREFERENCES_TOKEN, authManager.getAccessToken());
     			editor.apply();
-    			AuthenticationManager.getInstance().Initialize(authorizationCode);
+    			
+    			    			
+    			//Authentication success, Activate sync service
+    			setupSyncService(authManager);
+    			
     			Toast.makeText(this, "Answers is successfully authorized.", Toast.LENGTH_LONG).show();
+
     		} else {
     			Toast.makeText(this, "Failed to authorize Answers.", Toast.LENGTH_LONG).show();
     		}
     	}
+    }
+    
+    private void setupSyncService(AuthenticationManager authManager)
+    {
+    	AccountManager accountManager = (AccountManager)getSystemService(
+                        ACCOUNT_SERVICE);
+    	
+    	// Get the content resolver for your app
+        syncResolver = getContentResolver();
+        
+        //Syncing parameters
+        Bundle params = new Bundle();
+        params.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, false);
+        params.putBoolean(ContentResolver.SYNC_EXTRAS_DO_NOT_RETRY, false);
+        params.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, false);
+      
+        
+        //Account is a dummy account - only added to satisfy the standard Android libraries - getting the correct token is handled internally
+        //If we want to have our account name show up in the settings menu, it should be inserted here.
+        Account syncAccount = new Account(SYNC_ACCOUNT, SYNC_ACCOUNT_TYPE);
+        ContentResolver.setIsSyncable(syncAccount, SYNC_AUTHORITY, 1);
+        
+        //Authorize sync invokations from other sources
+        ContentResolver.setSyncAutomatically(syncAccount, SYNC_AUTHORITY, true);
+        
+        //Explicitly adds account to Android's account system for syncing- makes it show up in settings menu
+      	accountManager.addAccountExplicitly(syncAccount, null, null);
+        
+        
+        //Start periodic sync
+        ContentResolver.addPeriodicSync(
+                syncAccount,
+                SYNC_AUTHORITY,
+                params,
+                SYNC_DEFAULT_INTERVAL);
+        
+        //Request a first sync- this method can also be used as a refresh button.
+		ContentResolver.requestSync(syncAccount, SYNC_AUTHORITY, params);
+		
+		
+		
     }
 }

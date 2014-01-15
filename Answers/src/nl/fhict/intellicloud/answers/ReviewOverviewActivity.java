@@ -1,8 +1,9 @@
 package nl.fhict.intellicloud.answers;
 
-import java.util.List;
 
-import nl.fhict.intellicloud.R;
+import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
+import nl.fhict.intellicloud.answers.backendcommunication.IAnswerService;
+import java.util.List;
 import nl.fhict.intellicloud.answers.backendcommunication.IQuestionService;
 import nl.fhict.intellicloud.answers.backendcommunication.IReviewService;
 import nl.fhict.intellicloud.answers.backendcommunication.QuestionDataSource;
@@ -46,7 +47,10 @@ public class ReviewOverviewActivity extends Activity {
 		tvQuestionDetail.setText(question.getQuestion());
 		
 		TextView tvAnswer = (TextView) findViewById(R.id.tvAnswer);
-		tvAnswer.setText(answer.getAnswer());
+		if (answer != null)
+		{
+			tvAnswer.setText(answer.getAnswer());
+		}
 		
 		Button btnDeclineAnswer = (Button) findViewById(R.id.btnDeclineAnswer);
 		btnDeclineAnswer.setOnClickListener(new OnClickListener(){

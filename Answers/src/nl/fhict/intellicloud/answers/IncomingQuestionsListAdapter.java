@@ -1,8 +1,9 @@
 package nl.fhict.intellicloud.answers;
 
 import java.text.SimpleDateFormat;
-import nl.fhict.intellicloud.R;
+
 import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
+
 
 import java.util.ArrayList;
 import java.util.Date;

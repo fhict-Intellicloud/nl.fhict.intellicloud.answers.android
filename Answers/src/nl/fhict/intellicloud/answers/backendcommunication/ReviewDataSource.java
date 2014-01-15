@@ -20,8 +20,8 @@ public class ReviewDataSource implements IReviewService {
 	private SQLiteDatabase database;
 	private LocalStorageSQLiteHelper dbHelper;
 	private final String[] allColumns = { ReviewsEntry.COLUMN_ID, 
-										ReviewsEntry.COLUMN_REVIEW,
 										ReviewsEntry.COLUMN_BACKEND_ID,
+										ReviewsEntry.COLUMN_REVIEW,
 										ReviewsEntry.COLUMN_REVIEWER_ID,
 										ReviewsEntry.COLUMN_REVIEWSTATE,
 										ReviewsEntry.COLUMN_ANSWER_ID
@@ -76,6 +76,7 @@ public class ReviewDataSource implements IReviewService {
 			
 			cursor.moveToNext();
 		}
+		cursor.close();
 		close();
 		return filteredReviews;
 	}
@@ -86,22 +87,23 @@ public class ReviewDataSource implements IReviewService {
 		values.put(ReviewsEntry.COLUMN_REVIEWSTATE, review.getReviewState().toString());
 	
 		open();
-		database.update(ReviewsEntry.TABLE_NAME, values, ReviewsEntry.COLUMN_ID + " = " + review.getId(), null);
+		database.update(ReviewsEntry.TABLE_NAME, values, ReviewsEntry.COLUMN_BACKEND_ID + " = " + review.getId(), null);
 		close();
 
 	}
 	
 	private Review getNextReviewFromCursor(Cursor cursor)
 	{
-		User reviewer = UserDataSource.GetUser(cursor.getInt(2), database);
-		Answer answerForReview = answerDataSource.GetAnswer(cursor.getInt(4));
-		ReviewState state = ReviewState.valueOf(cursor.getString(3));
+		User reviewer = UserDataSource.GetUser(cursor.getInt(3), database);
+		ReviewState state = ReviewState.valueOf(cursor.getString(4));
+		Answer answerForReview = answerDataSource.GetAnswer(cursor.getInt(5));
+		
 		Review review = new Review(
-								cursor.getString(1),
+								cursor.getString(2),
 								answerForReview,
 								reviewer,
 								state);
-		review.setId(cursor.getInt(0));
+		review.setId(cursor.getInt(1));
 								
 		return review;			
 								
