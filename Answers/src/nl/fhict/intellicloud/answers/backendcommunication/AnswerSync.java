@@ -36,9 +36,9 @@ public class AnswerSync {
 	private int dateColumn;
 	private int answerIdColumn;
 	private int answererIdColumn;
-	private int isPrivateColumn;
-	private int askerIdColumn;
-	private int questionStateColumn;
+
+	private int questionIdColumn;
+
 	
 	public AnswerSync(Context context, ContentProviderClient contentProviderClient)
 	{
@@ -63,7 +63,9 @@ public class AnswerSync {
 		dateColumn = answersCursor.getColumnIndex(AnswersEntry.COLUMN_DATE);
 		answererIdColumn = answersCursor.getColumnIndex(AnswersEntry.COLUMN_ANSWERER_ID);
 		localIdColumn = answersCursor.getColumnIndex(AnswersEntry.COLUMN_ID);
-
+		questionIdColumn = answersCursor.getColumnIndex(AnswersEntry.COLUMN_QUESTION_ID);
+		
+		answersCursor.moveToFirst();
 		for (int i = 0; i < answersResultArray.length(); i++)
 		{
 			answersToAddToDB.add(answersResultArray.getJSONObject(i));
@@ -74,11 +76,11 @@ public class AnswerSync {
 			JSONObject serverAnswer = null;
 	
 			
-			for (int i = 0; i < answersResultArray.length(); i++)
+			for (int i = 0; i < answersToAddToDB.size(); i++)
 			{
 				
-				serverAnswer = answersResultArray.getJSONObject(i);
-				Log.d("sync", serverAnswer.toString());
+				serverAnswer = answersToAddToDB.get(i);
+				//Log.d("sync", serverAnswer.toString());
 				if (getIdFromURI(serverAnswer.getString("Id")) == (answersCursor.getInt(idColumn)))
 				{
 					answersToAddToDB.remove(i);
@@ -118,7 +120,7 @@ public class AnswerSync {
 	private JSONObject getJsonForCurrentAnswer(Cursor cursor) throws JSONException
 	{
 		JSONObject jsonAnswer = new JSONObject();
-		jsonAnswer.accumulate("questionId", cursor.getInt(idColumn));
+		jsonAnswer.accumulate("questionId",  cursor.getInt(questionIdColumn));
 		jsonAnswer.accumulate("answer", cursor.getString(answerColumn));
 		jsonAnswer.accumulate("answererId", cursor.getInt(answererIdColumn));
 		jsonAnswer.accumulate("answerState", cursor.getString(answerStateColumn));
@@ -132,7 +134,7 @@ public class AnswerSync {
 		ContentValues values = new ContentValues();
 		values.put(AnswersEntry.COLUMN_TIMESTAMP, answer.optString("LastChangedTime"));
 		values.put(AnswersEntry.COLUMN_ANSWER, answer.optString("Content"));
-		values.put(AnswersEntry.COLUMN_DATE, answer.optString("Date"));
+		values.put(AnswersEntry.COLUMN_DATE, DateHelper.getUnixMillisecondsFromJsonDate(answer.optString("Date")));
 		values.put(AnswersEntry.COLUMN_ANSWERSTATE, answer.optString("answerState"));//TODO
 		
 		String backendid = answer.optString("Id");
@@ -155,11 +157,12 @@ public class AnswerSync {
 		String[] uriparts = uri.split("/");
 		for (int i = 0; i < uriparts.length; i++)
 		{
-			int result = Integer.getInteger(uriparts[i], -1);
-			if (result != -1)
+			if(uriparts[i].matches("-?\\d+"))//Regex that checks if the string is a number
 			{
+				int result = Integer.parseInt(uriparts[i]);
 				return result;
 			}
+
 		}
 		return -1;
 	}

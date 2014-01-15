@@ -59,22 +59,23 @@ public class UserSync {
 		idColumn = usersCursor.getColumnIndex(UsersEntry.COLUMN_BACKEND_ID);
 		localIdColumn = usersCursor.getColumnIndex(UsersEntry.COLUMN_ID);
 		//				timestampColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_TIMESTAMP);
-
+		
+		usersCursor.moveToFirst();
 		for (int i = 0; i < userResultArray.length(); i++)
 		{
 			usersToAddToDB.add(userResultArray.getJSONObject(i));
 		}
 		
 		while (!usersCursor.isAfterLast()) {
-			Log.d("sync", "while");
+	
 			JSONObject serverUser = null;
 			boolean userFoundInResult = false;
 			
-			for (int i = 0; i < userResultArray.length(); i++)
+			for (int i = 0; i < usersToAddToDB.size(); i++)
 			{
 				
-				serverUser = userResultArray.getJSONObject(i);
-				Log.d("sync", serverUser.toString());
+				serverUser = usersToAddToDB.get(i);
+
 				if (getIdFromURI(serverUser.getString("Id")) == (usersCursor.getInt(idColumn)))
 				{
 					userFoundInResult = true;
@@ -107,10 +108,11 @@ public class UserSync {
 	private void addUserToDb(JSONObject user) throws JSONException, RemoteException
 	{
 		ContentValues values = new ContentValues();
+		Log.d("user", user.toString());
 		values.put(UsersEntry.COLUMN_FIRSTNAME, user.optString("FirstName"));
 		values.put(UsersEntry.COLUMN_LASTNAME, user.optString("LastName"));
 		values.put(UsersEntry.COLUMN_INFIX, user.optString("Infix"));
-		values.put(UsersEntry.COLUMN_TIMESTAMP, user.optString("CreationTime"));
+		values.put(UsersEntry.COLUMN_TIMESTAMP, DateHelper.getUnixMillisecondsFromJsonDate(user.optString("CreationTime")));
 		values.put(UsersEntry.COLUMN_USERTYPE,UserType.Employee.toString());
 		
 		String backendid = user.optString("Id");
@@ -125,11 +127,12 @@ public class UserSync {
 		String[] uriparts = uri.split("/");
 		for (int i = 0; i < uriparts.length; i++)
 		{
-			int result = Integer.getInteger(uriparts[i], -1);
-			if (result != -1)
+			if(uriparts[i].matches("-?\\d+"))//Regex that checks if the string is a number
 			{
+				int result = Integer.parseInt(uriparts[i]);
 				return result;
 			}
+
 		}
 		return -1;
 	}

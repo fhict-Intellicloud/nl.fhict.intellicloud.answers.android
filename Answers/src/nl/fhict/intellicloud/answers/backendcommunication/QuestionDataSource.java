@@ -50,7 +50,7 @@ public class QuestionDataSource implements IQuestionService {
 		answerService = new AnswerDataSource(context);
 		open();
 		Question question = null;
-		Cursor cursor = database.query(QuestionsEntry.TABLE_NAME, allColumns, QuestionsEntry.COLUMN_BACKEND_ID + " = " + id, null, null, null, null);
+		Cursor cursor = database.query(QuestionsEntry.TABLE_NAME, allColumns, QuestionsEntry.COLUMN_BACKEND_ID + " == " + id, null, null, null, null);
 		if (cursor.moveToFirst())
 		{
 			
@@ -93,7 +93,7 @@ public class QuestionDataSource implements IQuestionService {
 	private Question getNextQuestionFromCursor(Cursor cursor)
 	{
 		
-		Long unixMilliSeconds = cursor.getLong(4)*1000;
+		Long unixMilliSeconds = cursor.getLong(4);
 		Question question = new Question(cursor.getInt(1), 
 								cursor.getString(5), 
 								UserDataSource.GetUser(cursor.getInt(3), database), 
@@ -110,7 +110,10 @@ public class QuestionDataSource implements IQuestionService {
 	public void UpdateQuestion(Question question) {
 		ContentValues values = new ContentValues();
 		values.put(QuestionsEntry.COLUMN_QUESTIONSTATE, question.getQuestionState().toString());
-		values.put(QuestionsEntry.COLUMN_ANSWER_ID, question.getAnswer().getId());
+		if (question.getAnswer() != null)
+		{
+			values.put(QuestionsEntry.COLUMN_ANSWER_ID, question.getAnswer().getId());
+		}
 
 	
 		open();

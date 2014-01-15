@@ -13,7 +13,7 @@ public class UserDataSource {
 	public static User GetUser(int id, SQLiteDatabase database)
 	{
 		User user = null;
-		Cursor cursor = database.query(UsersEntry.TABLE_NAME, UsersEntry.ALL_COLUMNS, UsersEntry.COLUMN_BACKEND_ID + " = " + id , null, null, null, null);
+		Cursor cursor = database.query(UsersEntry.TABLE_NAME, UsersEntry.ALL_COLUMNS, UsersEntry.COLUMN_BACKEND_ID + " == " + id , null, null, null, null);
 		if (cursor.moveToFirst())
 		{
 			user = new User(cursor.getInt(1), 

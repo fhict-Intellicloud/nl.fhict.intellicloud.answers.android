@@ -48,20 +48,19 @@ public class AnswerDataSource implements IAnswerService {
 			Date currentDate = new Date();
 			values.put(AnswersEntry.COLUMN_ANSWER, answer.getAnswer());
 			values.put(AnswersEntry.COLUMN_ANSWERSTATE, answer.getAnwserState().toString());
-			values.put(AnswersEntry.COLUMN_ANSWERER_ID, answer.getAnswerer().getId());
+			if (answer.getAnswerer() != null)
+			{
+				values.put(AnswersEntry.COLUMN_ANSWERER_ID, answer.getAnswerer().getId());
+			}
 			values.put(AnswersEntry.COLUMN_DATE, currentDate.getTime());
+			values.put(AnswersEntry.COLUMN_QUESTION_ID, currentDate.getTime());
 			
 			open();
 			database.insert(AnswersEntry.TABLE_NAME, null,
 			    values);
 			
 			close();
-			ArrayList<Answer> newList = GetAnswers();
-			
-			Answer dbAnswer = newList.get(newList.size()-1);
-			//			Question questionForAnswer = questionDataSource.GetQuestion(questionId);
-			//			questionForAnswer.setAnswer(dbAnswer);
-			//questionDataSource.UpdateQuestion(questionForAnswer);
+
 		}
 
 		@Override
@@ -89,18 +88,8 @@ public class AnswerDataSource implements IAnswerService {
 //			Question question = questionDataSource.GetQuestion(questionId);
 			return null;
 			
-			/*//Code unnecessary due to QuestionDataSource
-			Cursor cursor = database.query(QuestionsEntry.TABLE_NAME, allColumns, QuestionsEntry.COLUMN_ANSWER_ID + " = " + questionId, null, null, null, null);
-			if (cursor.moveToFirst())
-			{
-				
-				answer = getNextAnswerFromCursor(cursor);
-				
-			}
-			cursor.close();
-			close();
-			return answer;
-			*/
+			
+			
 		}
 		@Override
 		public ArrayList<Answer> GetAnswers() {
@@ -167,5 +156,4 @@ public class AnswerDataSource implements IAnswerService {
 			return foundAnswer;
 		}
 
-		
 }

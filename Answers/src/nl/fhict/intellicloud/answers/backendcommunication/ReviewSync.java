@@ -64,6 +64,8 @@ public class ReviewSync {
 		localIdColumn = reviewsCursor.getColumnIndex(ReviewsEntry.COLUMN_ID);
 		reviewStateColumn = reviewsCursor.getColumnIndex(ReviewsEntry.COLUMN_REVIEWSTATE);
 
+		reviewsCursor.moveToFirst();
+		
 		for (int i = 0; i < reviewsResultArray.length(); i++)
 		{
 			reviewsToAddToDB.add(reviewsResultArray.getJSONObject(i));
@@ -74,10 +76,10 @@ public class ReviewSync {
 			JSONObject serverReview = null;
 
 
-			for (int i = 0; i < reviewsResultArray.length(); i++)
+			for (int i = 0; i < reviewsToAddToDB.size(); i++)
 			{
-
-				serverReview = reviewsResultArray.getJSONObject(i);
+				
+				serverReview = reviewsToAddToDB.get(i);
 				Log.d("sync", serverReview.toString());
 				if (getIdFromURI(serverReview.getString("Id")) == (reviewsCursor.getInt(idColumn)))
 				{
@@ -119,8 +121,8 @@ public class ReviewSync {
 	private JSONObject getJsonForCurrentReview(Cursor cursor) throws JSONException
 	{
 		JSONObject jsonAnswer = new JSONObject();
-		jsonAnswer.accumulate("employeeId", cursor.getInt(reviewerIdColumn));
-		jsonAnswer.accumulate("answerId", cursor.getInt(answerIdColumn));
+		jsonAnswer.accumulate("employeeId", "UserService.svc/users/" + cursor.getInt(reviewerIdColumn));
+		jsonAnswer.accumulate("answerId", "AnswerService.svc/answers/" + cursor.getInt(answerIdColumn));
 		jsonAnswer.accumulate("review", cursor.getString(reviewColumn));
 		return jsonAnswer;
 	}
@@ -155,11 +157,12 @@ public class ReviewSync {
 		String[] uriparts = uri.split("/");
 		for (int i = 0; i < uriparts.length; i++)
 		{
-			int result = Integer.getInteger(uriparts[i], -1);
-			if (result != -1)
+			if(uriparts[i].matches("-?\\d+"))//Regex that checks if the string is a number
 			{
+				int result = Integer.parseInt(uriparts[i]);
 				return result;
 			}
+
 		}
 		return -1;
 	}

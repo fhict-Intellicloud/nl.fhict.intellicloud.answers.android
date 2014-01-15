@@ -47,7 +47,10 @@ public class ReviewOverviewActivity extends Activity {
 		tvQuestionDetail.setText(question.getQuestion());
 		
 		TextView tvAnswer = (TextView) findViewById(R.id.tvAnswer);
-		tvAnswer.setText(answer.getAnswer());
+		if (answer != null)
+		{
+			tvAnswer.setText(answer.getAnswer());
+		}
 		
 		Button btnDeclineAnswer = (Button) findViewById(R.id.btnDeclineAnswer);
 		btnDeclineAnswer.setOnClickListener(new OnClickListener(){

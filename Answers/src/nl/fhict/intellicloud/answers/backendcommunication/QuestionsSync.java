@@ -76,15 +76,15 @@ public class QuestionsSync {
 		}
 		
 		while (!questionsCursor.isAfterLast()) {
-			Log.d("sync", "while");
+			
 			JSONObject serverQuestion = null;
 			boolean questionFoundInResult = false;
-			
-			for (int i = 0; i < questionResultArray.length(); i++)
+
+			for (int i = 0; i < questionsToAddToDB.size(); i++)
 			{
 				
-				serverQuestion = questionResultArray.getJSONObject(i);
-				Log.d("sync", serverQuestion.toString());
+				serverQuestion = questionsToAddToDB.get(i);
+				
 				if (getIdFromURI(serverQuestion.getString("Id")) == (questionsCursor.getInt(idColumn)))
 				{
 					questionFoundInResult = true;
@@ -117,14 +117,14 @@ public class QuestionsSync {
 	private void addQuestionToDb(JSONObject question) throws JSONException, RemoteException
 	{
 
-
 		ContentValues values = new ContentValues();
 		values.put(QuestionsEntry.COLUMN_TIMESTAMP, question.optString("LastChangedTime"));
 		values.put(QuestionsEntry.COLUMN_QUESTION, question.optString("Content"));
-		values.put(QuestionsEntry.COLUMN_DATE, question.optString("Date"));
+		values.put(QuestionsEntry.COLUMN_DATE, DateHelper.getUnixMillisecondsFromJsonDate(question.optString("CreationTime")));
+		
 		values.put(QuestionsEntry.COLUMN_TITLE, question.optString("Title"));
 		values.put(QuestionsEntry.COLUMN_IS_PRIVATE, question.optString("IsPrivate"));
-		values.put(QuestionsEntry.COLUMN_QUESTIONSTATE, QuestionState.Open.toString()); //No questionState?
+		values.put(QuestionsEntry.COLUMN_QUESTIONSTATE, getQuestionState(question.optInt("QuestionState")).toString());
 
 		String answer = question.optString("Answer");
 		if (answer != null)
@@ -136,12 +136,13 @@ public class QuestionsSync {
 		{
 			values.put(QuestionsEntry.COLUMN_ANSWERER_ID, getIdFromURI(answerer));
 		}
-		String asker = question.optString("Asker");
+		String asker = question.optString("User");
 		if (answer != null)
 		{
 			values.put(QuestionsEntry.COLUMN_ASKER_ID, getIdFromURI(asker));
 		}
 		String backendid = question.optString("Id");
+		
 		if (backendid != null)
 		{
 			values.put(QuestionsEntry.COLUMN_BACKEND_ID, getIdFromURI(backendid));
@@ -155,13 +156,35 @@ public class QuestionsSync {
 		String[] uriparts = uri.split("/");
 		for (int i = 0; i < uriparts.length; i++)
 		{
-			int result = Integer.getInteger(uriparts[i], -1);
-			if (result != -1)
+			if(uriparts[i].matches("-?\\d+"))//Regex that checks if the string is a number
 			{
+				int result = Integer.parseInt(uriparts[i]);
 				return result;
 			}
+
 		}
 		return -1;
+	}
+	private QuestionState getQuestionState(int serverState)
+	{
+		QuestionState foundState = QuestionState.Open;
+		switch (serverState) {
+		case 0:
+			foundState = QuestionState.Open;
+			break;
+		case 1:
+			foundState = QuestionState.UpForAnswer;
+			break;
+		case 2:
+			foundState = QuestionState.UpForFeedback;
+			break;
+		case 3:
+			foundState = QuestionState.Closed;
+			break;
+		default:
+			break;
+		}
+		return foundState;
 	}
 }
 
