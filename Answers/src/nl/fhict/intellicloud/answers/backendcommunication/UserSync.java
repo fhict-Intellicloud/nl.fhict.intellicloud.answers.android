@@ -76,7 +76,7 @@ public class UserSync {
 				
 				serverUser = usersToAddToDB.get(i);
 
-				if (getIdFromURI(serverUser.getString("Id")) == (usersCursor.getInt(idColumn)))
+				if (SyncHelper.getIdFromURI(serverUser.getString("Id")) == (usersCursor.getInt(idColumn)))
 				{
 					userFoundInResult = true;
 					usersToAddToDB.remove(i);
@@ -112,30 +112,17 @@ public class UserSync {
 		values.put(UsersEntry.COLUMN_FIRSTNAME, user.optString("FirstName"));
 		values.put(UsersEntry.COLUMN_LASTNAME, user.optString("LastName"));
 		values.put(UsersEntry.COLUMN_INFIX, user.optString("Infix"));
-		values.put(UsersEntry.COLUMN_TIMESTAMP, DateHelper.getUnixMillisecondsFromJsonDate(user.optString("CreationTime")));
+		values.put(UsersEntry.COLUMN_TIMESTAMP, SyncHelper.getUnixMillisecondsFromJsonDate(user.optString("CreationTime")));
 		values.put(UsersEntry.COLUMN_USERTYPE,UserType.Employee.toString());
 		
 		String backendid = user.optString("Id");
 		if (backendid != null)
 		{
-			values.put(UsersEntry.COLUMN_BACKEND_ID, getIdFromURI(backendid));
+			values.put(UsersEntry.COLUMN_BACKEND_ID, SyncHelper.getIdFromURI(backendid));
 		}
 		contentProviderClient.insert(BackendContentProvider.CONTENT_USERS, values);
 	}
-	private int getIdFromURI(String uri)
-	{
-		String[] uriparts = uri.split("/");
-		for (int i = 0; i < uriparts.length; i++)
-		{
-			if(uriparts[i].matches("-?\\d+"))//Regex that checks if the string is a number
-			{
-				int result = Integer.parseInt(uriparts[i]);
-				return result;
-			}
-
-		}
-		return -1;
-	}
+	
 }
 
 

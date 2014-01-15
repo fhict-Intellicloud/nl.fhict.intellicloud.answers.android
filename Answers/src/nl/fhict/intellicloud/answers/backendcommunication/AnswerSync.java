@@ -81,7 +81,7 @@ public class AnswerSync {
 				
 				serverAnswer = answersToAddToDB.get(i);
 				//Log.d("sync", serverAnswer.toString());
-				if (getIdFromURI(serverAnswer.getString("Id")) == (answersCursor.getInt(idColumn)))
+				if (SyncHelper.getIdFromURI(serverAnswer.getString("Id")) == (answersCursor.getInt(idColumn)))
 				{
 					answersToAddToDB.remove(i);
 					break;
@@ -120,10 +120,12 @@ public class AnswerSync {
 	private JSONObject getJsonForCurrentAnswer(Cursor cursor) throws JSONException
 	{
 		JSONObject jsonAnswer = new JSONObject();
+		int answerState = getIdForAnswerState(AnswerState.valueOf(cursor.getString(answerStateColumn)));
+		
 		jsonAnswer.accumulate("questionId",  cursor.getInt(questionIdColumn));
 		jsonAnswer.accumulate("answer", cursor.getString(answerColumn));
 		jsonAnswer.accumulate("answererId", cursor.getInt(answererIdColumn));
-		jsonAnswer.accumulate("answerState", cursor.getString(answerStateColumn));
+		jsonAnswer.accumulate("answerState", answerState);
 		Log.d("AnswerSync", jsonAnswer.toString());
 		return jsonAnswer;
 		
@@ -134,38 +136,44 @@ public class AnswerSync {
 		ContentValues values = new ContentValues();
 		values.put(AnswersEntry.COLUMN_TIMESTAMP, answer.optString("LastChangedTime"));
 		values.put(AnswersEntry.COLUMN_ANSWER, answer.optString("Content"));
-		values.put(AnswersEntry.COLUMN_DATE, DateHelper.getUnixMillisecondsFromJsonDate(answer.optString("Date")));
-		values.put(AnswersEntry.COLUMN_ANSWERSTATE, answer.optString("answerState"));//TODO
+		values.put(AnswersEntry.COLUMN_DATE, SyncHelper.getUnixMillisecondsFromJsonDate(answer.optString("Date")));
+		values.put(AnswersEntry.COLUMN_ANSWERSTATE, getAnswerStateForId(answer.optInt("answerState")).toString());//TODO
 		
 		String backendid = answer.optString("Id");
 		if (backendid != null)
 		{
-			values.put(AnswersEntry.COLUMN_BACKEND_ID, getIdFromURI(backendid));
+			values.put(AnswersEntry.COLUMN_BACKEND_ID, SyncHelper.getIdFromURI(backendid));
 		}
 		String answerer = answer.optString("Answerer");
 		if (answerer != null)
 		{
-			values.put(AnswersEntry.COLUMN_ANSWERER_ID, getIdFromURI(answerer));
+			values.put(AnswersEntry.COLUMN_ANSWERER_ID, SyncHelper.getIdFromURI(answerer));
 		}
 				
 		contentProviderClient.insert(BackendContentProvider.CONTENT_ANSWERS, values);
 		
 		
 	}
-	private int getIdFromURI(String uri)
+	private static int getIdForAnswerState(AnswerState state)
 	{
-		String[] uriparts = uri.split("/");
-		for (int i = 0; i < uriparts.length; i++)
-		{
-			if(uriparts[i].matches("-?\\d+"))//Regex that checks if the string is a number
-			{
-				int result = Integer.parseInt(uriparts[i]);
-				return result;
-			}
-
+		switch (state) {
+		case UnderReview:
+			return 0;
+		case Ready:
+			return 1;
+		default:
+			return 0;
 		}
-		return -1;
 	}
-
-	
+	private static AnswerState getAnswerStateForId(int id)
+	{
+		switch (id) {
+		case 0:
+			return AnswerState.UnderReview;
+		case 1:
+			return AnswerState.Ready;
+		default:
+			return AnswerState.UnderReview;
+		}
+	}
 }

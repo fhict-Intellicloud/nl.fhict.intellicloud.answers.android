@@ -35,8 +35,7 @@ public class ReviewSync {
 	private int dateColumn;
 	private int reviewColumn;
 	private int reviewStateColumn;
-	private int askerIdColumn;
-	private int questionStateColumn;
+
 
 	public ReviewSync(Context context, ContentProviderClient contentProviderClient)
 	{
@@ -81,7 +80,7 @@ public class ReviewSync {
 				
 				serverReview = reviewsToAddToDB.get(i);
 				Log.d("sync", serverReview.toString());
-				if (getIdFromURI(serverReview.getString("Id")) == (reviewsCursor.getInt(idColumn)))
+				if (SyncHelper.getIdFromURI(serverReview.getString("Id")) == (reviewsCursor.getInt(idColumn)))
 				{
 					reviewsToAddToDB.remove(i);
 					break;
@@ -121,8 +120,8 @@ public class ReviewSync {
 	private JSONObject getJsonForCurrentReview(Cursor cursor) throws JSONException
 	{
 		JSONObject jsonAnswer = new JSONObject();
-		jsonAnswer.accumulate("employeeId", "UserService.svc/users/" + cursor.getInt(reviewerIdColumn));
-		jsonAnswer.accumulate("answerId", "AnswerService.svc/answers/" + cursor.getInt(answerIdColumn));
+		jsonAnswer.accumulate("employeeId", cursor.getInt(reviewerIdColumn));
+		jsonAnswer.accumulate("answerId", cursor.getInt(answerIdColumn));
 		jsonAnswer.accumulate("review", cursor.getString(reviewColumn));
 		return jsonAnswer;
 	}
@@ -138,32 +137,19 @@ public class ReviewSync {
 		String answer = review.optString("Answer");
 		if (answer != null)
 		{
-			values.put(ReviewsEntry.COLUMN_ANSWER_ID, getIdFromURI(answer));
+			values.put(ReviewsEntry.COLUMN_ANSWER_ID, SyncHelper.getIdFromURI(answer));
 		}
 		String reviewer = review.optString("Reviewer");
 		if (reviewer != null)
 		{
-			values.put(ReviewsEntry.COLUMN_REVIEWER_ID, getIdFromURI(reviewer));
+			values.put(ReviewsEntry.COLUMN_REVIEWER_ID, SyncHelper.getIdFromURI(reviewer));
 		}
 		String backendid = review.optString("Id");
 		if (backendid != null)
 		{
-			values.put(ReviewsEntry.COLUMN_BACKEND_ID, getIdFromURI(backendid));
+			values.put(ReviewsEntry.COLUMN_BACKEND_ID, SyncHelper.getIdFromURI(backendid));
 		}
 		contentProviderClient.insert(BackendContentProvider.CONTENT_REVIEWS, values);
 	}
-	private int getIdFromURI(String uri)
-	{
-		String[] uriparts = uri.split("/");
-		for (int i = 0; i < uriparts.length; i++)
-		{
-			if(uriparts[i].matches("-?\\d+"))//Regex that checks if the string is a number
-			{
-				int result = Integer.parseInt(uriparts[i]);
-				return result;
-			}
 
-		}
-		return -1;
-	}
 }

@@ -85,7 +85,7 @@ public class QuestionsSync {
 				
 				serverQuestion = questionsToAddToDB.get(i);
 				
-				if (getIdFromURI(serverQuestion.getString("Id")) == (questionsCursor.getInt(idColumn)))
+				if (SyncHelper.getIdFromURI(serverQuestion.getString("Id")) == (questionsCursor.getInt(idColumn)))
 				{
 					questionFoundInResult = true;
 					questionsToAddToDB.remove(i);
@@ -120,7 +120,7 @@ public class QuestionsSync {
 		ContentValues values = new ContentValues();
 		values.put(QuestionsEntry.COLUMN_TIMESTAMP, question.optString("LastChangedTime"));
 		values.put(QuestionsEntry.COLUMN_QUESTION, question.optString("Content"));
-		values.put(QuestionsEntry.COLUMN_DATE, DateHelper.getUnixMillisecondsFromJsonDate(question.optString("CreationTime")));
+		values.put(QuestionsEntry.COLUMN_DATE, SyncHelper.getUnixMillisecondsFromJsonDate(question.optString("CreationTime")));
 		
 		values.put(QuestionsEntry.COLUMN_TITLE, question.optString("Title"));
 		values.put(QuestionsEntry.COLUMN_IS_PRIVATE, question.optString("IsPrivate"));
@@ -129,42 +129,29 @@ public class QuestionsSync {
 		String answer = question.optString("Answer");
 		if (answer != null)
 		{
-			values.put(QuestionsEntry.COLUMN_ANSWER_ID, getIdFromURI(answer));
+			values.put(QuestionsEntry.COLUMN_ANSWER_ID, SyncHelper.getIdFromURI(answer));
 		}
 		String answerer = question.optString("Answerer");
 		if (answer != null)
 		{
-			values.put(QuestionsEntry.COLUMN_ANSWERER_ID, getIdFromURI(answerer));
+			values.put(QuestionsEntry.COLUMN_ANSWERER_ID, SyncHelper.getIdFromURI(answerer));
 		}
 		String asker = question.optString("User");
 		if (answer != null)
 		{
-			values.put(QuestionsEntry.COLUMN_ASKER_ID, getIdFromURI(asker));
+			values.put(QuestionsEntry.COLUMN_ASKER_ID, SyncHelper.getIdFromURI(asker));
 		}
 		String backendid = question.optString("Id");
 		
 		if (backendid != null)
 		{
-			values.put(QuestionsEntry.COLUMN_BACKEND_ID, getIdFromURI(backendid));
+			values.put(QuestionsEntry.COLUMN_BACKEND_ID, SyncHelper.getIdFromURI(backendid));
 		}
 
 
 		contentProviderClient.insert(BackendContentProvider.CONTENT_QUESTIONS, values);
 	}
-	private int getIdFromURI(String uri)
-	{
-		String[] uriparts = uri.split("/");
-		for (int i = 0; i < uriparts.length; i++)
-		{
-			if(uriparts[i].matches("-?\\d+"))//Regex that checks if the string is a number
-			{
-				int result = Integer.parseInt(uriparts[i]);
-				return result;
-			}
-
-		}
-		return -1;
-	}
+	
 	private QuestionState getQuestionState(int serverState)
 	{
 		QuestionState foundState = QuestionState.Open;
