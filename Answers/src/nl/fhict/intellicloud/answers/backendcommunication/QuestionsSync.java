@@ -58,7 +58,7 @@ public class QuestionsSync {
 		Log.d("sync", "uri");
 		idColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_BACKEND_ID);
 		int localIdColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_BACKEND_ID);
-		//			timestampColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_TIMESTAMP);
+		
 		//			questionColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_QUESTION);
 		//			dateColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_DATE);
 		//			titleColumn = questionsCursor.getColumnIndex(QuestionsEntry.COLUMN_TITLE);
@@ -89,12 +89,19 @@ public class QuestionsSync {
 				{
 					questionFoundInResult = true;
 					questionsToAddToDB.remove(i);
+					
+					
+					if (SyncHelper.isServerObjectNewer(serverQuestion, questionsCursor))
+					{
+						updateQuestion(serverQuestion, questionsCursor.getInt(localIdColumn));
+					}
 					break;
 
 				}
 			}
 			if (!questionFoundInResult)
 			{
+				
 				String deleteUri = uri + "/" + questionsCursor.getInt(localIdColumn);
 				questionsCursor.moveToNext();
 				contentProviderClient.delete(Uri.parse(deleteUri), null, null);
@@ -114,11 +121,10 @@ public class QuestionsSync {
 
 
 	}
-	private void addQuestionToDb(JSONObject question) throws JSONException, RemoteException
+	private ContentValues getQuestionContentValues(JSONObject question)
 	{
-
 		ContentValues values = new ContentValues();
-		values.put(QuestionsEntry.COLUMN_TIMESTAMP, question.optString("LastChangedTime"));
+		values.put(QuestionsEntry.COLUMN_TIMESTAMP, SyncHelper.getUnixMillisecondsFromJsonDate(question.optString("LastChangedTime")));
 		values.put(QuestionsEntry.COLUMN_QUESTION, question.optString("Content"));
 		values.put(QuestionsEntry.COLUMN_DATE, SyncHelper.getUnixMillisecondsFromJsonDate(question.optString("CreationTime")));
 		
@@ -147,10 +153,21 @@ public class QuestionsSync {
 		{
 			values.put(QuestionsEntry.COLUMN_BACKEND_ID, SyncHelper.getIdFromURI(backendid));
 		}
+		return values;
 
-
+	}
+	private void updateQuestion(JSONObject question, int rowId) throws JSONException, RemoteException
+	{
+		String updateUri = BackendContentProvider.CONTENT_QUESTIONS + "/" + rowId;
+		ContentValues values = getQuestionContentValues(question);
+		contentProviderClient.update(Uri.parse(updateUri), values, null, null);
+	}
+	private void addQuestionToDb(JSONObject question) throws JSONException, RemoteException
+	{
+		ContentValues values = getQuestionContentValues(question);
 		contentProviderClient.insert(BackendContentProvider.CONTENT_QUESTIONS, values);
 	}
+	
 	
 	private QuestionState getQuestionState(int serverState)
 	{
@@ -173,5 +190,6 @@ public class QuestionsSync {
 		}
 		return foundState;
 	}
+	
 }
 

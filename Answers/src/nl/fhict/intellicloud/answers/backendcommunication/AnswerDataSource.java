@@ -81,14 +81,18 @@ public class AnswerDataSource implements IAnswerService {
 		
 		@Override
 		public Answer GetAnswerUsingQuestion(int questionId) {
-			// TODO Auto-generated method stub
-
-//			QuestionDataSource questionDataSource = new QuestionDataSource(context);
-//			
-//			Question question = questionDataSource.GetQuestion(questionId);
-			return null;
-			
-			
+			open();
+			Answer answer = null;
+			Cursor cursor = database.query(AnswersEntry.TABLE_NAME, allColumns, AnswersEntry.COLUMN_QUESTION_ID + " = " + questionId, null, null, null, null);
+			if (cursor.moveToFirst())
+			{
+				
+				answer = getNextAnswerFromCursor(cursor);
+				
+			}
+			cursor.close();
+			close();
+			return answer;
 			
 		}
 		@Override

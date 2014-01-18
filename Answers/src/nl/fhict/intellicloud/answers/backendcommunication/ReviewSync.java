@@ -79,10 +79,14 @@ public class ReviewSync {
 			{
 				
 				serverReview = reviewsToAddToDB.get(i);
-				Log.d("sync", serverReview.toString());
+				
 				if (SyncHelper.getIdFromURI(serverReview.getString("Id")) == (reviewsCursor.getInt(idColumn)))
 				{
 					reviewsToAddToDB.remove(i);
+					if (SyncHelper.isServerObjectNewer(serverReview, reviewsCursor))
+					{
+						updateReview(serverReview, reviewsCursor.getInt(localIdColumn));
+					}
 					break;
 
 				}
@@ -117,15 +121,7 @@ public class ReviewSync {
 		return reviewsToUpload;
 
 	}
-	private JSONObject getJsonForCurrentReview(Cursor cursor) throws JSONException
-	{
-		JSONObject jsonAnswer = new JSONObject();
-		jsonAnswer.accumulate("employeeId", cursor.getInt(reviewerIdColumn));
-		jsonAnswer.accumulate("answerId", cursor.getInt(answerIdColumn));
-		jsonAnswer.accumulate("review", cursor.getString(reviewColumn));
-		return jsonAnswer;
-	}
-	private void addReviewToDb(JSONObject review) throws JSONException, RemoteException
+	private ContentValues getReviewContentValues(JSONObject review)
 	{
 		ContentValues values = new ContentValues();
 		values.put(ReviewsEntry.COLUMN_TIMESTAMP, review.optString("LastChangedTime"));
@@ -149,6 +145,25 @@ public class ReviewSync {
 		{
 			values.put(ReviewsEntry.COLUMN_BACKEND_ID, SyncHelper.getIdFromURI(backendid));
 		}
+		return values;
+	}
+	private void updateReview(JSONObject review, int rowId) throws JSONException, RemoteException
+	{
+		String updateUri = BackendContentProvider.CONTENT_REVIEWS + "/" + rowId;
+		ContentValues values = getReviewContentValues(review);
+		contentProviderClient.update(Uri.parse(updateUri), values, null, null);
+	}
+	private JSONObject getJsonForCurrentReview(Cursor cursor) throws JSONException
+	{
+		JSONObject jsonAnswer = new JSONObject();
+		jsonAnswer.accumulate("employeeId", cursor.getInt(reviewerIdColumn));
+		jsonAnswer.accumulate("answerId", cursor.getInt(answerIdColumn));
+		jsonAnswer.accumulate("review", cursor.getString(reviewColumn));
+		return jsonAnswer;
+	}
+	private void addReviewToDb(JSONObject review) throws JSONException, RemoteException
+	{
+		ContentValues values = getReviewContentValues(review);
 		contentProviderClient.insert(BackendContentProvider.CONTENT_REVIEWS, values);
 	}
 

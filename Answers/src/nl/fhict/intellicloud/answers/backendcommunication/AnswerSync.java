@@ -84,6 +84,10 @@ public class AnswerSync {
 				if (SyncHelper.getIdFromURI(serverAnswer.getString("Id")) == (answersCursor.getInt(idColumn)))
 				{
 					answersToAddToDB.remove(i);
+					if (SyncHelper.isServerObjectNewer(serverAnswer, answersCursor))
+					{
+						updateAnswer(serverAnswer, answersCursor.getInt(localIdColumn));
+					}
 					break;
 
 				}
@@ -130,9 +134,8 @@ public class AnswerSync {
 		return jsonAnswer;
 		
 	}
-	private void addAnswerToDb(JSONObject answer) throws JSONException, RemoteException
+	private ContentValues getAnswerContentValues(JSONObject answer)
 	{
-		Log.d("AnswerSync", answer.toString());
 		ContentValues values = new ContentValues();
 		values.put(AnswersEntry.COLUMN_TIMESTAMP, answer.optString("LastChangedTime"));
 		values.put(AnswersEntry.COLUMN_ANSWER, answer.optString("Content"));
@@ -149,10 +152,18 @@ public class AnswerSync {
 		{
 			values.put(AnswersEntry.COLUMN_ANSWERER_ID, SyncHelper.getIdFromURI(answerer));
 		}
-				
+		return values;
+	}
+	private void updateAnswer(JSONObject answer, int rowId) throws JSONException, RemoteException
+	{
+		String updateUri = BackendContentProvider.CONTENT_ANSWERS + "/" + rowId;
+		ContentValues values = getAnswerContentValues(answer);
+		contentProviderClient.update(Uri.parse(updateUri), values, null, null);
+	}
+	private void addAnswerToDb(JSONObject answer) throws JSONException, RemoteException
+	{
+		ContentValues values = getAnswerContentValues(answer);	
 		contentProviderClient.insert(BackendContentProvider.CONTENT_ANSWERS, values);
-		
-		
 	}
 	private static int getIdForAnswerState(AnswerState state)
 	{
