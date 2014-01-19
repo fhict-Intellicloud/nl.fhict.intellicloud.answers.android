@@ -50,7 +50,7 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
 	private final int AUTHORIZE_REQUEST = 1000;
 	
 	//Static values for synchronization
-	private static final long SYNC_DEFAULT_INTERVAL = 60000L; //Every minute
+	private static final long SYNC_DEFAULT_INTERVAL = 600000L; //Every 10 minutes
     private static final String SYNC_AUTHORITY = "nl.fhict.intellicloud.answers.android.contentprovider";
     private static final String SYNC_ACCOUNT = "Intellicloud - Answers";
     private static final String SYNC_ACCOUNT_TYPE = "nl.fhict.intellicloud.answers.account";

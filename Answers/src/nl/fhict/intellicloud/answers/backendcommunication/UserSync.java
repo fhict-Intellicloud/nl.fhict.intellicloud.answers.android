@@ -80,6 +80,10 @@ public class UserSync {
 				{
 					userFoundInResult = true;
 					usersToAddToDB.remove(i);
+					if (SyncHelper.isServerObjectNewer(serverUser, usersCursor))
+					{
+						updateUser(serverUser, usersCursor.getInt(localIdColumn));
+					}
 					break;
 
 				}
@@ -105,10 +109,10 @@ public class UserSync {
 
 		
 	}
-	private void addUserToDb(JSONObject user) throws JSONException, RemoteException
+	private ContentValues getUserContentValues(JSONObject user)
 	{
 		ContentValues values = new ContentValues();
-		Log.d("user", user.toString());
+		
 		values.put(UsersEntry.COLUMN_FIRSTNAME, user.optString("FirstName"));
 		values.put(UsersEntry.COLUMN_LASTNAME, user.optString("LastName"));
 		values.put(UsersEntry.COLUMN_INFIX, user.optString("Infix"));
@@ -120,6 +124,17 @@ public class UserSync {
 		{
 			values.put(UsersEntry.COLUMN_BACKEND_ID, SyncHelper.getIdFromURI(backendid));
 		}
+		return values;
+	}
+	private void updateUser(JSONObject user, int rowId) throws JSONException, RemoteException
+	{
+		String updateUri = BackendContentProvider.CONTENT_USERS + "/" + rowId;
+		ContentValues values = getUserContentValues(user);
+		contentProviderClient.update(Uri.parse(updateUri), values, null, null);
+	}
+	private void addUserToDb(JSONObject user) throws JSONException, RemoteException
+	{
+		ContentValues values = getUserContentValues(user);
 		contentProviderClient.insert(BackendContentProvider.CONTENT_USERS, values);
 	}
 	
