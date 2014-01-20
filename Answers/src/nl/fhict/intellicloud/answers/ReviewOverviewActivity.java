@@ -3,7 +3,10 @@ package nl.fhict.intellicloud.answers;
 
 import nl.fhict.intellicloud.answers.backendcommunication.DummyBackend;
 import nl.fhict.intellicloud.answers.backendcommunication.IAnswerService;
+
 import java.util.List;
+
+import nl.fhict.intellicloud.answers.backendcommunication.AnswerDataSource;
 import nl.fhict.intellicloud.answers.backendcommunication.IQuestionService;
 import nl.fhict.intellicloud.answers.backendcommunication.IReviewService;
 import nl.fhict.intellicloud.answers.backendcommunication.QuestionDataSource;
@@ -29,6 +32,7 @@ public class ReviewOverviewActivity extends Activity {
 	
 	EditText etReviewField;
 	IReviewService iReviewService;
+	IAnswerService iAnswerService;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,7 @@ public class ReviewOverviewActivity extends Activity {
 
 		IQuestionService iQuestionService = new QuestionDataSource(getApplicationContext());
 		final IReviewService iReviewService = new ReviewDataSource(getApplicationContext());
+		iAnswerService = new AnswerDataSource(getApplicationContext());
 		question = iQuestionService.GetQuestion(reviewInt);
 		answer = question.getAnswer();
 		
@@ -64,6 +69,7 @@ public class ReviewOverviewActivity extends Activity {
 			//TODO: ADD Reviews in list
 			//lvReviews.setAdapter();
 		}
+				intent.putExtra("reviewInt", reviewInt);
 				startActivity(intent);
 				finish();
 			}
@@ -73,8 +79,8 @@ public class ReviewOverviewActivity extends Activity {
 		btnAcceptAnswer.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				Intent intent = new Intent(ReviewOverviewActivity.this, AddReviewActivity.class);
-				startActivity(intent);
+				answer.setAnswerState(AnswerState.Ready);
+				iAnswerService.UpdateAnswer(answer);
 				finish();
 			}
 		});

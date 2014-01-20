@@ -123,6 +123,7 @@ public class QuestionsSync {
 	}
 	private ContentValues getQuestionContentValues(JSONObject question)
 	{
+		Log.d("QuestionSync", question.toString());
 		ContentValues values = new ContentValues();
 		values.put(QuestionsEntry.COLUMN_TIMESTAMP, SyncHelper.getUnixMillisecondsFromJsonDate(question.optString("LastChangedTime")));
 		values.put(QuestionsEntry.COLUMN_QUESTION, question.optString("Content"));

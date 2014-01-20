@@ -24,7 +24,8 @@ public class AnswerDataSource implements IAnswerService {
 										AnswersEntry.COLUMN_ANSWER, 
 										AnswersEntry.COLUMN_ANSWERER_ID,
 										AnswersEntry.COLUMN_ANSWERSTATE,
-										AnswersEntry.COLUMN_DATE};
+										AnswersEntry.COLUMN_DATE,
+										AnswersEntry.COLUMN_QUESTION_ID};
 		
 		
 		
