@@ -102,7 +102,8 @@ public class QuestionDataSource implements IQuestionService {
 								new Date(unixMilliSeconds));
 		question.setIsPrivate(cursor.getInt(7) > 0);
 		question.setTitle(cursor.getString(8));
-		question.setAnswer(answerService.GetAnswer(cursor.getInt(9)));
+		int answerId = cursor.getInt(9);
+		question.setAnswer(answerService.GetAnswer(answerId));
 		return question;
 	}
 

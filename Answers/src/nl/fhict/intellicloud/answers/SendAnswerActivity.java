@@ -74,6 +74,7 @@ public class SendAnswerActivity extends Activity {
         String answerText = etAnswer.getText().toString();
         answer = new Answer(answerText, question.getAnwserer(), AnswerState.UnderReview);
         question = new Question(question.getId(), question.getQuestion(), question.getAsker(), null, QuestionState.UpForFeedback, null);
+        question.setAnswer(answer);
         qService.UpdateQuestion(question);
         aService.CreateAnswer(answer, questionInt);
     }

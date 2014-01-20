@@ -260,7 +260,12 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
     }
     
     public void onLogoutClick(View v){
-    	Toast.makeText(this, getResources().getString(R.string.triedToLogout), Toast.LENGTH_SHORT).show();
+    	Editor editor = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_MULTI_PROCESS).edit();
+		editor.remove(PREFERENCES_KEY);
+		editor.remove(PREFERENCES_TOKEN);
+		editor.apply();
+    	this.startActivityForResult(new Intent(this, AuthorizationActivity.class), AUTHORIZE_REQUEST);
+    	//Toast.makeText(this, getResources().getString(R.string.triedToLogout), Toast.LENGTH_SHORT).show();
     }
     
    /**

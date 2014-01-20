@@ -121,7 +121,7 @@ public class ReviewSync {
 		return reviewsToUpload;
 
 	}
-	private ContentValues getReviewContentValues(JSONObject review)
+	private ContentValues getReviewContentValues(JSONObject review) throws AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, JSONException, IOException
 	{
 		ContentValues values = new ContentValues();
 		values.put(ReviewsEntry.COLUMN_TIMESTAMP, review.optString("LastChangedTime"));
@@ -131,14 +131,15 @@ public class ReviewSync {
 
 
 		String answer = review.optString("Answer");
-		if (answer != null)
+		if (answer != null && !answer.equals("null") && answer.length() > 0)
 		{
-			values.put(ReviewsEntry.COLUMN_ANSWER_ID, SyncHelper.getIdFromURI(answer));
+			values.put(ReviewsEntry.COLUMN_ANSWER_ID, SyncHelper.getRealIdForObjectURI(answer, context));
 		}
 		String reviewer = review.optString("Reviewer");
-		if (reviewer != null)
+		if (reviewer != null && !reviewer.equals("null") && reviewer.length() > 0)
 		{
-			values.put(ReviewsEntry.COLUMN_REVIEWER_ID, SyncHelper.getIdFromURI(reviewer));
+			values.put(ReviewsEntry.COLUMN_REVIEWER_ID, SyncHelper.getRealIdForObjectURI(reviewer,context));
+			
 		}
 		String backendid = review.optString("Id");
 		if (backendid != null)
@@ -147,7 +148,7 @@ public class ReviewSync {
 		}
 		return values;
 	}
-	private void updateReview(JSONObject review, int rowId) throws JSONException, RemoteException
+	private void updateReview(JSONObject review, int rowId) throws JSONException, RemoteException, AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, IOException
 	{
 		String updateUri = BackendContentProvider.CONTENT_REVIEWS + "/" + rowId;
 		ContentValues values = getReviewContentValues(review);
@@ -161,7 +162,7 @@ public class ReviewSync {
 		jsonAnswer.accumulate("review", cursor.getString(reviewColumn));
 		return jsonAnswer;
 	}
-	private void addReviewToDb(JSONObject review) throws JSONException, RemoteException
+	private void addReviewToDb(JSONObject review) throws JSONException, RemoteException, AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, IOException
 	{
 		ContentValues values = getReviewContentValues(review);
 		contentProviderClient.insert(BackendContentProvider.CONTENT_REVIEWS, values);

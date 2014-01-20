@@ -134,7 +134,7 @@ public class AnswerSync {
 		return jsonAnswer;
 		
 	}
-	private ContentValues getAnswerContentValues(JSONObject answer)
+	private ContentValues getAnswerContentValues(JSONObject answer) throws AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, JSONException, IOException
 	{
 		ContentValues values = new ContentValues();
 		values.put(AnswersEntry.COLUMN_TIMESTAMP, answer.optString("LastChangedTime"));
@@ -148,19 +148,19 @@ public class AnswerSync {
 			values.put(AnswersEntry.COLUMN_BACKEND_ID, SyncHelper.getIdFromURI(backendid));
 		}
 		String answerer = answer.optString("Answerer");
-		if (answerer != null)
+		if (answerer != null && !answerer.equals("null") && answerer.length() > 0)
 		{
-			values.put(AnswersEntry.COLUMN_ANSWERER_ID, SyncHelper.getIdFromURI(answerer));
+			values.put(AnswersEntry.COLUMN_ANSWERER_ID, SyncHelper.getRealIdForObjectURI(answerer, context));
 		}
 		return values;
 	}
-	private void updateAnswer(JSONObject answer, int rowId) throws JSONException, RemoteException
+	private void updateAnswer(JSONObject answer, int rowId) throws JSONException, RemoteException, AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, IOException
 	{
 		String updateUri = BackendContentProvider.CONTENT_ANSWERS + "/" + rowId;
 		ContentValues values = getAnswerContentValues(answer);
 		contentProviderClient.update(Uri.parse(updateUri), values, null, null);
 	}
-	private void addAnswerToDb(JSONObject answer) throws JSONException, RemoteException
+	private void addAnswerToDb(JSONObject answer) throws JSONException, RemoteException, AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, IOException
 	{
 		ContentValues values = getAnswerContentValues(answer);	
 		contentProviderClient.insert(BackendContentProvider.CONTENT_ANSWERS, values);

@@ -54,7 +54,7 @@ public class AnswerDataSource implements IAnswerService {
 				values.put(AnswersEntry.COLUMN_ANSWERER_ID, answer.getAnswerer().getId());
 			}
 			values.put(AnswersEntry.COLUMN_DATE, currentDate.getTime());
-			values.put(AnswersEntry.COLUMN_QUESTION_ID, currentDate.getTime());
+			values.put(AnswersEntry.COLUMN_QUESTION_ID, questionId);
 			
 			open();
 			database.insert(AnswersEntry.TABLE_NAME, null,
