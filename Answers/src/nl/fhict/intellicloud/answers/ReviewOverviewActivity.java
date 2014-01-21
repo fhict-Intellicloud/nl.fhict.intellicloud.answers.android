@@ -44,7 +44,7 @@ public class ReviewOverviewActivity extends Activity {
 		final IReviewService iReviewService = new ReviewDataSource(getApplicationContext());
 		iAnswerService = new AnswerDataSource(getApplicationContext());
 		question = iQuestionService.GetQuestion(reviewInt);
-		answer = question.getAnswer();
+		answer = iAnswerService.GetAnswerUsingQuestion(reviewInt);
 		
 		TextView tvQuestion = (TextView) findViewById(R.id.tvQuestion);
 		tvQuestion.setText(question.getQuestion());

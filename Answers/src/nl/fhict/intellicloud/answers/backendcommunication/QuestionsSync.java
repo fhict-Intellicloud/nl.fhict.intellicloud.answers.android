@@ -121,7 +121,7 @@ public class QuestionsSync {
 
 
 	}
-	private ContentValues getQuestionContentValues(JSONObject question)
+	private ContentValues getQuestionContentValues(JSONObject question) throws RemoteException, AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, JSONException, IOException
 	{
 		Log.d("QuestionSync", question.toString());
 		ContentValues values = new ContentValues();
@@ -132,41 +132,50 @@ public class QuestionsSync {
 		values.put(QuestionsEntry.COLUMN_TITLE, question.optString("Title"));
 		values.put(QuestionsEntry.COLUMN_IS_PRIVATE, question.optString("IsPrivate"));
 		values.put(QuestionsEntry.COLUMN_QUESTIONSTATE, getQuestionState(question.optInt("QuestionState")).toString());
-
-		String answer = question.optString("Answer");
-		if (answer != null)
-		{
-			values.put(QuestionsEntry.COLUMN_ANSWER_ID, SyncHelper.getIdFromURI(answer));
-		}
-		String answerer = question.optString("Answerer");
-		if (answer != null)
-		{
-			values.put(QuestionsEntry.COLUMN_ANSWERER_ID, SyncHelper.getIdFromURI(answerer));
-		}
-		String asker = question.optString("User");
-		if (answer != null)
-		{
-			values.put(QuestionsEntry.COLUMN_ASKER_ID, SyncHelper.getIdFromURI(asker));
-		}
-		String backendid = question.optString("Id");
 		
+		String backendid = question.optString("Id");
 		if (backendid != null)
 		{
 			values.put(QuestionsEntry.COLUMN_BACKEND_ID, SyncHelper.getIdFromURI(backendid));
 		}
+		
+		String answer = question.optString("AnswerId");
+		if (answer != null && !answer.equals("null") && answer.length() > 0)
+		{
+			int answerId = Integer.parseInt(answer);
+			values.put(QuestionsEntry.COLUMN_ANSWER_ID, answerId);
+			addQuestionIdToAnswer(answerId, SyncHelper.getIdFromURI(backendid));
+		}
+		String answerer = question.optString("Answerer");
+		//NOTE: This returns a badrequest.
+//		if (answerer != null && !answerer.equals("null") && answerer.length() > 0) 
+//		{
+//			values.put(QuestionsEntry.COLUMN_ANSWERER_ID, SyncHelper.getRealIdForObjectURI(answerer,context));
+//		}
+		String asker = question.optString("User");
+		if (asker != null && !asker.equals("null") && asker.length() > 0)
+		{
+			values.put(QuestionsEntry.COLUMN_ASKER_ID, SyncHelper.getRealIdForObjectURI(asker,context));
+		}
+		
 		return values;
-
 	}
-	private void updateQuestion(JSONObject question, int rowId) throws JSONException, RemoteException
+	private void updateQuestion(JSONObject question, int rowId) throws JSONException, RemoteException, AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, IOException
 	{
 		String updateUri = BackendContentProvider.CONTENT_QUESTIONS + "/" + rowId;
 		ContentValues values = getQuestionContentValues(question);
 		contentProviderClient.update(Uri.parse(updateUri), values, null, null);
 	}
-	private void addQuestionToDb(JSONObject question) throws JSONException, RemoteException
+	private void addQuestionToDb(JSONObject question) throws JSONException, RemoteException, AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, IOException
 	{
 		ContentValues values = getQuestionContentValues(question);
 		contentProviderClient.insert(BackendContentProvider.CONTENT_QUESTIONS, values);
+	}
+	private void addQuestionIdToAnswer(int answerId, int questionId) throws RemoteException
+	{
+		ContentValues values = new ContentValues();
+		values.put(AnswersEntry.COLUMN_QUESTION_ID, questionId);
+		contentProviderClient.update(BackendContentProvider.CONTENT_ANSWERS, values, AnswersEntry.COLUMN_BACKEND_ID + " = " + answerId, null);
 	}
 	
 	
