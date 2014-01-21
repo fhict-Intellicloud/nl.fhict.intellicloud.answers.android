@@ -190,12 +190,20 @@ public class SyncHelper {
         ConnManagerParams.setTimeout(params, HTTP_REQUEST_TIMEOUT_MS);
         return httpClient;
     }
-	public static int getRealIdForObjectURI(String uri, Context context) throws AuthenticationException, ParseException, OperationCanceledException, AuthenticatorException, JSONException, IOException
+	public static int getRealIdForObjectURI(String uri, Context context) 
 	{
-		String requestUrl = INTELLICLOUD_NEW_BASE_URL + uri;
-		JSONArray result = performNetworkGetRequest(requestUrl, context);
-		JSONObject firstObject = result.getJSONObject(0);
-		return getIdFromURI(firstObject.getString("Id"));
+		try
+		{
+			String requestUrl = INTELLICLOUD_NEW_BASE_URL + uri;
+			JSONArray result = performNetworkGetRequest(requestUrl, context);
+			JSONObject firstObject = result.getJSONObject(0);
+			return getIdFromURI(firstObject.getString("Id"));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 }
