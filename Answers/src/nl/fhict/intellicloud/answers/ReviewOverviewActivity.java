@@ -12,6 +12,7 @@ import nl.fhict.intellicloud.answers.backendcommunication.IReviewService;
 import nl.fhict.intellicloud.answers.backendcommunication.QuestionDataSource;
 import nl.fhict.intellicloud.answers.backendcommunication.ReviewDataSource;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 public class ReviewOverviewActivity extends Activity {
 
 	int reviewInt;
+	Context context;
 	
 	Answer answer;
 	Question question;
@@ -39,6 +41,7 @@ public class ReviewOverviewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_review_overview);
 		reviewInt = getIntent().getExtras().getInt("reviewInt");
+		this.context = this;
 
 		IQuestionService iQuestionService = new QuestionDataSource(getApplicationContext());
 		final IReviewService iReviewService = new ReviewDataSource(getApplicationContext());
@@ -61,14 +64,15 @@ public class ReviewOverviewActivity extends Activity {
 		btnDeclineAnswer.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				Intent intent = new Intent(ReviewOverviewActivity.this, AddReviewActivity.class);
+				Intent intent = new Intent(context, AddReviewActivity.class);
 				
-		ListView lvReviews = (ListView) findViewById(R.id.lvReviews);
-		List<Review> reviews = iReviewService.GetReviews(answer.getId());
-		if(reviews != null && reviews.size() > 0){
-			//TODO: ADD Reviews in list
-			//lvReviews.setAdapter();
-		}
+				ListView lvReviews = (ListView) findViewById(R.id.lvReviews);
+				List<Review> reviews = iReviewService.GetReviews(answer.getId());
+				if(reviews != null && reviews.size() > 0){
+					//TODO: ADD Reviews in list
+					//lvReviews.setAdapter();					
+				}
+				
 				intent.putExtra("reviewInt", reviewInt);
 				startActivity(intent);
 				finish();
