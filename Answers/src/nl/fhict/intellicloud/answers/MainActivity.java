@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import nl.fhict.intellicloud.answers.backendcommunication.BackendSyncService;
+import nl.fhict.intellicloud.answers.backendcommunication.IUserService;
+import nl.fhict.intellicloud.answers.backendcommunication.UserDataSource;
 import nl.fhict.intellicloud.answers.backendcommunication.oauth.AuthenticationManager;
 
 import java.util.Calendar;
@@ -25,7 +27,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
+import android.database.ContentObserver;
 import android.net.ParseException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -46,7 +50,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements SearchView.OnQueryTextListener {
+public class MainActivity extends Activity implements SearchView.OnQueryTextListener, IUserFoundObserver {
 	private final int AUTHORIZE_REQUEST = 1000;
 	
 	//Static values for synchronization
@@ -60,19 +64,25 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
 	private final String PREFERENCES_NAME = "nl.fhict.intellicloud.answers";
 	private final String PREFERENCES_KEY = "AUTHORIZATON_CODE";
 	private final String PREFERENCES_TOKEN = "AUTHORIZATON_TOKEN";
+	private final String PREFERENCES_USER_DB_ID = "USER_ID";
+	
 	
     private DrawerLayout mDrawerLayout;
     private RelativeLayout mLinearLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    TextView drawerUserText;
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mFilterTitles;
 
     private ContentResolver syncResolver;
+    private ContentObserver userContentObserver;
     
-    
+    private IUserService userService;
+   
+    private GetUserIdTask userTask;
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +90,9 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
         
         //Get the shared preference which should contain the authorization code
         //If the code is saved in the shared, the application can start getting an access token
-        SharedPreferences preferences = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_MULTI_PROCESS);
+        
+        
+        SharedPreferences preferences = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_MULTI_PROCESS);       
         if(preferences.contains(PREFERENCES_KEY))
         {
         	Log.d("SharedPrefs", preferences.getString(PREFERENCES_KEY, null));
@@ -90,6 +102,7 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
 			//editor.putString(PREFERENCES_TOKEN, authManager.getAccessToken());
 			editor.apply();
         	
+			
         	setupSyncService(authManager);
         }
         // if the code is not saved yet it should be requested
@@ -103,8 +116,8 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.lvDrawer);
         mLinearLayout = (RelativeLayout) findViewById(R.id.left_drawer);
-        TextView drawerUserTekst = (TextView) findViewById(R.id.txtUserIdText);
-        drawerUserTekst.setText("Piet Jansen");
+        drawerUserText = (TextView) findViewById(R.id.txtUserIdText);
+        drawerUserText.setText("Downloading user info...");
         // set a custom shadow that overlays the main content when the drawer opens
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
@@ -144,6 +157,8 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
 	            selectItem(0);
 	        }
         }
+        userService = new UserDataSource(this);
+        
     }
 
     @Override
@@ -334,7 +349,39 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
         //Request a first sync- this method can also be used as a refresh button.
 		ContentResolver.requestSync(syncAccount, SYNC_AUTHORITY, params);
 		
+		userTask = new GetUserIdTask(this, this);
+		userTask.execute(new String[1]);
 		
 		
     }
+    private void refreshUser() {
+		// TODO Auto-generated method stub
+    	SharedPreferences prefs = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_MULTI_PROCESS);
+    	int id = prefs.getInt(PREFERENCES_USER_DB_ID, -1);
+    	if (id > -1)
+    	{
+    		User user = userService.GetUser(id);
+    		if (user != null)
+    		{
+    			drawerUserText.setText(user.getFullName());
+    		}
+    	}
+    	
+    	
+	}
+	@Override
+	public void loggedInUserFound(int id) {
+		Editor editor = this.getSharedPreferences(PREFERENCES_NAME, Context.MODE_MULTI_PROCESS).edit();
+		editor.putInt(PREFERENCES_USER_DB_ID, id);
+		editor.apply();
+		refreshUser();
+		
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		refreshUser();
+	}
 }
