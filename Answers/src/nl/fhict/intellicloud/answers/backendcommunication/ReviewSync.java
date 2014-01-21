@@ -102,9 +102,9 @@ public class ReviewSync {
 			{
 				reviewsToUpload.add(getJsonForCurrentReview(reviewsCursor));
 
-				String deleteUri = uri + "/" + reviewsCursor.getInt(localIdColumn);
+//				String deleteUri = uri + "/" + reviewsCursor.getInt(localIdColumn);
 				reviewsCursor.moveToNext();
-				contentProviderClient.delete(Uri.parse(deleteUri), null, null);
+//				contentProviderClient.delete(Uri.parse(deleteUri), null, null);
 			}
 			else
 			{

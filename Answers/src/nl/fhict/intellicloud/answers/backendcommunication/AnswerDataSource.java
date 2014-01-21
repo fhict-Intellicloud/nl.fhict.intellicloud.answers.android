@@ -84,12 +84,27 @@ public class AnswerDataSource implements IAnswerService {
 		public Answer GetAnswerUsingQuestion(int questionId) {
 			open();
 			Answer answer = null;
+			Boolean answerFound = false;
 			Cursor cursor = database.query(AnswersEntry.TABLE_NAME, allColumns, AnswersEntry.COLUMN_QUESTION_ID + " = " + questionId, null, null, null, null);
-			if (cursor.moveToFirst())
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast() && !answerFound)
 			{
+				if (!cursor.isNull(1))
+				{
+					answer = getNextAnswerFromCursor(cursor);
+					answerFound = true;
+				}
+				else
+				{
+					cursor.moveToNext();
+				}
 				
+				
+			}
+			if (!answerFound)
+			{
+				cursor.moveToFirst();
 				answer = getNextAnswerFromCursor(cursor);
-				
 			}
 			cursor.close();
 			close();
@@ -142,7 +157,7 @@ public class AnswerDataSource implements IAnswerService {
 			values.put(AnswersEntry.COLUMN_ANSWERSTATE, answer.getAnwserState().toString());
 			values.put(AnswersEntry.COLUMN_ANSWERER_ID, answer.getAnswerer().getId());
 			values.put(AnswersEntry.COLUMN_ANSWER, answer.getAnswer());
-		
+			
 			open();
 			database.update(AnswersEntry.TABLE_NAME, values, AnswersEntry.COLUMN_BACKEND_ID + " = " + answer.getId(), null);
 			close();
