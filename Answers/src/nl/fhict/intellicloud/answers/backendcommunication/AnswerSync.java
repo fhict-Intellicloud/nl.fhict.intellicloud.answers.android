@@ -103,9 +103,9 @@ public class AnswerSync {
 			{
 				answersToUpload.add(getJsonForCurrentAnswer(answersCursor));
 				
-				String deleteUri = uri + "/" + answersCursor.getInt(localIdColumn);
+//				String deleteUri = uri + "/" + answersCursor.getInt(localIdColumn);
 				answersCursor.moveToNext();
-				contentProviderClient.delete(Uri.parse(deleteUri), null, null);
+//				contentProviderClient.delete(Uri.parse(deleteUri), null, null);
 			}
 			else
 			{
